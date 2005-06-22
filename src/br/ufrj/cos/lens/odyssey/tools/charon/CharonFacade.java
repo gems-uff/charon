@@ -11,6 +11,10 @@ import java.util.Set;
 
 import javax.swing.JFrame;
 
+import modelmanagement.Package;
+
+import processstructure.WorkDefinition;
+
 import br.ufrj.cos.lens.odyssey.tools.charon.agents.Agente;
 import br.ufrj.cos.lens.odyssey.tools.charon.agents.AgenteAcompanhamento;
 import br.ufrj.cos.lens.odyssey.tools.charon.agents.AgenteExecucao;
@@ -204,6 +208,16 @@ public class CharonFacade implements Serializable {
 		}
 
 		return basesSelecionadas.iterator();
+	}
+	
+	/**
+	 * Instancia um processo dentro de um contexto.
+	 *
+	 * @param contexto Contexto em que o processo será instanciado
+	 * @param jmiPackage instancia de pacote jmi com a definicao do processo
+	 */
+	public void instanciaProcesso(Object contexto, Package jmiPackage) {
+		
 	}
 
 //	/**

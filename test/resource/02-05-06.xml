@@ -1,0 +1,2717 @@
+<?xml version = '1.0' encoding = 'ISO-8859-1' ?>
+<!-- <!DOCTYPE XMI SYSTEM 'Model1311.DTD' > -->
+<XMI xmi.version = '1.1' xmlns:Model='omg.org/mof.Model/1.3' timestamp = 'Sun May 26 18:03:12 2002' >
+ <XMI.header>
+  <XMI.documentation>
+   <XMI.exporter>Unisys.JCR.1</XMI.exporter>
+   <XMI.exporterVersion>1.3.2</XMI.exporterVersion>
+  </XMI.documentation>
+  <XMI.metamodel xmi.name = 'org.omg.mof.Model' xmi.version = '1.3'/>
+ </XMI.header>
+<XMI.content>
+<!-- ==================== ProcessStructure    [Package] ==================== -->
+<Model:Package xmi.id = 'a3CF0FD2B0006' 
+  name = 'ProcessStructure' annotation = '' 
+  isRoot = 'false' isLeaf = 'false' isAbstract = 'false' visibility = 'public_vis' >
+  <Model:Namespace.contents>
+    <!-- ==================== ProcessStructure.org.omg.mof.idl_prefix=org.omg.spem.Extensions    [Tag] ==================== -->
+    <Model:Tag xmi.id = 'G.109' 
+      name = 'org.omg.mof.idl_prefix=org.omg.spem.Extensions' annotation = '' 
+      tagId = 'org.omg.mof.idl_prefix' 
+      elements = 'a3CF0FD2B0006' >
+      <Model:Tag.values>
+        <XMI.any xmi.type = 'string' xmi.name = ''>org.omg.spem.Extensions</XMI.any>
+      </Model:Tag.values>
+    </Model:Tag>
+    <!-- ==================== ProcessStructure.org.omg.xmi.namespace=SPEM    [Tag] ==================== -->
+    <Model:Tag xmi.id = 'G.110' 
+      name = 'org.omg.xmi.namespace=SPEM' annotation = '' 
+      tagId = 'org.omg.xmi.namespace' 
+      elements = 'a3CF0FD2B0006' >
+      <Model:Tag.values>
+        <XMI.any xmi.type = 'string' xmi.name = ''>SPEM</XMI.any>
+      </Model:Tag.values>
+    </Model:Tag>
+    <!-- ==================== ProcessStructure.com.urep.jcr.java_prefix=org.omg.java.spem.Extensions    [Tag] ==================== -->
+    <Model:Tag xmi.id = 'G.111' 
+      name = 'com.urep.jcr.java_prefix=org.omg.java.spem.Extensions' annotation = '' 
+      tagId = 'com.urep.jcr.java_prefix' 
+      elements = 'a3CF0FD2B0006' >
+      <Model:Tag.values>
+        <XMI.any xmi.type = 'string' xmi.name = ''>org.omg.java.spem.Extensions</XMI.any>
+      </Model:Tag.values>
+    </Model:Tag>
+    <Model:Import xmi.id = 'G.112' 
+      name = 'Core' annotation = '' 
+      visibility = 'public_vis' isClustered = 'true' 
+      importedNamespace = 'a3CF0FD2B00A6' />
+    <Model:Import xmi.id = 'G.113' 
+      name = 'ActivityGraphs' annotation = '' 
+      visibility = 'public_vis' isClustered = 'true' 
+      importedNamespace = 'a3CF0FD2B0158' />
+    <!-- ==================== ProcessStructure.WorkProduct    [Class] ==================== -->
+    <Model:Class xmi.id = 'a3CF0FD2B0009' 
+      name = 'WorkProduct' annotation = '' 
+      isRoot = 'false' isLeaf = 'false' isAbstract = 'false' visibility = 'public_vis' 
+      isSingleton = 'false' 
+      supertypes = 'a3CF0FD2B00B4' >
+      <Model:Namespace.contents>
+        <!-- ==================== ProcessStructure.WorkProduct.isDeliverable    [Attribute] ==================== -->
+        <Model:Attribute xmi.id = 'a3CF0FD2B000B' 
+          name = 'isDeliverable' annotation = '' 
+          scope = 'instance_level' visibility = 'public_vis' 
+          isChangeable = 'true' 
+          isDerived = 'false' 
+          type = 'a3CF0FD2B008A' >
+          <Model:StructuralFeature.multiplicity>
+            <Model:MultiplicityType lower = '1' upper = '1' is_ordered = 'false' is_unique = 'false' />
+          </Model:StructuralFeature.multiplicity>
+        </Model:Attribute>
+        <!-- ==================== ProcessStructure.WorkProduct.kind    [Reference] ==================== -->
+        <Model:Reference xmi.id = 'a3CF0FD2B000C' 
+          name = 'kind' annotation = '' 
+          scope = 'instance_level' visibility = 'public_vis' 
+          isChangeable = 'true' 
+          type = 'a3CF0FD2B0020' 
+          referencedEnd = 'a3CF0FD2B0033' >
+          <Model:StructuralFeature.multiplicity>
+            <Model:MultiplicityType lower = '1' upper = '1' is_ordered = 'false' is_unique = 'false' />
+          </Model:StructuralFeature.multiplicity>
+        </Model:Reference>
+        <!-- ==================== ProcessStructure.WorkProduct.responsibleRole    [Reference] ==================== -->
+        <Model:Reference xmi.id = 'a3CF0FD2B000D' 
+          name = 'responsibleRole' annotation = '' 
+          scope = 'instance_level' visibility = 'public_vis' 
+          isChangeable = 'true' 
+          type = 'a3CF0FD2B0011' 
+          referencedEnd = 'a3CF0FD2B0030' >
+          <Model:StructuralFeature.multiplicity>
+            <Model:MultiplicityType lower = '0' upper = '1' is_ordered = 'false' is_unique = 'false' />
+          </Model:StructuralFeature.multiplicity>
+        </Model:Reference>
+      </Model:Namespace.contents>
+    </Model:Class>
+    <Model:Import xmi.id = 'G.114' 
+      name = 'Data_Types' annotation = '' 
+      visibility = 'public_vis' isClustered = 'false' 
+      importedNamespace = 'a3CF0FD2B0082' />
+    <!-- ==================== ProcessStructure.ProcessPerformer    [Class] ==================== -->
+    <Model:Class xmi.id = 'a3CF0FD2B000E' 
+      name = 'ProcessPerformer' annotation = '' 
+      isRoot = 'false' isLeaf = 'false' isAbstract = 'false' visibility = 'public_vis' 
+      isSingleton = 'false' 
+      supertypes = 'a3CF0FD2B00B4' >
+      <Model:Namespace.contents>
+        <!-- ==================== ProcessStructure.ProcessPerformer.work    [Reference] ==================== -->
+        <Model:Reference xmi.id = 'a3CF0FD2B0010' 
+          name = 'work' annotation = '' 
+          scope = 'instance_level' visibility = 'public_vis' 
+          isChangeable = 'true' 
+          type = 'a3CF0FD2B0016' 
+          referencedEnd = 'a3CF0FD2B0029' >
+          <Model:StructuralFeature.multiplicity>
+            <Model:MultiplicityType lower = '0' upper = '-1' is_ordered = 'true' is_unique = 'true' />
+          </Model:StructuralFeature.multiplicity>
+        </Model:Reference>
+      </Model:Namespace.contents>
+    </Model:Class>
+    <!-- ==================== ProcessStructure.ProcessRole    [Class] ==================== -->
+    <Model:Class xmi.id = 'a3CF0FD2B0011' 
+      name = 'ProcessRole' annotation = '' 
+      isRoot = 'false' isLeaf = 'false' isAbstract = 'false' visibility = 'public_vis' 
+      isSingleton = 'false' 
+      supertypes = 'a3CF0FD2B000E' />
+    <!-- ==================== ProcessStructure.ActivityParameter    [Class] ==================== -->
+    <Model:Class xmi.id = 'a3CF0FD2B0013' 
+      name = 'ActivityParameter' annotation = '' 
+      isRoot = 'false' isLeaf = 'false' isAbstract = 'false' visibility = 'public_vis' 
+      isSingleton = 'false' 
+      supertypes = 'a3CF0FD2B00CC' >
+      <Model:Namespace.contents>
+        <!-- ==================== ProcessStructure.ActivityParameter.hasWorkPerArtifact    [Attribute] ==================== -->
+        <Model:Attribute xmi.id = 'a3CF0FD2B0015' 
+          name = 'hasWorkPerArtifact' annotation = '' 
+          scope = 'instance_level' visibility = 'public_vis' 
+          isChangeable = 'true' 
+          isDerived = 'false' 
+          type = 'a3CF0FD2B008A' >
+          <Model:StructuralFeature.multiplicity>
+            <Model:MultiplicityType lower = '1' upper = '1' is_ordered = 'false' is_unique = 'false' />
+          </Model:StructuralFeature.multiplicity>
+        </Model:Attribute>
+      </Model:Namespace.contents>
+    </Model:Class>
+    <!-- ==================== ProcessStructure.WorkDefinition    [Class] ==================== -->
+    <Model:Class xmi.id = 'a3CF0FD2B0016' 
+      name = 'WorkDefinition' annotation = '' 
+      isRoot = 'false' isLeaf = 'false' isAbstract = 'false' visibility = 'public_vis' 
+      isSingleton = 'false' 
+      supertypes = 'a3CF0FD2B00E2' >
+      <Model:Namespace.contents>
+        <!-- ==================== ProcessStructure.WorkDefinition.performer    [Reference] ==================== -->
+        <Model:Reference xmi.id = 'a3CF0FD2B0018' 
+          name = 'performer' annotation = '' 
+          scope = 'instance_level' visibility = 'public_vis' 
+          isChangeable = 'true' 
+          type = 'a3CF0FD2B000E' 
+          referencedEnd = 'a3CF0FD2B002A' >
+          <Model:StructuralFeature.multiplicity>
+            <Model:MultiplicityType lower = '1' upper = '1' is_ordered = 'false' is_unique = 'false' />
+          </Model:StructuralFeature.multiplicity>
+        </Model:Reference>
+        <!-- ==================== ProcessStructure.WorkDefinition.parentWork    [Reference] ==================== -->
+        <Model:Reference xmi.id = 'a3CF0FD2B0019' 
+          name = 'parentWork' annotation = '' 
+          scope = 'instance_level' visibility = 'public_vis' 
+          isChangeable = 'true' 
+          type = 'a3CF0FD2B0016' 
+          referencedEnd = 'a3CF0FD2B0027' >
+          <Model:StructuralFeature.multiplicity>
+            <Model:MultiplicityType lower = '0' upper = '-1' is_ordered = 'false' is_unique = 'true' />
+          </Model:StructuralFeature.multiplicity>
+        </Model:Reference>
+      </Model:Namespace.contents>
+    </Model:Class>
+    <!-- ==================== ProcessStructure.Activity    [Class] ==================== -->
+    <Model:Class xmi.id = 'a3CF0FD2B001A' 
+      name = 'Activity' annotation = '' 
+      isRoot = 'false' isLeaf = 'false' isAbstract = 'false' visibility = 'public_vis' 
+      isSingleton = 'false' 
+      supertypes = 'a3CF0FD2B0016' >
+      <Model:Namespace.contents>
+        <!-- ==================== ProcessStructure.Activity.assistant    [Reference] ==================== -->
+        <Model:Reference xmi.id = 'a3CF0FD2B001C' 
+          name = 'assistant' annotation = '' 
+          scope = 'instance_level' visibility = 'public_vis' 
+          isChangeable = 'true' 
+          type = 'a3CF0FD2B0011' 
+          referencedEnd = 'a3CF0FD2B002C' >
+          <Model:StructuralFeature.multiplicity>
+            <Model:MultiplicityType lower = '0' upper = '-1' is_ordered = 'false' is_unique = 'true' />
+          </Model:StructuralFeature.multiplicity>
+        </Model:Reference>
+        <!-- ==================== ProcessStructure.Activity.step    [Reference] ==================== -->
+        <Model:Reference xmi.id = 'a3CF0FD2B001D' 
+          name = 'step' annotation = '' 
+          scope = 'instance_level' visibility = 'public_vis' 
+          isChangeable = 'true' 
+          type = 'a3CF0FD2B001E' 
+          referencedEnd = 'a3CF0FD2B0023' >
+          <Model:StructuralFeature.multiplicity>
+            <Model:MultiplicityType lower = '0' upper = '-1' is_ordered = 'false' is_unique = 'true' />
+          </Model:StructuralFeature.multiplicity>
+        </Model:Reference>
+      </Model:Namespace.contents>
+    </Model:Class>
+    <!-- ==================== ProcessStructure.Step    [Class] ==================== -->
+    <Model:Class xmi.id = 'a3CF0FD2B001E' 
+      name = 'Step' annotation = '' 
+      isRoot = 'false' isLeaf = 'false' isAbstract = 'false' visibility = 'public_vis' 
+      isSingleton = 'false' 
+      supertypes = 'a3CF0FD2B015D' />
+    <!-- ==================== ProcessStructure.WorkProductKind    [Class] ==================== -->
+    <Model:Class xmi.id = 'a3CF0FD2B0020' 
+      name = 'WorkProductKind' annotation = '' 
+      isRoot = 'false' isLeaf = 'false' isAbstract = 'false' visibility = 'public_vis' 
+      isSingleton = 'false' 
+      supertypes = 'a3CF0FD2B00A9' />
+    <!-- ==================== ProcessStructure.A_step_activity    [Association] ==================== -->
+    <Model:Association xmi.id = 'a3CF0FD2B0022' 
+      name = 'A_step_activity' annotation = '' 
+      isRoot = 'true' isLeaf = 'true' isAbstract = 'false' visibility = 'public_vis' 
+      isDerived = 'false' >
+      <Model:Namespace.contents>
+        <Model:AssociationEnd xmi.id = 'a3CF0FD2B0023' 
+          name = 'step' annotation = '' 
+          isNavigable = 'true' aggregation = 'none' isChangeable = 'true' 
+          type = 'a3CF0FD2B001E' >
+          <Model:AssociationEnd.multiplicity>
+            <Model:MultiplicityType lower = '0' upper = '-1' is_ordered = 'false' is_unique = 'true' />
+          </Model:AssociationEnd.multiplicity>
+        </Model:AssociationEnd>
+        <Model:AssociationEnd xmi.id = 'a3CF0FD2B0024' 
+          name = 'activity' annotation = '' 
+          isNavigable = 'true' aggregation = 'composite' isChangeable = 'true' 
+          type = 'a3CF0FD2B001A' >
+          <Model:AssociationEnd.multiplicity>
+            <Model:MultiplicityType lower = '1' upper = '1' is_ordered = 'false' is_unique = 'false' />
+          </Model:AssociationEnd.multiplicity>
+        </Model:AssociationEnd>
+      </Model:Namespace.contents>
+    </Model:Association>
+    <!-- ==================== ProcessStructure.A_subWork_parentWork    [Association] ==================== -->
+    <Model:Association xmi.id = 'a3CF0FD2B0025' 
+      name = 'A_subWork_parentWork' annotation = '' 
+      isRoot = 'true' isLeaf = 'true' isAbstract = 'false' visibility = 'public_vis' 
+      isDerived = 'false' >
+      <Model:Namespace.contents>
+        <Model:AssociationEnd xmi.id = 'a3CF0FD2B0026' 
+          name = 'subWork' annotation = '' 
+          isNavigable = 'true' aggregation = 'none' isChangeable = 'true' 
+          type = 'a3CF0FD2B0016' >
+          <Model:AssociationEnd.multiplicity>
+            <Model:MultiplicityType lower = '0' upper = '-1' is_ordered = 'false' is_unique = 'true' />
+          </Model:AssociationEnd.multiplicity>
+        </Model:AssociationEnd>
+        <Model:AssociationEnd xmi.id = 'a3CF0FD2B0027' 
+          name = 'parentWork' annotation = '' 
+          isNavigable = 'true' aggregation = 'none' isChangeable = 'true' 
+          type = 'a3CF0FD2B0016' >
+          <Model:AssociationEnd.multiplicity>
+            <Model:MultiplicityType lower = '0' upper = '-1' is_ordered = 'false' is_unique = 'true' />
+          </Model:AssociationEnd.multiplicity>
+        </Model:AssociationEnd>
+      </Model:Namespace.contents>
+    </Model:Association>
+    <!-- ==================== ProcessStructure.A_work_performer    [Association] ==================== -->
+    <Model:Association xmi.id = 'a3CF0FD2B0028' 
+      name = 'A_work_performer' annotation = '' 
+      isRoot = 'true' isLeaf = 'true' isAbstract = 'false' visibility = 'public_vis' 
+      isDerived = 'false' >
+      <Model:Namespace.contents>
+        <Model:AssociationEnd xmi.id = 'a3CF0FD2B0029' 
+          name = 'work' annotation = '' 
+          isNavigable = 'true' aggregation = 'none' isChangeable = 'true' 
+          type = 'a3CF0FD2B0016' >
+          <Model:AssociationEnd.multiplicity>
+            <Model:MultiplicityType lower = '0' upper = '-1' is_ordered = 'true' is_unique = 'true' />
+          </Model:AssociationEnd.multiplicity>
+        </Model:AssociationEnd>
+        <Model:AssociationEnd xmi.id = 'a3CF0FD2B002A' 
+          name = 'performer' annotation = '' 
+          isNavigable = 'true' aggregation = 'composite' isChangeable = 'true' 
+          type = 'a3CF0FD2B000E' >
+          <Model:AssociationEnd.multiplicity>
+            <Model:MultiplicityType lower = '1' upper = '1' is_ordered = 'false' is_unique = 'false' />
+          </Model:AssociationEnd.multiplicity>
+        </Model:AssociationEnd>
+      </Model:Namespace.contents>
+    </Model:Association>
+    <!-- ==================== ProcessStructure.A_assistant_activity    [Association] ==================== -->
+    <Model:Association xmi.id = 'a3CF0FD2B002B' 
+      name = 'A_assistant_activity' annotation = '' 
+      isRoot = 'true' isLeaf = 'true' isAbstract = 'false' visibility = 'public_vis' 
+      isDerived = 'false' >
+      <Model:Namespace.contents>
+        <Model:AssociationEnd xmi.id = 'a3CF0FD2B002C' 
+          name = 'assistant' annotation = '' 
+          isNavigable = 'true' aggregation = 'none' isChangeable = 'true' 
+          type = 'a3CF0FD2B0011' >
+          <Model:AssociationEnd.multiplicity>
+            <Model:MultiplicityType lower = '0' upper = '-1' is_ordered = 'false' is_unique = 'true' />
+          </Model:AssociationEnd.multiplicity>
+        </Model:AssociationEnd>
+        <Model:AssociationEnd xmi.id = 'a3CF0FD2B002D' 
+          name = 'activity' annotation = '' 
+          isNavigable = 'true' aggregation = 'none' isChangeable = 'true' 
+          type = 'a3CF0FD2B001A' >
+          <Model:AssociationEnd.multiplicity>
+            <Model:MultiplicityType lower = '0' upper = '-1' is_ordered = 'false' is_unique = 'true' />
+          </Model:AssociationEnd.multiplicity>
+        </Model:AssociationEnd>
+      </Model:Namespace.contents>
+    </Model:Association>
+    <!-- ==================== ProcessStructure.A_workProduct_responsibleRole    [Association] ==================== -->
+    <Model:Association xmi.id = 'a3CF0FD2B002E' 
+      name = 'A_workProduct_responsibleRole' annotation = '' 
+      isRoot = 'true' isLeaf = 'true' isAbstract = 'false' visibility = 'public_vis' 
+      isDerived = 'false' >
+      <Model:Namespace.contents>
+        <Model:AssociationEnd xmi.id = 'a3CF0FD2B002F' 
+          name = 'workProduct' annotation = '' 
+          isNavigable = 'true' aggregation = 'none' isChangeable = 'true' 
+          type = 'a3CF0FD2B0009' >
+          <Model:AssociationEnd.multiplicity>
+            <Model:MultiplicityType lower = '0' upper = '-1' is_ordered = 'false' is_unique = 'true' />
+          </Model:AssociationEnd.multiplicity>
+        </Model:AssociationEnd>
+        <Model:AssociationEnd xmi.id = 'a3CF0FD2B0030' 
+          name = 'responsibleRole' annotation = '' 
+          isNavigable = 'true' aggregation = 'none' isChangeable = 'true' 
+          type = 'a3CF0FD2B0011' >
+          <Model:AssociationEnd.multiplicity>
+            <Model:MultiplicityType lower = '0' upper = '1' is_ordered = 'false' is_unique = 'false' />
+          </Model:AssociationEnd.multiplicity>
+        </Model:AssociationEnd>
+      </Model:Namespace.contents>
+    </Model:Association>
+    <!-- ==================== ProcessStructure.A_workProduct_kind    [Association] ==================== -->
+    <Model:Association xmi.id = 'a3CF0FD2B0031' 
+      name = 'A_workProduct_kind' annotation = '' 
+      isRoot = 'true' isLeaf = 'true' isAbstract = 'false' visibility = 'public_vis' 
+      isDerived = 'false' >
+      <Model:Namespace.contents>
+        <Model:AssociationEnd xmi.id = 'a3CF0FD2B0032' 
+          name = 'workProduct' annotation = '' 
+          isNavigable = 'true' aggregation = 'none' isChangeable = 'true' 
+          type = 'a3CF0FD2B0009' >
+          <Model:AssociationEnd.multiplicity>
+            <Model:MultiplicityType lower = '0' upper = '-1' is_ordered = 'false' is_unique = 'true' />
+          </Model:AssociationEnd.multiplicity>
+        </Model:AssociationEnd>
+        <Model:AssociationEnd xmi.id = 'a3CF0FD2B0033' 
+          name = 'kind' annotation = '' 
+          isNavigable = 'true' aggregation = 'none' isChangeable = 'true' 
+          type = 'a3CF0FD2B0020' >
+          <Model:AssociationEnd.multiplicity>
+            <Model:MultiplicityType lower = '1' upper = '1' is_ordered = 'false' is_unique = 'false' />
+          </Model:AssociationEnd.multiplicity>
+        </Model:AssociationEnd>
+      </Model:Namespace.contents>
+    </Model:Association>
+  </Model:Namespace.contents>
+</Model:Package>
+<!-- ==================== BasicElements    [Package] ==================== -->
+<Model:Package xmi.id = 'a3CF0FD2B0035' 
+  name = 'BasicElements' annotation = '' 
+  isRoot = 'false' isLeaf = 'false' isAbstract = 'false' visibility = 'public_vis' >
+  <Model:Namespace.contents>
+    <!-- ==================== BasicElements.org.omg.mof.idl_prefix=org.omg.spem.Extensions    [Tag] ==================== -->
+    <Model:Tag xmi.id = 'G.115' 
+      name = 'org.omg.mof.idl_prefix=org.omg.spem.Extensions' annotation = '' 
+      tagId = 'org.omg.mof.idl_prefix' 
+      elements = 'a3CF0FD2B0035' >
+      <Model:Tag.values>
+        <XMI.any xmi.type = 'string' xmi.name = ''>org.omg.spem.Extensions</XMI.any>
+      </Model:Tag.values>
+    </Model:Tag>
+    <!-- ==================== BasicElements.org.omg.xmi.namespace=SPEM    [Tag] ==================== -->
+    <Model:Tag xmi.id = 'G.116' 
+      name = 'org.omg.xmi.namespace=SPEM' annotation = '' 
+      tagId = 'org.omg.xmi.namespace' 
+      elements = 'a3CF0FD2B0035' >
+      <Model:Tag.values>
+        <XMI.any xmi.type = 'string' xmi.name = ''>SPEM</XMI.any>
+      </Model:Tag.values>
+    </Model:Tag>
+    <!-- ==================== BasicElements.com.urep.jcr.java_prefix=org.omg.java.spem.Extensions    [Tag] ==================== -->
+    <Model:Tag xmi.id = 'G.117' 
+      name = 'com.urep.jcr.java_prefix=org.omg.java.spem.Extensions' annotation = '' 
+      tagId = 'com.urep.jcr.java_prefix' 
+      elements = 'a3CF0FD2B0035' >
+      <Model:Tag.values>
+        <XMI.any xmi.type = 'string' xmi.name = ''>org.omg.java.spem.Extensions</XMI.any>
+      </Model:Tag.values>
+    </Model:Tag>
+    <Model:Import xmi.id = 'G.118' 
+      name = 'Core' annotation = '' 
+      visibility = 'public_vis' isClustered = 'true' 
+      importedNamespace = 'a3CF0FD2B00A6' />
+    <!-- ==================== BasicElements.ExternalDescription    [Class] ==================== -->
+    <Model:Class xmi.id = 'a3CF0FD2B0037' 
+      name = 'ExternalDescription' annotation = '' 
+      isRoot = 'false' isLeaf = 'false' isAbstract = 'false' visibility = 'public_vis' 
+      isSingleton = 'false' 
+      supertypes = 'a3CF0FD2B00D9' >
+      <Model:Namespace.contents>
+        <!-- ==================== BasicElements.ExternalDescription.name    [Attribute] ==================== -->
+        <Model:Attribute xmi.id = 'a3CF0FD2B0039' 
+          name = 'name' annotation = '' 
+          scope = 'instance_level' visibility = 'public_vis' 
+          isChangeable = 'true' 
+          isDerived = 'false' 
+          type = 'a3CF0FD2B0085' >
+          <Model:StructuralFeature.multiplicity>
+            <Model:MultiplicityType lower = '1' upper = '1' is_ordered = 'false' is_unique = 'false' />
+          </Model:StructuralFeature.multiplicity>
+        </Model:Attribute>
+        <!-- ==================== BasicElements.ExternalDescription.content    [Attribute] ==================== -->
+        <Model:Attribute xmi.id = 'a3CF0FD2B003A' 
+          name = 'content' annotation = '' 
+          scope = 'instance_level' visibility = 'public_vis' 
+          isChangeable = 'true' 
+          isDerived = 'false' 
+          type = 'a3CF0FD2B0085' >
+          <Model:StructuralFeature.multiplicity>
+            <Model:MultiplicityType lower = '1' upper = '1' is_ordered = 'false' is_unique = 'false' />
+          </Model:StructuralFeature.multiplicity>
+        </Model:Attribute>
+        <!-- ==================== BasicElements.ExternalDescription.medium    [Attribute] ==================== -->
+        <Model:Attribute xmi.id = 'a3CF0FD2B003B' 
+          name = 'medium' annotation = '' 
+          scope = 'instance_level' visibility = 'public_vis' 
+          isChangeable = 'true' 
+          isDerived = 'false' 
+          type = 'a3CF0FD2B0085' >
+          <Model:StructuralFeature.multiplicity>
+            <Model:MultiplicityType lower = '1' upper = '1' is_ordered = 'false' is_unique = 'false' />
+          </Model:StructuralFeature.multiplicity>
+        </Model:Attribute>
+        <!-- ==================== BasicElements.ExternalDescription.language    [Attribute] ==================== -->
+        <Model:Attribute xmi.id = 'a3CF0FD2B003C' 
+          name = 'language' annotation = '' 
+          scope = 'instance_level' visibility = 'public_vis' 
+          isChangeable = 'true' 
+          isDerived = 'false' 
+          type = 'a3CF0FD2B0085' >
+          <Model:StructuralFeature.multiplicity>
+            <Model:MultiplicityType lower = '1' upper = '1' is_ordered = 'false' is_unique = 'false' />
+          </Model:StructuralFeature.multiplicity>
+        </Model:Attribute>
+      </Model:Namespace.contents>
+    </Model:Class>
+    <Model:Import xmi.id = 'G.119' 
+      name = 'Data_Types' annotation = '' 
+      visibility = 'public_vis' isClustered = 'false' 
+      importedNamespace = 'a3CF0FD2B0082' />
+    <!-- ==================== BasicElements.Guidance    [Class] ==================== -->
+    <Model:Class xmi.id = 'a3CF0FD2B003D' 
+      name = 'Guidance' annotation = '' 
+      isRoot = 'false' isLeaf = 'false' isAbstract = 'false' visibility = 'public_vis' 
+      isSingleton = 'false' 
+      supertypes = 'a3CF0FD2B00A9' >
+      <Model:Namespace.contents>
+        <!-- ==================== BasicElements.Guidance.annotatedElement    [Reference] ==================== -->
+        <Model:Reference xmi.id = 'a3CF0FD2B003F' 
+          name = 'annotatedElement' annotation = '' 
+          scope = 'instance_level' visibility = 'public_vis' 
+          isChangeable = 'true' 
+          type = 'a3CF0FD2B00A9' 
+          referencedEnd = 'a3CF0FD2B0047' >
+          <Model:StructuralFeature.multiplicity>
+            <Model:MultiplicityType lower = '1' upper = '-1' is_ordered = 'false' is_unique = 'true' />
+          </Model:StructuralFeature.multiplicity>
+        </Model:Reference>
+        <!-- ==================== BasicElements.Guidance.kind    [Reference] ==================== -->
+        <Model:Reference xmi.id = 'a3CF0FD2B0040' 
+          name = 'kind' annotation = '' 
+          scope = 'instance_level' visibility = 'public_vis' 
+          isChangeable = 'true' 
+          type = 'a3CF0FD2B0041' 
+          referencedEnd = 'a3CF0FD2B0045' >
+          <Model:StructuralFeature.multiplicity>
+            <Model:MultiplicityType lower = '1' upper = '1' is_ordered = 'false' is_unique = 'false' />
+          </Model:StructuralFeature.multiplicity>
+        </Model:Reference>
+      </Model:Namespace.contents>
+    </Model:Class>
+    <!-- ==================== BasicElements.GuidanceKind    [Class] ==================== -->
+    <Model:Class xmi.id = 'a3CF0FD2B0041' 
+      name = 'GuidanceKind' annotation = '' 
+      isRoot = 'false' isLeaf = 'false' isAbstract = 'false' visibility = 'public_vis' 
+      isSingleton = 'false' 
+      supertypes = 'a3CF0FD2B00A9' />
+    <!-- ==================== BasicElements.A_guidance_kind    [Association] ==================== -->
+    <Model:Association xmi.id = 'a3CF0FD2B0043' 
+      name = 'A_guidance_kind' annotation = '' 
+      isRoot = 'true' isLeaf = 'true' isAbstract = 'false' visibility = 'public_vis' 
+      isDerived = 'false' >
+      <Model:Namespace.contents>
+        <Model:AssociationEnd xmi.id = 'a3CF0FD2B0044' 
+          name = 'guidance' annotation = '' 
+          isNavigable = 'true' aggregation = 'none' isChangeable = 'true' 
+          type = 'a3CF0FD2B003D' >
+          <Model:AssociationEnd.multiplicity>
+            <Model:MultiplicityType lower = '0' upper = '-1' is_ordered = 'false' is_unique = 'true' />
+          </Model:AssociationEnd.multiplicity>
+        </Model:AssociationEnd>
+        <Model:AssociationEnd xmi.id = 'a3CF0FD2B0045' 
+          name = 'kind' annotation = '' 
+          isNavigable = 'true' aggregation = 'none' isChangeable = 'true' 
+          type = 'a3CF0FD2B0041' >
+          <Model:AssociationEnd.multiplicity>
+            <Model:MultiplicityType lower = '1' upper = '1' is_ordered = 'false' is_unique = 'false' />
+          </Model:AssociationEnd.multiplicity>
+        </Model:AssociationEnd>
+      </Model:Namespace.contents>
+    </Model:Association>
+    <!-- ==================== BasicElements.A_annotatedElement_guidance    [Association] ==================== -->
+    <Model:Association xmi.id = 'a3CF0FD2B0046' 
+      name = 'A_annotatedElement_guidance' annotation = '' 
+      isRoot = 'true' isLeaf = 'true' isAbstract = 'false' visibility = 'public_vis' 
+      isDerived = 'false' >
+      <Model:Namespace.contents>
+        <Model:AssociationEnd xmi.id = 'a3CF0FD2B0047' 
+          name = 'annotatedElement' annotation = '' 
+          isNavigable = 'true' aggregation = 'none' isChangeable = 'true' 
+          type = 'a3CF0FD2B00A9' >
+          <Model:AssociationEnd.multiplicity>
+            <Model:MultiplicityType lower = '1' upper = '-1' is_ordered = 'false' is_unique = 'true' />
+          </Model:AssociationEnd.multiplicity>
+        </Model:AssociationEnd>
+        <Model:AssociationEnd xmi.id = 'a3CF0FD2B0048' 
+          name = 'guidance' annotation = '' 
+          isNavigable = 'true' aggregation = 'none' isChangeable = 'true' 
+          type = 'a3CF0FD2B003D' >
+          <Model:AssociationEnd.multiplicity>
+            <Model:MultiplicityType lower = '0' upper = '-1' is_ordered = 'false' is_unique = 'true' />
+          </Model:AssociationEnd.multiplicity>
+        </Model:AssociationEnd>
+      </Model:Namespace.contents>
+    </Model:Association>
+  </Model:Namespace.contents>
+</Model:Package>
+<!-- ==================== ProcessComponents    [Package] ==================== -->
+<Model:Package xmi.id = 'a3CF0FD2B004A' 
+  name = 'ProcessComponents' annotation = '' 
+  isRoot = 'false' isLeaf = 'false' isAbstract = 'false' visibility = 'public_vis' >
+  <Model:Namespace.contents>
+    <!-- ==================== ProcessComponents.org.omg.mof.idl_prefix=org.omg.spem.Extensions    [Tag] ==================== -->
+    <Model:Tag xmi.id = 'G.120' 
+      name = 'org.omg.mof.idl_prefix=org.omg.spem.Extensions' annotation = '' 
+      tagId = 'org.omg.mof.idl_prefix' 
+      elements = 'a3CF0FD2B004A' >
+      <Model:Tag.values>
+        <XMI.any xmi.type = 'string' xmi.name = ''>org.omg.spem.Extensions</XMI.any>
+      </Model:Tag.values>
+    </Model:Tag>
+    <!-- ==================== ProcessComponents.org.omg.xmi.namespace=SPEM    [Tag] ==================== -->
+    <Model:Tag xmi.id = 'G.121' 
+      name = 'org.omg.xmi.namespace=SPEM' annotation = '' 
+      tagId = 'org.omg.xmi.namespace' 
+      elements = 'a3CF0FD2B004A' >
+      <Model:Tag.values>
+        <XMI.any xmi.type = 'string' xmi.name = ''>SPEM</XMI.any>
+      </Model:Tag.values>
+    </Model:Tag>
+    <!-- ==================== ProcessComponents.com.urep.jcr.java_prefix=org.omg.java.spem.Extensions    [Tag] ==================== -->
+    <Model:Tag xmi.id = 'G.122' 
+      name = 'com.urep.jcr.java_prefix=org.omg.java.spem.Extensions' annotation = '' 
+      tagId = 'com.urep.jcr.java_prefix' 
+      elements = 'a3CF0FD2B004A' >
+      <Model:Tag.values>
+        <XMI.any xmi.type = 'string' xmi.name = ''>org.omg.java.spem.Extensions</XMI.any>
+      </Model:Tag.values>
+    </Model:Tag>
+    <Model:Import xmi.id = 'G.123' 
+      name = 'Model_Management' annotation = '' 
+      visibility = 'public_vis' isClustered = 'true' 
+      importedNamespace = 'a3CF0FD2B0109' />
+    <!-- ==================== ProcessComponents.ProcessComponent    [Class] ==================== -->
+    <Model:Class xmi.id = 'a3CF0FD2B004D' 
+      name = 'ProcessComponent' annotation = '' 
+      isRoot = 'false' isLeaf = 'false' isAbstract = 'false' visibility = 'public_vis' 
+      isSingleton = 'false' 
+      supertypes = 'a3CF0FD2B010D' />
+    <!-- ==================== ProcessComponents.Process    [Class] ==================== -->
+    <Model:Class xmi.id = 'a3CF0FD2B004F' 
+      name = 'Process' annotation = '' 
+      isRoot = 'false' isLeaf = 'false' isAbstract = 'false' visibility = 'public_vis' 
+      isSingleton = 'false' 
+      supertypes = 'a3CF0FD2B004D' />
+    <!-- ==================== ProcessComponents.Discipline    [Class] ==================== -->
+    <Model:Class xmi.id = 'a3CF0FD2B0051' 
+      name = 'Discipline' annotation = '' 
+      isRoot = 'false' isLeaf = 'false' isAbstract = 'false' visibility = 'public_vis' 
+      isSingleton = 'false' 
+      supertypes = 'a3CF0FD2B004D' />
+  </Model:Namespace.contents>
+</Model:Package>
+<!-- ==================== ProcessLifecycle    [Package] ==================== -->
+<Model:Package xmi.id = 'a3CF0FD2B0054' 
+  name = 'ProcessLifecycle' annotation = '' 
+  isRoot = 'false' isLeaf = 'false' isAbstract = 'false' visibility = 'public_vis' >
+  <Model:Namespace.contents>
+    <!-- ==================== ProcessLifecycle.org.omg.mof.idl_prefix=org.omg.spem.Extensions    [Tag] ==================== -->
+    <Model:Tag xmi.id = 'G.124' 
+      name = 'org.omg.mof.idl_prefix=org.omg.spem.Extensions' annotation = '' 
+      tagId = 'org.omg.mof.idl_prefix' 
+      elements = 'a3CF0FD2B0054' >
+      <Model:Tag.values>
+        <XMI.any xmi.type = 'string' xmi.name = ''>org.omg.spem.Extensions</XMI.any>
+      </Model:Tag.values>
+    </Model:Tag>
+    <!-- ==================== ProcessLifecycle.org.omg.xmi.namespace=SPEM    [Tag] ==================== -->
+    <Model:Tag xmi.id = 'G.125' 
+      name = 'org.omg.xmi.namespace=SPEM' annotation = '' 
+      tagId = 'org.omg.xmi.namespace' 
+      elements = 'a3CF0FD2B0054' >
+      <Model:Tag.values>
+        <XMI.any xmi.type = 'string' xmi.name = ''>SPEM</XMI.any>
+      </Model:Tag.values>
+    </Model:Tag>
+    <!-- ==================== ProcessLifecycle.com.urep.jcr.java_prefix=org.omg.java.spem.Extensions    [Tag] ==================== -->
+    <Model:Tag xmi.id = 'G.126' 
+      name = 'com.urep.jcr.java_prefix=org.omg.java.spem.Extensions' annotation = '' 
+      tagId = 'com.urep.jcr.java_prefix' 
+      elements = 'a3CF0FD2B0054' >
+      <Model:Tag.values>
+        <XMI.any xmi.type = 'string' xmi.name = ''>org.omg.java.spem.Extensions</XMI.any>
+      </Model:Tag.values>
+    </Model:Tag>
+    <Model:Import xmi.id = 'G.127' 
+      name = 'ProcessStructure' annotation = '' 
+      visibility = 'public_vis' isClustered = 'true' 
+      importedNamespace = 'a3CF0FD2B0006' />
+    <Model:Import xmi.id = 'G.128' 
+      name = 'ProcessComponents' annotation = '' 
+      visibility = 'public_vis' isClustered = 'true' 
+      importedNamespace = 'a3CF0FD2B004A' />
+    <Model:Import xmi.id = 'G.129' 
+      name = 'Core' annotation = '' 
+      visibility = 'public_vis' isClustered = 'true' 
+      importedNamespace = 'a3CF0FD2B00A6' />
+    <!-- ==================== ProcessLifecycle.Goal    [Class] ==================== -->
+    <Model:Class xmi.id = 'a3CF0FD2B0058' 
+      name = 'Goal' annotation = '' 
+      isRoot = 'false' isLeaf = 'false' isAbstract = 'false' visibility = 'public_vis' 
+      isSingleton = 'false' 
+      supertypes = 'a3CF0FD2B00C0' />
+    <!-- ==================== ProcessLifecycle.Precondition    [Class] ==================== -->
+    <Model:Class xmi.id = 'a3CF0FD2B005A' 
+      name = 'Precondition' annotation = '' 
+      isRoot = 'false' isLeaf = 'false' isAbstract = 'false' visibility = 'public_vis' 
+      isSingleton = 'false' 
+      supertypes = 'a3CF0FD2B00C0' />
+    <!-- ==================== ProcessLifecycle.Iteration    [Class] ==================== -->
+    <Model:Class xmi.id = 'a3CF0FD2B005C' 
+      name = 'Iteration' annotation = '' 
+      isRoot = 'false' isLeaf = 'false' isAbstract = 'false' visibility = 'public_vis' 
+      isSingleton = 'false' 
+      supertypes = 'a3CF0FD2B0016' />
+    <!-- ==================== ProcessLifecycle.Phase    [Class] ==================== -->
+    <Model:Class xmi.id = 'a3CF0FD2B005E' 
+      name = 'Phase' annotation = '' 
+      isRoot = 'false' isLeaf = 'false' isAbstract = 'false' visibility = 'public_vis' 
+      isSingleton = 'false' 
+      supertypes = 'a3CF0FD2B0016' />
+    <!-- ==================== ProcessLifecycle.Lifecycle    [Class] ==================== -->
+    <Model:Class xmi.id = 'a3CF0FD2B0060' 
+      name = 'Lifecycle' annotation = '' 
+      isRoot = 'false' isLeaf = 'false' isAbstract = 'false' visibility = 'public_vis' 
+      isSingleton = 'false' 
+      supertypes = 'a3CF0FD2B0016' >
+      <Model:Namespace.contents>
+        <!-- ==================== ProcessLifecycle.Lifecycle.governedProcesses    [Reference] ==================== -->
+        <Model:Reference xmi.id = 'a3CF0FD2B0062' 
+          name = 'governedProcesses' annotation = '' 
+          scope = 'instance_level' visibility = 'public_vis' 
+          isChangeable = 'true' 
+          type = 'a3CF0FD2B004F' 
+          referencedEnd = 'a3CF0FD2B006A' >
+          <Model:StructuralFeature.multiplicity>
+            <Model:MultiplicityType lower = '0' upper = '-1' is_ordered = 'false' is_unique = 'true' />
+          </Model:StructuralFeature.multiplicity>
+        </Model:Reference>
+      </Model:Namespace.contents>
+    </Model:Class>
+    <!-- ==================== ProcessLifecycle.A_governedProcesses_governingLifecycle    [Association] ==================== -->
+    <Model:Association xmi.id = 'a3CF0FD2B0069' 
+      name = 'A_governedProcesses_governingLifecycle' annotation = '' 
+      isRoot = 'true' isLeaf = 'true' isAbstract = 'false' visibility = 'public_vis' 
+      isDerived = 'false' >
+      <Model:Namespace.contents>
+        <Model:AssociationEnd xmi.id = 'a3CF0FD2B006A' 
+          name = 'governedProcesses' annotation = '' 
+          isNavigable = 'true' aggregation = 'none' isChangeable = 'true' 
+          type = 'a3CF0FD2B004F' >
+          <Model:AssociationEnd.multiplicity>
+            <Model:MultiplicityType lower = '0' upper = '-1' is_ordered = 'false' is_unique = 'true' />
+          </Model:AssociationEnd.multiplicity>
+        </Model:AssociationEnd>
+        <Model:AssociationEnd xmi.id = 'a3CF0FD2B006B' 
+          name = 'governingLifecycle' annotation = '' 
+          isNavigable = 'true' aggregation = 'none' isChangeable = 'true' 
+          type = 'a3CF0FD2B0060' >
+          <Model:AssociationEnd.multiplicity>
+            <Model:MultiplicityType lower = '0' upper = '1' is_ordered = 'false' is_unique = 'false' />
+          </Model:AssociationEnd.multiplicity>
+        </Model:AssociationEnd>
+      </Model:Namespace.contents>
+    </Model:Association>
+  </Model:Namespace.contents>
+</Model:Package>
+<!-- ==================== Dependencies    [Package] ==================== -->
+<Model:Package xmi.id = 'a3CF0FD2B006D' 
+  name = 'Dependencies' annotation = '' 
+  isRoot = 'false' isLeaf = 'false' isAbstract = 'false' visibility = 'public_vis' >
+  <Model:Namespace.contents>
+    <!-- ==================== Dependencies.org.omg.mof.idl_prefix=org.omg.spem.Extensions    [Tag] ==================== -->
+    <Model:Tag xmi.id = 'G.130' 
+      name = 'org.omg.mof.idl_prefix=org.omg.spem.Extensions' annotation = '' 
+      tagId = 'org.omg.mof.idl_prefix' 
+      elements = 'a3CF0FD2B006D' >
+      <Model:Tag.values>
+        <XMI.any xmi.type = 'string' xmi.name = ''>org.omg.spem.Extensions</XMI.any>
+      </Model:Tag.values>
+    </Model:Tag>
+    <!-- ==================== Dependencies.org.omg.xmi.namespace=SPEM    [Tag] ==================== -->
+    <Model:Tag xmi.id = 'G.131' 
+      name = 'org.omg.xmi.namespace=SPEM' annotation = '' 
+      tagId = 'org.omg.xmi.namespace' 
+      elements = 'a3CF0FD2B006D' >
+      <Model:Tag.values>
+        <XMI.any xmi.type = 'string' xmi.name = ''>SPEM</XMI.any>
+      </Model:Tag.values>
+    </Model:Tag>
+    <!-- ==================== Dependencies.com.urep.jcr.java_prefix=org.omg.java.spem.Extensions    [Tag] ==================== -->
+    <Model:Tag xmi.id = 'G.132' 
+      name = 'com.urep.jcr.java_prefix=org.omg.java.spem.Extensions' annotation = '' 
+      tagId = 'com.urep.jcr.java_prefix' 
+      elements = 'a3CF0FD2B006D' >
+      <Model:Tag.values>
+        <XMI.any xmi.type = 'string' xmi.name = ''>org.omg.java.spem.Extensions</XMI.any>
+      </Model:Tag.values>
+    </Model:Tag>
+    <Model:Import xmi.id = 'G.133' 
+      name = 'Core' annotation = '' 
+      visibility = 'public_vis' isClustered = 'true' 
+      importedNamespace = 'a3CF0FD2B00A6' />
+    <!-- ==================== Dependencies.Trace    [Class] ==================== -->
+    <Model:Class xmi.id = 'a3CF0FD2B006F' 
+      name = 'Trace' annotation = '' 
+      isRoot = 'false' isLeaf = 'false' isAbstract = 'false' visibility = 'public_vis' 
+      isSingleton = 'false' 
+      supertypes = 'a3CF0FD2B00E0' />
+    <!-- ==================== Dependencies.RefersTo    [Class] ==================== -->
+    <Model:Class xmi.id = 'a3CF0FD2B0071' 
+      name = 'RefersTo' annotation = '' 
+      isRoot = 'false' isLeaf = 'false' isAbstract = 'false' visibility = 'public_vis' 
+      isSingleton = 'false' 
+      supertypes = 'a3CF0FD2B00DC' />
+    <!-- ==================== Dependencies.Impacts    [Class] ==================== -->
+    <Model:Class xmi.id = 'a3CF0FD2B0073' 
+      name = 'Impacts' annotation = '' 
+      isRoot = 'false' isLeaf = 'false' isAbstract = 'false' visibility = 'public_vis' 
+      isSingleton = 'false' 
+      supertypes = 'a3CF0FD2B00DC' />
+    <!-- ==================== Dependencies.Import    [Class] ==================== -->
+    <Model:Class xmi.id = 'a3CF0FD2B0075' 
+      name = 'Import' annotation = '' 
+      isRoot = 'false' isLeaf = 'false' isAbstract = 'false' visibility = 'public_vis' 
+      isSingleton = 'false' 
+      supertypes = 'a3CF0FD2B00DE' />
+    <!-- ==================== Dependencies.Precedes    [Class] ==================== -->
+    <Model:Class xmi.id = 'a3CF0FD2B0077' 
+      name = 'Precedes' annotation = '' 
+      isRoot = 'false' isLeaf = 'false' isAbstract = 'false' visibility = 'public_vis' 
+      isSingleton = 'false' 
+      supertypes = 'a3CF0FD2B00DC' >
+      <Model:Namespace.contents>
+        <!-- ==================== Dependencies.Precedes.kind    [Attribute] ==================== -->
+        <Model:Attribute xmi.id = 'a3CF0FD2B0079' 
+          name = 'kind' annotation = '' 
+          scope = 'instance_level' visibility = 'public_vis' 
+          isChangeable = 'true' 
+          isDerived = 'false' 
+          type = 'a3CF0FD2B007A' >
+          <Model:StructuralFeature.multiplicity>
+            <Model:MultiplicityType lower = '1' upper = '1' is_ordered = 'false' is_unique = 'false' />
+          </Model:StructuralFeature.multiplicity>
+        </Model:Attribute>
+      </Model:Namespace.contents>
+    </Model:Class>
+    <!-- ==================== Dependencies.PrecedenceKind    [DataType] ==================== -->
+    <Model:DataType xmi.id = 'a3CF0FD2B007A' 
+      name = 'PrecedenceKind' annotation = '' 
+      isRoot = 'true' isLeaf = 'true' isAbstract = 'false' visibility = 'public_vis' >
+      <Model:DataType.typeCode>
+        <XMI.CorbaTypeCode>
+          <XMI.CorbaTcEnum xmi.tcName = 'PrecedenceKind'>
+          <XMI.CorbaTcEnumLabel xmi.tcName = 'pk_start_start'/>
+          <XMI.CorbaTcEnumLabel xmi.tcName = 'pk_finish_start'/>
+          <XMI.CorbaTcEnumLabel xmi.tcName = 'pk_finish_finish'/>
+          </XMI.CorbaTcEnum>
+        </XMI.CorbaTypeCode>
+      </Model:DataType.typeCode>
+    </Model:DataType>
+    <!-- ==================== Dependencies.org.omg.xmi.enumerationUnprefix=pk_    [Tag] ==================== -->
+    <Model:Tag xmi.id = 'G.134' 
+      name = 'org.omg.xmi.enumerationUnprefix=pk_' annotation = '' 
+      tagId = 'org.omg.xmi.enumerationUnprefix' 
+      elements = 'a3CF0FD2B007A' >
+      <Model:Tag.values>
+        <XMI.any xmi.type = 'string' xmi.name = ''>pk_</XMI.any>
+      </Model:Tag.values>
+    </Model:Tag>
+    <!-- ==================== Dependencies.Categorizes    [Class] ==================== -->
+    <Model:Class xmi.id = 'a3CF0FD2B007E' 
+      name = 'Categorizes' annotation = '' 
+      isRoot = 'false' isLeaf = 'false' isAbstract = 'false' visibility = 'public_vis' 
+      isSingleton = 'false' 
+      supertypes = 'a3CF0FD2B00DC' />
+  </Model:Namespace.contents>
+</Model:Package>
+<!-- ==================== Data_Types    [Package] ==================== -->
+<Model:Package xmi.id = 'a3CF0FD2B0082' 
+  name = 'Data_Types' annotation = '' 
+  isRoot = 'false' isLeaf = 'false' isAbstract = 'false' visibility = 'public_vis' >
+  <Model:Namespace.contents>
+    <!-- ==================== Data_Types.org.omg.mof.idl_prefix=org.omg.spem.Foundation    [Tag] ==================== -->
+    <Model:Tag xmi.id = 'G.135' 
+      name = 'org.omg.mof.idl_prefix=org.omg.spem.Foundation' annotation = '' 
+      tagId = 'org.omg.mof.idl_prefix' 
+      elements = 'a3CF0FD2B0082' >
+      <Model:Tag.values>
+        <XMI.any xmi.type = 'string' xmi.name = ''>org.omg.spem.Foundation</XMI.any>
+      </Model:Tag.values>
+    </Model:Tag>
+    <!-- ==================== Data_Types.org.omg.xmi.namespace=SPEM    [Tag] ==================== -->
+    <Model:Tag xmi.id = 'G.136' 
+      name = 'org.omg.xmi.namespace=SPEM' annotation = '' 
+      tagId = 'org.omg.xmi.namespace' 
+      elements = 'a3CF0FD2B0082' >
+      <Model:Tag.values>
+        <XMI.any xmi.type = 'string' xmi.name = ''>SPEM</XMI.any>
+      </Model:Tag.values>
+    </Model:Tag>
+    <!-- ==================== Data_Types.com.urep.jcr.java_prefix=org.omg.java.spem.Foundation    [Tag] ==================== -->
+    <Model:Tag xmi.id = 'G.137' 
+      name = 'com.urep.jcr.java_prefix=org.omg.java.spem.Foundation' annotation = '' 
+      tagId = 'com.urep.jcr.java_prefix' 
+      elements = 'a3CF0FD2B0082' >
+      <Model:Tag.values>
+        <XMI.any xmi.type = 'string' xmi.name = ''>org.omg.java.spem.Foundation</XMI.any>
+      </Model:Tag.values>
+    </Model:Tag>
+    <!-- ==================== Data_Types.Integer    [DataType] ==================== -->
+    <Model:DataType xmi.id = 'a3CF0FD2B0083' 
+      name = 'Integer' annotation = '' 
+      isRoot = 'true' isLeaf = 'true' isAbstract = 'false' visibility = 'public_vis' >
+      <Model:DataType.typeCode>
+        <XMI.CorbaTypeCode>
+          <XMI.CorbaTcLong/>
+        </XMI.CorbaTypeCode>
+      </Model:DataType.typeCode>
+    </Model:DataType>
+    <!-- ==================== Data_Types.UnlimitedInteger    [DataType] ==================== -->
+    <Model:DataType xmi.id = 'a3CF0FD2B0084' 
+      name = 'UnlimitedInteger' annotation = '' 
+      isRoot = 'true' isLeaf = 'true' isAbstract = 'false' visibility = 'public_vis' >
+      <Model:DataType.typeCode>
+        <XMI.CorbaTypeCode>
+          <XMI.CorbaTcAlias xmi.tcName = 'UnlimitedInteger'>
+          <XMI.CorbaTypeCode>
+            <XMI.CorbaTcLong/>
+          </XMI.CorbaTypeCode>
+          </XMI.CorbaTcAlias>
+        </XMI.CorbaTypeCode>
+      </Model:DataType.typeCode>
+    </Model:DataType>
+    <!-- ==================== Data_Types.String    [DataType] ==================== -->
+    <Model:DataType xmi.id = 'a3CF0FD2B0085' 
+      name = 'String' annotation = '' 
+      isRoot = 'true' isLeaf = 'true' isAbstract = 'false' visibility = 'public_vis' >
+      <Model:DataType.typeCode>
+        <XMI.CorbaTypeCode>
+          <XMI.CorbaTcString xmi.tcLength = '0'/>
+        </XMI.CorbaTypeCode>
+      </Model:DataType.typeCode>
+    </Model:DataType>
+    <!-- ==================== Data_Types.AggregationKind    [DataType] ==================== -->
+    <Model:DataType xmi.id = 'a3CF0FD2B0086' 
+      name = 'AggregationKind' annotation = '' 
+      isRoot = 'true' isLeaf = 'true' isAbstract = 'false' visibility = 'public_vis' >
+      <Model:DataType.typeCode>
+        <XMI.CorbaTypeCode>
+          <XMI.CorbaTcEnum xmi.tcName = 'AggregationKind'>
+          <XMI.CorbaTcEnumLabel xmi.tcName = 'ak_none'/>
+          <XMI.CorbaTcEnumLabel xmi.tcName = 'ak_aggregate'/>
+          <XMI.CorbaTcEnumLabel xmi.tcName = 'ak_composite'/>
+          </XMI.CorbaTcEnum>
+        </XMI.CorbaTypeCode>
+      </Model:DataType.typeCode>
+    </Model:DataType>
+    <!-- ==================== Data_Types.org.omg.xmi.enumerationUnprefix=ak_    [Tag] ==================== -->
+    <Model:Tag xmi.id = 'G.138' 
+      name = 'org.omg.xmi.enumerationUnprefix=ak_' annotation = '' 
+      tagId = 'org.omg.xmi.enumerationUnprefix' 
+      elements = 'a3CF0FD2B0086' >
+      <Model:Tag.values>
+        <XMI.any xmi.type = 'string' xmi.name = ''>ak_</XMI.any>
+      </Model:Tag.values>
+    </Model:Tag>
+    <!-- ==================== Data_Types.Boolean    [DataType] ==================== -->
+    <Model:DataType xmi.id = 'a3CF0FD2B008A' 
+      name = 'Boolean' annotation = '' 
+      isRoot = 'true' isLeaf = 'true' isAbstract = 'false' visibility = 'public_vis' >
+      <Model:DataType.typeCode>
+        <XMI.CorbaTypeCode>
+          <XMI.CorbaTcBoolean/>
+        </XMI.CorbaTypeCode>
+      </Model:DataType.typeCode>
+    </Model:DataType>
+    <!-- ==================== Data_Types.ParameterDirectionKind    [DataType] ==================== -->
+    <Model:DataType xmi.id = 'a3CF0FD2B008B' 
+      name = 'ParameterDirectionKind' annotation = '' 
+      isRoot = 'true' isLeaf = 'true' isAbstract = 'false' visibility = 'public_vis' >
+      <Model:DataType.typeCode>
+        <XMI.CorbaTypeCode>
+          <XMI.CorbaTcEnum xmi.tcName = 'ParameterDirectionKind'>
+          <XMI.CorbaTcEnumLabel xmi.tcName = 'pdk_in'/>
+          <XMI.CorbaTcEnumLabel xmi.tcName = 'pdk_inout'/>
+          <XMI.CorbaTcEnumLabel xmi.tcName = 'pdk_out'/>
+          <XMI.CorbaTcEnumLabel xmi.tcName = 'pdk_return'/>
+          </XMI.CorbaTcEnum>
+        </XMI.CorbaTypeCode>
+      </Model:DataType.typeCode>
+    </Model:DataType>
+    <!-- ==================== Data_Types.org.omg.xmi.enumerationUnprefix=pdk_    [Tag] ==================== -->
+    <Model:Tag xmi.id = 'G.139' 
+      name = 'org.omg.xmi.enumerationUnprefix=pdk_' annotation = '' 
+      tagId = 'org.omg.xmi.enumerationUnprefix' 
+      elements = 'a3CF0FD2B008B' >
+      <Model:Tag.values>
+        <XMI.any xmi.type = 'string' xmi.name = ''>pdk_</XMI.any>
+      </Model:Tag.values>
+    </Model:Tag>
+    <!-- ==================== Data_Types.Name    [DataType] ==================== -->
+    <Model:DataType xmi.id = 'a3CF0FD2B0090' 
+      name = 'Name' annotation = '' 
+      isRoot = 'true' isLeaf = 'true' isAbstract = 'false' visibility = 'public_vis' >
+      <Model:DataType.typeCode>
+        <XMI.CorbaTypeCode>
+          <XMI.CorbaTcAlias xmi.tcName = 'Name'>
+          <XMI.CorbaTypeCode>
+            <XMI.CorbaTcString xmi.tcLength = '0'/>
+          </XMI.CorbaTypeCode>
+          </XMI.CorbaTcAlias>
+        </XMI.CorbaTypeCode>
+      </Model:DataType.typeCode>
+    </Model:DataType>
+    <!-- ==================== Data_Types.Multiplicity    [Class] ==================== -->
+    <Model:Class xmi.id = 'a3CF0FD2B0091' 
+      name = 'Multiplicity' annotation = '' 
+      isRoot = 'false' isLeaf = 'false' isAbstract = 'false' visibility = 'public_vis' 
+      isSingleton = 'false' >
+      <Model:Namespace.contents>
+        <!-- ==================== Data_Types.Multiplicity.range    [Reference] ==================== -->
+        <Model:Reference xmi.id = 'a3CF0FD2B0092' 
+          name = 'range' annotation = '' 
+          scope = 'instance_level' visibility = 'public_vis' 
+          isChangeable = 'true' 
+          type = 'a3CF0FD2B0093' 
+          referencedEnd = 'a3CF0FD2B00A3' >
+          <Model:StructuralFeature.multiplicity>
+            <Model:MultiplicityType lower = '1' upper = '-1' is_ordered = 'false' is_unique = 'true' />
+          </Model:StructuralFeature.multiplicity>
+        </Model:Reference>
+      </Model:Namespace.contents>
+    </Model:Class>
+    <!-- ==================== Data_Types.MultiplicityRange    [Class] ==================== -->
+    <Model:Class xmi.id = 'a3CF0FD2B0093' 
+      name = 'MultiplicityRange' annotation = '' 
+      isRoot = 'false' isLeaf = 'false' isAbstract = 'false' visibility = 'public_vis' 
+      isSingleton = 'false' >
+      <Model:Namespace.contents>
+        <!-- ==================== Data_Types.MultiplicityRange.lower    [Attribute] ==================== -->
+        <Model:Attribute xmi.id = 'a3CF0FD2B0094' 
+          name = 'lower' annotation = '' 
+          scope = 'instance_level' visibility = 'public_vis' 
+          isChangeable = 'true' 
+          isDerived = 'false' 
+          type = 'a3CF0FD2B0083' >
+          <Model:StructuralFeature.multiplicity>
+            <Model:MultiplicityType lower = '1' upper = '1' is_ordered = 'false' is_unique = 'false' />
+          </Model:StructuralFeature.multiplicity>
+        </Model:Attribute>
+        <!-- ==================== Data_Types.MultiplicityRange.upper    [Attribute] ==================== -->
+        <Model:Attribute xmi.id = 'a3CF0FD2B0095' 
+          name = 'upper' annotation = '' 
+          scope = 'instance_level' visibility = 'public_vis' 
+          isChangeable = 'true' 
+          isDerived = 'false' 
+          type = 'a3CF0FD2B0084' >
+          <Model:StructuralFeature.multiplicity>
+            <Model:MultiplicityType lower = '1' upper = '1' is_ordered = 'false' is_unique = 'false' />
+          </Model:StructuralFeature.multiplicity>
+        </Model:Attribute>
+        <!-- ==================== Data_Types.MultiplicityRange.multiplicity    [Reference] ==================== -->
+        <Model:Reference xmi.id = 'a3CF0FD2B0096' 
+          name = 'multiplicity' annotation = '' 
+          scope = 'instance_level' visibility = 'public_vis' 
+          isChangeable = 'true' 
+          type = 'a3CF0FD2B0091' 
+          referencedEnd = 'a3CF0FD2B00A2' >
+          <Model:StructuralFeature.multiplicity>
+            <Model:MultiplicityType lower = '1' upper = '1' is_ordered = 'false' is_unique = 'false' />
+          </Model:StructuralFeature.multiplicity>
+        </Model:Reference>
+      </Model:Namespace.contents>
+    </Model:Class>
+    <!-- ==================== Data_Types.Expression    [Class] ==================== -->
+    <Model:Class xmi.id = 'a3CF0FD2B0097' 
+      name = 'Expression' annotation = '' 
+      isRoot = 'false' isLeaf = 'false' isAbstract = 'false' visibility = 'public_vis' 
+      isSingleton = 'false' >
+      <Model:Namespace.contents>
+        <!-- ==================== Data_Types.Expression.language    [Attribute] ==================== -->
+        <Model:Attribute xmi.id = 'a3CF0FD2B0098' 
+          name = 'language' annotation = '' 
+          scope = 'instance_level' visibility = 'public_vis' 
+          isChangeable = 'true' 
+          isDerived = 'false' 
+          type = 'a3CF0FD2B0090' >
+          <Model:StructuralFeature.multiplicity>
+            <Model:MultiplicityType lower = '0' upper = '1' is_ordered = 'false' is_unique = 'false' />
+          </Model:StructuralFeature.multiplicity>
+        </Model:Attribute>
+        <!-- ==================== Data_Types.Expression.body    [Attribute] ==================== -->
+        <Model:Attribute xmi.id = 'a3CF0FD2B0099' 
+          name = 'body' annotation = '' 
+          scope = 'instance_level' visibility = 'public_vis' 
+          isChangeable = 'true' 
+          isDerived = 'false' 
+          type = 'a3CF0FD2B0085' >
+          <Model:StructuralFeature.multiplicity>
+            <Model:MultiplicityType lower = '1' upper = '1' is_ordered = 'false' is_unique = 'false' />
+          </Model:StructuralFeature.multiplicity>
+        </Model:Attribute>
+      </Model:Namespace.contents>
+    </Model:Class>
+    <!-- ==================== Data_Types.BooleanExpression    [Class] ==================== -->
+    <Model:Class xmi.id = 'a3CF0FD2B009A' 
+      name = 'BooleanExpression' annotation = '' 
+      isRoot = 'false' isLeaf = 'false' isAbstract = 'false' visibility = 'public_vis' 
+      isSingleton = 'false' 
+      supertypes = 'a3CF0FD2B0097' />
+    <!-- ==================== Data_Types.PseudoStateKind    [DataType] ==================== -->
+    <Model:DataType xmi.id = 'a3CF0FD2B009C' 
+      name = 'PseudoStateKind' annotation = '' 
+      isRoot = 'true' isLeaf = 'true' isAbstract = 'false' visibility = 'public_vis' >
+      <Model:DataType.typeCode>
+        <XMI.CorbaTypeCode>
+          <XMI.CorbaTcEnum xmi.tcName = 'PseudoStateKind'>
+          <XMI.CorbaTcEnumLabel xmi.tcName = 'pk_fork'/>
+          <XMI.CorbaTcEnumLabel xmi.tcName = 'pk_initial'/>
+          <XMI.CorbaTcEnumLabel xmi.tcName = 'pk_join'/>
+          <XMI.CorbaTcEnumLabel xmi.tcName = 'pk_junction'/>
+          </XMI.CorbaTcEnum>
+        </XMI.CorbaTypeCode>
+      </Model:DataType.typeCode>
+    </Model:DataType>
+    <!-- ==================== Data_Types.org.omg.xmi.enumerationUnprefix=pk_    [Tag] ==================== -->
+    <Model:Tag xmi.id = 'G.140' 
+      name = 'org.omg.xmi.enumerationUnprefix=pk_' annotation = '' 
+      tagId = 'org.omg.xmi.enumerationUnprefix' 
+      elements = 'a3CF0FD2B009C' >
+      <Model:Tag.values>
+        <XMI.any xmi.type = 'string' xmi.name = ''>pk_</XMI.any>
+      </Model:Tag.values>
+    </Model:Tag>
+    <!-- ==================== Data_Types.A_multiplicity_range    [Association] ==================== -->
+    <Model:Association xmi.id = 'a3CF0FD2B00A1' 
+      name = 'A_multiplicity_range' annotation = '' 
+      isRoot = 'true' isLeaf = 'true' isAbstract = 'false' visibility = 'public_vis' 
+      isDerived = 'false' >
+      <Model:Namespace.contents>
+        <Model:AssociationEnd xmi.id = 'a3CF0FD2B00A2' 
+          name = 'multiplicity' annotation = '' 
+          isNavigable = 'true' aggregation = 'composite' isChangeable = 'true' 
+          type = 'a3CF0FD2B0091' >
+          <Model:AssociationEnd.multiplicity>
+            <Model:MultiplicityType lower = '1' upper = '1' is_ordered = 'false' is_unique = 'false' />
+          </Model:AssociationEnd.multiplicity>
+        </Model:AssociationEnd>
+        <Model:AssociationEnd xmi.id = 'a3CF0FD2B00A3' 
+          name = 'range' annotation = '' 
+          isNavigable = 'true' aggregation = 'none' isChangeable = 'true' 
+          type = 'a3CF0FD2B0093' >
+          <Model:AssociationEnd.multiplicity>
+            <Model:MultiplicityType lower = '1' upper = '-1' is_ordered = 'false' is_unique = 'true' />
+          </Model:AssociationEnd.multiplicity>
+        </Model:AssociationEnd>
+      </Model:Namespace.contents>
+    </Model:Association>
+  </Model:Namespace.contents>
+</Model:Package>
+<!-- ==================== Core    [Package] ==================== -->
+<Model:Package xmi.id = 'a3CF0FD2B00A6' 
+  name = 'Core' annotation = '' 
+  isRoot = 'false' isLeaf = 'false' isAbstract = 'false' visibility = 'public_vis' >
+  <Model:Namespace.contents>
+    <!-- ==================== Core.org.omg.mof.idl_prefix=org.omg.spem.Foundation    [Tag] ==================== -->
+    <Model:Tag xmi.id = 'G.141' 
+      name = 'org.omg.mof.idl_prefix=org.omg.spem.Foundation' annotation = '' 
+      tagId = 'org.omg.mof.idl_prefix' 
+      elements = 'a3CF0FD2B00A6' >
+      <Model:Tag.values>
+        <XMI.any xmi.type = 'string' xmi.name = ''>org.omg.spem.Foundation</XMI.any>
+      </Model:Tag.values>
+    </Model:Tag>
+    <!-- ==================== Core.org.omg.xmi.namespace=SPEM    [Tag] ==================== -->
+    <Model:Tag xmi.id = 'G.142' 
+      name = 'org.omg.xmi.namespace=SPEM' annotation = '' 
+      tagId = 'org.omg.xmi.namespace' 
+      elements = 'a3CF0FD2B00A6' >
+      <Model:Tag.values>
+        <XMI.any xmi.type = 'string' xmi.name = ''>SPEM</XMI.any>
+      </Model:Tag.values>
+    </Model:Tag>
+    <!-- ==================== Core.com.urep.jcr.java_prefix=org.omg.java.spem.Foundation    [Tag] ==================== -->
+    <Model:Tag xmi.id = 'G.143' 
+      name = 'com.urep.jcr.java_prefix=org.omg.java.spem.Foundation' annotation = '' 
+      tagId = 'com.urep.jcr.java_prefix' 
+      elements = 'a3CF0FD2B00A6' >
+      <Model:Tag.values>
+        <XMI.any xmi.type = 'string' xmi.name = ''>org.omg.java.spem.Foundation</XMI.any>
+      </Model:Tag.values>
+    </Model:Tag>
+    <Model:Import xmi.id = 'G.144' 
+      name = 'Data_Types' annotation = '' 
+      visibility = 'public_vis' isClustered = 'true' 
+      importedNamespace = 'a3CF0FD2B0082' />
+    <!-- ==================== Core.Element    [Class] ==================== -->
+    <Model:Class xmi.id = 'a3CF0FD2B00A8' 
+      name = 'Element' annotation = '' 
+      isRoot = 'false' isLeaf = 'false' isAbstract = 'true' visibility = 'public_vis' 
+      isSingleton = 'false' />
+    <!-- ==================== Core.ModelElement    [Class] ==================== -->
+    <Model:Class xmi.id = 'a3CF0FD2B00A9' 
+      name = 'ModelElement' annotation = '' 
+      isRoot = 'false' isLeaf = 'false' isAbstract = 'true' visibility = 'public_vis' 
+      isSingleton = 'false' 
+      supertypes = 'a3CF0FD2B00A8' >
+      <Model:Namespace.contents>
+        <!-- ==================== Core.ModelElement.name    [Attribute] ==================== -->
+        <Model:Attribute xmi.id = 'a3CF0FD2B00AB' 
+          name = 'name' annotation = '' 
+          scope = 'instance_level' visibility = 'public_vis' 
+          isChangeable = 'true' 
+          isDerived = 'false' 
+          type = 'a3CF0FD2B0090' >
+          <Model:StructuralFeature.multiplicity>
+            <Model:MultiplicityType lower = '0' upper = '1' is_ordered = 'false' is_unique = 'false' />
+          </Model:StructuralFeature.multiplicity>
+        </Model:Attribute>
+        <!-- ==================== Core.ModelElement.namespace    [Reference] ==================== -->
+        <Model:Reference xmi.id = 'a3CF0FD2B00AC' 
+          name = 'namespace' annotation = '' 
+          scope = 'instance_level' visibility = 'public_vis' 
+          isChangeable = 'true' 
+          type = 'a3CF0FD2B00B1' 
+          referencedEnd = 'a3CF0FD2B00E8' >
+          <Model:StructuralFeature.multiplicity>
+            <Model:MultiplicityType lower = '0' upper = '1' is_ordered = 'false' is_unique = 'false' />
+          </Model:StructuralFeature.multiplicity>
+        </Model:Reference>
+        <!-- ==================== Core.ModelElement.clientDependency    [Reference] ==================== -->
+        <Model:Reference xmi.id = 'a3CF0FD2B00AD' 
+          name = 'clientDependency' annotation = '' 
+          scope = 'instance_level' visibility = 'public_vis' 
+          isChangeable = 'true' 
+          type = 'a3CF0FD2B00D5' 
+          referencedEnd = 'a3CF0FD2B00FB' >
+          <Model:StructuralFeature.multiplicity>
+            <Model:MultiplicityType lower = '0' upper = '-1' is_ordered = 'false' is_unique = 'true' />
+          </Model:StructuralFeature.multiplicity>
+        </Model:Reference>
+      </Model:Namespace.contents>
+    </Model:Class>
+    <!-- ==================== Core.com.urep.jcr.mof.object_name=true    [Tag] ==================== -->
+    <Model:Tag xmi.id = 'G.145' 
+      name = 'com.urep.jcr.mof.object_name=true' annotation = '' 
+      tagId = 'com.urep.jcr.mof.object_name' 
+      elements = 'a3CF0FD2B00AB' >
+      <Model:Tag.values>
+        <XMI.any xmi.type = 'string' xmi.name = ''>true</XMI.any>
+      </Model:Tag.values>
+    </Model:Tag>
+    <!-- ==================== Core.GeneralizableElement    [Class] ==================== -->
+    <Model:Class xmi.id = 'a3CF0FD2B00AE' 
+      name = 'GeneralizableElement' annotation = '' 
+      isRoot = 'false' isLeaf = 'false' isAbstract = 'true' visibility = 'public_vis' 
+      isSingleton = 'false' 
+      supertypes = 'a3CF0FD2B00A9' >
+      <Model:Namespace.contents>
+        <!-- ==================== Core.GeneralizableElement.generalization    [Reference] ==================== -->
+        <Model:Reference xmi.id = 'a3CF0FD2B00B0' 
+          name = 'generalization' annotation = '' 
+          scope = 'instance_level' visibility = 'public_vis' 
+          isChangeable = 'true' 
+          type = 'a3CF0FD2B00D1' 
+          referencedEnd = 'a3CF0FD2B00F2' >
+          <Model:StructuralFeature.multiplicity>
+            <Model:MultiplicityType lower = '0' upper = '-1' is_ordered = 'false' is_unique = 'true' />
+          </Model:StructuralFeature.multiplicity>
+        </Model:Reference>
+      </Model:Namespace.contents>
+    </Model:Class>
+    <!-- ==================== Core.Namespace    [Class] ==================== -->
+    <Model:Class xmi.id = 'a3CF0FD2B00B1' 
+      name = 'Namespace' annotation = '' 
+      isRoot = 'false' isLeaf = 'false' isAbstract = 'true' visibility = 'public_vis' 
+      isSingleton = 'false' 
+      supertypes = 'a3CF0FD2B00A9' >
+      <Model:Namespace.contents>
+        <!-- ==================== Core.Namespace.ownedElement    [Reference] ==================== -->
+        <Model:Reference xmi.id = 'a3CF0FD2B00B3' 
+          name = 'ownedElement' annotation = '' 
+          scope = 'instance_level' visibility = 'public_vis' 
+          isChangeable = 'true' 
+          type = 'a3CF0FD2B00A9' 
+          referencedEnd = 'a3CF0FD2B00E9' >
+          <Model:StructuralFeature.multiplicity>
+            <Model:MultiplicityType lower = '0' upper = '-1' is_ordered = 'false' is_unique = 'true' />
+          </Model:StructuralFeature.multiplicity>
+        </Model:Reference>
+      </Model:Namespace.contents>
+    </Model:Class>
+    <!-- ==================== Core.Classifier    [Class] ==================== -->
+    <Model:Class xmi.id = 'a3CF0FD2B00B4' 
+      name = 'Classifier' annotation = '' 
+      isRoot = 'false' isLeaf = 'false' isAbstract = 'true' visibility = 'public_vis' 
+      isSingleton = 'false' 
+      supertypes = 'a3CF0FD2B00AE a3CF0FD2B00B1' />
+    <!-- ==================== Core.Feature    [Class] ==================== -->
+    <Model:Class xmi.id = 'a3CF0FD2B00B7' 
+      name = 'Feature' annotation = '' 
+      isRoot = 'false' isLeaf = 'false' isAbstract = 'true' visibility = 'public_vis' 
+      isSingleton = 'false' 
+      supertypes = 'a3CF0FD2B00A9' />
+    <!-- ==================== Core.AssociationEnd    [Class] ==================== -->
+    <Model:Class xmi.id = 'a3CF0FD2B00B9' 
+      name = 'AssociationEnd' annotation = '' 
+      isRoot = 'false' isLeaf = 'false' isAbstract = 'false' visibility = 'public_vis' 
+      isSingleton = 'false' 
+      supertypes = 'a3CF0FD2B00A9' >
+      <Model:Namespace.contents>
+        <!-- ==================== Core.AssociationEnd.isNavigable    [Attribute] ==================== -->
+        <Model:Attribute xmi.id = 'a3CF0FD2B00BB' 
+          name = 'isNavigable' annotation = '' 
+          scope = 'instance_level' visibility = 'public_vis' 
+          isChangeable = 'true' 
+          isDerived = 'false' 
+          type = 'a3CF0FD2B008A' >
+          <Model:StructuralFeature.multiplicity>
+            <Model:MultiplicityType lower = '1' upper = '1' is_ordered = 'false' is_unique = 'false' />
+          </Model:StructuralFeature.multiplicity>
+        </Model:Attribute>
+        <!-- ==================== Core.AssociationEnd.aggregation    [Attribute] ==================== -->
+        <Model:Attribute xmi.id = 'a3CF0FD2B00BC' 
+          name = 'aggregation' annotation = '' 
+          scope = 'instance_level' visibility = 'public_vis' 
+          isChangeable = 'true' 
+          isDerived = 'false' 
+          type = 'a3CF0FD2B0086' >
+          <Model:StructuralFeature.multiplicity>
+            <Model:MultiplicityType lower = '0' upper = '1' is_ordered = 'false' is_unique = 'false' />
+          </Model:StructuralFeature.multiplicity>
+        </Model:Attribute>
+        <!-- ==================== Core.AssociationEnd.multiplicity    [Attribute] ==================== -->
+        <Model:Attribute xmi.id = 'a3CF0FD2B00BD' 
+          name = 'multiplicity' annotation = '' 
+          scope = 'instance_level' visibility = 'public_vis' 
+          isChangeable = 'true' 
+          isDerived = 'false' 
+          type = 'a3CF0FD2B0091' >
+          <Model:StructuralFeature.multiplicity>
+            <Model:MultiplicityType lower = '0' upper = '1' is_ordered = 'false' is_unique = 'false' />
+          </Model:StructuralFeature.multiplicity>
+        </Model:Attribute>
+        <!-- ==================== Core.AssociationEnd.association    [Reference] ==================== -->
+        <Model:Reference xmi.id = 'a3CF0FD2B00BE' 
+          name = 'association' annotation = '' 
+          scope = 'instance_level' visibility = 'public_vis' 
+          isChangeable = 'true' 
+          type = 'a3CF0FD2B00C6' 
+          referencedEnd = 'a3CF0FD2B00E5' >
+          <Model:StructuralFeature.multiplicity>
+            <Model:MultiplicityType lower = '1' upper = '1' is_ordered = 'false' is_unique = 'false' />
+          </Model:StructuralFeature.multiplicity>
+        </Model:Reference>
+        <!-- ==================== Core.AssociationEnd.participant    [Reference] ==================== -->
+        <Model:Reference xmi.id = 'a3CF0FD2B00BF' 
+          name = 'participant' annotation = '' 
+          scope = 'instance_level' visibility = 'public_vis' 
+          isChangeable = 'true' 
+          type = 'a3CF0FD2B00B4' 
+          referencedEnd = 'a3CF0FD2B00F7' >
+          <Model:StructuralFeature.multiplicity>
+            <Model:MultiplicityType lower = '1' upper = '1' is_ordered = 'false' is_unique = 'false' />
+          </Model:StructuralFeature.multiplicity>
+        </Model:Reference>
+      </Model:Namespace.contents>
+    </Model:Class>
+    <!-- ==================== Core.Constraint    [Class] ==================== -->
+    <Model:Class xmi.id = 'a3CF0FD2B00C0' 
+      name = 'Constraint' annotation = '' 
+      isRoot = 'false' isLeaf = 'false' isAbstract = 'false' visibility = 'public_vis' 
+      isSingleton = 'false' 
+      supertypes = 'a3CF0FD2B00A9' >
+      <Model:Namespace.contents>
+        <!-- ==================== Core.Constraint.body    [Attribute] ==================== -->
+        <Model:Attribute xmi.id = 'a3CF0FD2B00C2' 
+          name = 'body' annotation = '' 
+          scope = 'instance_level' visibility = 'public_vis' 
+          isChangeable = 'true' 
+          isDerived = 'false' 
+          type = 'a3CF0FD2B009A' >
+          <Model:StructuralFeature.multiplicity>
+            <Model:MultiplicityType lower = '0' upper = '1' is_ordered = 'false' is_unique = 'false' />
+          </Model:StructuralFeature.multiplicity>
+        </Model:Attribute>
+        <!-- ==================== Core.Constraint.constrainedElement    [Reference] ==================== -->
+        <Model:Reference xmi.id = 'a3CF0FD2B00C3' 
+          name = 'constrainedElement' annotation = '' 
+          scope = 'instance_level' visibility = 'public_vis' 
+          isChangeable = 'true' 
+          type = 'a3CF0FD2B00A9' 
+          referencedEnd = 'a3CF0FD2B00FD' >
+          <Model:StructuralFeature.multiplicity>
+            <Model:MultiplicityType lower = '0' upper = '-1' is_ordered = 'true' is_unique = 'true' />
+          </Model:StructuralFeature.multiplicity>
+        </Model:Reference>
+      </Model:Namespace.contents>
+    </Model:Class>
+    <!-- ==================== Core.org.omg.mof.idl_substitute_name=UmlConstraint    [Tag] ==================== -->
+    <Model:Tag xmi.id = 'G.146' 
+      name = 'org.omg.mof.idl_substitute_name=UmlConstraint' annotation = '' 
+      tagId = 'org.omg.mof.idl_substitute_name' 
+      elements = 'a3CF0FD2B00C0' >
+      <Model:Tag.values>
+        <XMI.any xmi.type = 'string' xmi.name = ''>UmlConstraint</XMI.any>
+      </Model:Tag.values>
+    </Model:Tag>
+    <!-- ==================== Core.Relationship    [Class] ==================== -->
+    <Model:Class xmi.id = 'a3CF0FD2B00C4' 
+      name = 'Relationship' annotation = '' 
+      isRoot = 'false' isLeaf = 'false' isAbstract = 'true' visibility = 'public_vis' 
+      isSingleton = 'false' 
+      supertypes = 'a3CF0FD2B00A9' />
+    <!-- ==================== Core.Association    [Class] ==================== -->
+    <Model:Class xmi.id = 'a3CF0FD2B00C6' 
+      name = 'Association' annotation = '' 
+      isRoot = 'false' isLeaf = 'false' isAbstract = 'false' visibility = 'public_vis' 
+      isSingleton = 'false' 
+      supertypes = 'a3CF0FD2B00C4' >
+      <Model:Namespace.contents>
+        <!-- ==================== Core.Association.connection    [Reference] ==================== -->
+        <Model:Reference xmi.id = 'a3CF0FD2B00C8' 
+          name = 'connection' annotation = '' 
+          scope = 'instance_level' visibility = 'public_vis' 
+          isChangeable = 'true' 
+          type = 'a3CF0FD2B00B9' 
+          referencedEnd = 'a3CF0FD2B00E6' >
+          <Model:StructuralFeature.multiplicity>
+            <Model:MultiplicityType lower = '2' upper = '2' is_ordered = 'true' is_unique = 'true' />
+          </Model:StructuralFeature.multiplicity>
+        </Model:Reference>
+      </Model:Namespace.contents>
+    </Model:Class>
+    <!-- ==================== Core.BehavioralFeature    [Class] ==================== -->
+    <Model:Class xmi.id = 'a3CF0FD2B00C9' 
+      name = 'BehavioralFeature' annotation = '' 
+      isRoot = 'false' isLeaf = 'false' isAbstract = 'true' visibility = 'public_vis' 
+      isSingleton = 'false' 
+      supertypes = 'a3CF0FD2B00B7' >
+      <Model:Namespace.contents>
+        <!-- ==================== Core.BehavioralFeature.parameter    [Reference] ==================== -->
+        <Model:Reference xmi.id = 'a3CF0FD2B00CB' 
+          name = 'parameter' annotation = '' 
+          scope = 'instance_level' visibility = 'public_vis' 
+          isChangeable = 'true' 
+          type = 'a3CF0FD2B00CC' 
+          referencedEnd = 'a3CF0FD2B00EC' >
+          <Model:StructuralFeature.multiplicity>
+            <Model:MultiplicityType lower = '0' upper = '-1' is_ordered = 'true' is_unique = 'true' />
+          </Model:StructuralFeature.multiplicity>
+        </Model:Reference>
+      </Model:Namespace.contents>
+    </Model:Class>
+    <!-- ==================== Core.Parameter    [Class] ==================== -->
+    <Model:Class xmi.id = 'a3CF0FD2B00CC' 
+      name = 'Parameter' annotation = '' 
+      isRoot = 'false' isLeaf = 'false' isAbstract = 'true' visibility = 'public_vis' 
+      isSingleton = 'false' 
+      supertypes = 'a3CF0FD2B00A9' >
+      <Model:Namespace.contents>
+        <!-- ==================== Core.Parameter.kind    [Attribute] ==================== -->
+        <Model:Attribute xmi.id = 'a3CF0FD2B00CE' 
+          name = 'kind' annotation = '' 
+          scope = 'instance_level' visibility = 'public_vis' 
+          isChangeable = 'true' 
+          isDerived = 'false' 
+          type = 'a3CF0FD2B008B' >
+          <Model:StructuralFeature.multiplicity>
+            <Model:MultiplicityType lower = '1' upper = '1' is_ordered = 'false' is_unique = 'false' />
+          </Model:StructuralFeature.multiplicity>
+        </Model:Attribute>
+        <!-- ==================== Core.Parameter.type    [Reference] ==================== -->
+        <Model:Reference xmi.id = 'a3CF0FD2B00CF' 
+          name = 'type' annotation = '' 
+          scope = 'instance_level' visibility = 'public_vis' 
+          isChangeable = 'true' 
+          type = 'a3CF0FD2B00B4' 
+          referencedEnd = 'a3CF0FD2B00EF' >
+          <Model:StructuralFeature.multiplicity>
+            <Model:MultiplicityType lower = '1' upper = '1' is_ordered = 'false' is_unique = 'false' />
+          </Model:StructuralFeature.multiplicity>
+        </Model:Reference>
+        <!-- ==================== Core.Parameter.behavioralFeature    [Reference] ==================== -->
+        <Model:Reference xmi.id = 'a3CF0FD2B00D0' 
+          name = 'behavioralFeature' annotation = '' 
+          scope = 'instance_level' visibility = 'public_vis' 
+          isChangeable = 'true' 
+          type = 'a3CF0FD2B00C9' 
+          referencedEnd = 'a3CF0FD2B00EB' >
+          <Model:StructuralFeature.multiplicity>
+            <Model:MultiplicityType lower = '0' upper = '1' is_ordered = 'false' is_unique = 'false' />
+          </Model:StructuralFeature.multiplicity>
+        </Model:Reference>
+      </Model:Namespace.contents>
+    </Model:Class>
+    <!-- ==================== Core.Generalization    [Class] ==================== -->
+    <Model:Class xmi.id = 'a3CF0FD2B00D1' 
+      name = 'Generalization' annotation = '' 
+      isRoot = 'false' isLeaf = 'false' isAbstract = 'false' visibility = 'public_vis' 
+      isSingleton = 'false' 
+      supertypes = 'a3CF0FD2B00C4' >
+      <Model:Namespace.contents>
+        <!-- ==================== Core.Generalization.child    [Reference] ==================== -->
+        <Model:Reference xmi.id = 'a3CF0FD2B00D3' 
+          name = 'child' annotation = '' 
+          scope = 'instance_level' visibility = 'public_vis' 
+          isChangeable = 'true' 
+          type = 'a3CF0FD2B00AE' 
+          referencedEnd = 'a3CF0FD2B00F1' >
+          <Model:StructuralFeature.multiplicity>
+            <Model:MultiplicityType lower = '1' upper = '1' is_ordered = 'false' is_unique = 'false' />
+          </Model:StructuralFeature.multiplicity>
+        </Model:Reference>
+        <!-- ==================== Core.Generalization.parent    [Reference] ==================== -->
+        <Model:Reference xmi.id = 'a3CF0FD2B00D4' 
+          name = 'parent' annotation = '' 
+          scope = 'instance_level' visibility = 'public_vis' 
+          isChangeable = 'true' 
+          type = 'a3CF0FD2B00AE' 
+          referencedEnd = 'a3CF0FD2B00F4' >
+          <Model:StructuralFeature.multiplicity>
+            <Model:MultiplicityType lower = '1' upper = '1' is_ordered = 'false' is_unique = 'false' />
+          </Model:StructuralFeature.multiplicity>
+        </Model:Reference>
+      </Model:Namespace.contents>
+    </Model:Class>
+    <!-- ==================== Core.Dependency    [Class] ==================== -->
+    <Model:Class xmi.id = 'a3CF0FD2B00D5' 
+      name = 'Dependency' annotation = '' 
+      isRoot = 'false' isLeaf = 'false' isAbstract = 'true' visibility = 'public_vis' 
+      isSingleton = 'false' 
+      supertypes = 'a3CF0FD2B00C4' >
+      <Model:Namespace.contents>
+        <!-- ==================== Core.Dependency.client    [Reference] ==================== -->
+        <Model:Reference xmi.id = 'a3CF0FD2B00D7' 
+          name = 'client' annotation = '' 
+          scope = 'instance_level' visibility = 'public_vis' 
+          isChangeable = 'true' 
+          type = 'a3CF0FD2B00A9' 
+          referencedEnd = 'a3CF0FD2B00FA' >
+          <Model:StructuralFeature.multiplicity>
+            <Model:MultiplicityType lower = '1' upper = '1' is_ordered = 'false' is_unique = 'false' />
+          </Model:StructuralFeature.multiplicity>
+        </Model:Reference>
+        <!-- ==================== Core.Dependency.supplier    [Reference] ==================== -->
+        <Model:Reference xmi.id = 'a3CF0FD2B00D8' 
+          name = 'supplier' annotation = '' 
+          scope = 'instance_level' visibility = 'public_vis' 
+          isChangeable = 'true' 
+          type = 'a3CF0FD2B00A9' 
+          referencedEnd = 'a3CF0FD2B0100' >
+          <Model:StructuralFeature.multiplicity>
+            <Model:MultiplicityType lower = '1' upper = '1' is_ordered = 'false' is_unique = 'false' />
+          </Model:StructuralFeature.multiplicity>
+        </Model:Reference>
+      </Model:Namespace.contents>
+    </Model:Class>
+    <!-- ==================== Core.PresentationElement    [Class] ==================== -->
+    <Model:Class xmi.id = 'a3CF0FD2B00D9' 
+      name = 'PresentationElement' annotation = '' 
+      isRoot = 'false' isLeaf = 'false' isAbstract = 'true' visibility = 'public_vis' 
+      isSingleton = 'false' 
+      supertypes = 'a3CF0FD2B00A8' >
+      <Model:Namespace.contents>
+        <!-- ==================== Core.PresentationElement.subject    [Reference] ==================== -->
+        <Model:Reference xmi.id = 'a3CF0FD2B00DB' 
+          name = 'subject' annotation = '' 
+          scope = 'instance_level' visibility = 'public_vis' 
+          isChangeable = 'true' 
+          type = 'a3CF0FD2B00A9' 
+          referencedEnd = 'a3CF0FD2B0104' >
+          <Model:StructuralFeature.multiplicity>
+            <Model:MultiplicityType lower = '1' upper = '1' is_ordered = 'false' is_unique = 'false' />
+          </Model:StructuralFeature.multiplicity>
+        </Model:Reference>
+      </Model:Namespace.contents>
+    </Model:Class>
+    <!-- ==================== Core.Usage    [Class] ==================== -->
+    <Model:Class xmi.id = 'a3CF0FD2B00DC' 
+      name = 'Usage' annotation = '' 
+      isRoot = 'false' isLeaf = 'false' isAbstract = 'true' visibility = 'public_vis' 
+      isSingleton = 'false' 
+      supertypes = 'a3CF0FD2B00D5' />
+    <!-- ==================== Core.Permission    [Class] ==================== -->
+    <Model:Class xmi.id = 'a3CF0FD2B00DE' 
+      name = 'Permission' annotation = '' 
+      isRoot = 'false' isLeaf = 'false' isAbstract = 'true' visibility = 'public_vis' 
+      isSingleton = 'false' 
+      supertypes = 'a3CF0FD2B00D5' />
+    <!-- ==================== Core.Abstraction    [Class] ==================== -->
+    <Model:Class xmi.id = 'a3CF0FD2B00E0' 
+      name = 'Abstraction' annotation = '' 
+      isRoot = 'false' isLeaf = 'false' isAbstract = 'true' visibility = 'public_vis' 
+      isSingleton = 'false' 
+      supertypes = 'a3CF0FD2B00D5' />
+    <!-- ==================== Core.Operation    [Class] ==================== -->
+    <Model:Class xmi.id = 'a3CF0FD2B00E2' 
+      name = 'Operation' annotation = '' 
+      isRoot = 'false' isLeaf = 'false' isAbstract = 'false' visibility = 'public_vis' 
+      isSingleton = 'false' 
+      supertypes = 'a3CF0FD2B00C9' />
+    <!-- ==================== Core.A_association_connection    [Association] ==================== -->
+    <Model:Association xmi.id = 'a3CF0FD2B00E4' 
+      name = 'A_association_connection' annotation = '' 
+      isRoot = 'true' isLeaf = 'true' isAbstract = 'false' visibility = 'public_vis' 
+      isDerived = 'false' >
+      <Model:Namespace.contents>
+        <Model:AssociationEnd xmi.id = 'a3CF0FD2B00E5' 
+          name = 'association' annotation = '' 
+          isNavigable = 'true' aggregation = 'composite' isChangeable = 'true' 
+          type = 'a3CF0FD2B00C6' >
+          <Model:AssociationEnd.multiplicity>
+            <Model:MultiplicityType lower = '1' upper = '1' is_ordered = 'false' is_unique = 'false' />
+          </Model:AssociationEnd.multiplicity>
+        </Model:AssociationEnd>
+        <Model:AssociationEnd xmi.id = 'a3CF0FD2B00E6' 
+          name = 'connection' annotation = '' 
+          isNavigable = 'true' aggregation = 'none' isChangeable = 'true' 
+          type = 'a3CF0FD2B00B9' >
+          <Model:AssociationEnd.multiplicity>
+            <Model:MultiplicityType lower = '2' upper = '2' is_ordered = 'true' is_unique = 'true' />
+          </Model:AssociationEnd.multiplicity>
+        </Model:AssociationEnd>
+      </Model:Namespace.contents>
+    </Model:Association>
+    <!-- ==================== Core.A_namespace_ownedElement    [Association] ==================== -->
+    <Model:Association xmi.id = 'a3CF0FD2B00E7' 
+      name = 'A_namespace_ownedElement' annotation = '' 
+      isRoot = 'true' isLeaf = 'true' isAbstract = 'false' visibility = 'public_vis' 
+      isDerived = 'false' >
+      <Model:Namespace.contents>
+        <Model:AssociationEnd xmi.id = 'a3CF0FD2B00E8' 
+          name = 'namespace' annotation = '' 
+          isNavigable = 'true' aggregation = 'composite' isChangeable = 'true' 
+          type = 'a3CF0FD2B00B1' >
+          <Model:AssociationEnd.multiplicity>
+            <Model:MultiplicityType lower = '0' upper = '1' is_ordered = 'false' is_unique = 'false' />
+          </Model:AssociationEnd.multiplicity>
+        </Model:AssociationEnd>
+        <Model:AssociationEnd xmi.id = 'a3CF0FD2B00E9' 
+          name = 'ownedElement' annotation = '' 
+          isNavigable = 'true' aggregation = 'none' isChangeable = 'true' 
+          type = 'a3CF0FD2B00A9' >
+          <Model:AssociationEnd.multiplicity>
+            <Model:MultiplicityType lower = '0' upper = '-1' is_ordered = 'false' is_unique = 'true' />
+          </Model:AssociationEnd.multiplicity>
+        </Model:AssociationEnd>
+      </Model:Namespace.contents>
+    </Model:Association>
+    <!-- ==================== Core.A_behavioralFeature_parameter    [Association] ==================== -->
+    <Model:Association xmi.id = 'a3CF0FD2B00EA' 
+      name = 'A_behavioralFeature_parameter' annotation = '' 
+      isRoot = 'true' isLeaf = 'true' isAbstract = 'false' visibility = 'public_vis' 
+      isDerived = 'false' >
+      <Model:Namespace.contents>
+        <Model:AssociationEnd xmi.id = 'a3CF0FD2B00EB' 
+          name = 'behavioralFeature' annotation = '' 
+          isNavigable = 'true' aggregation = 'composite' isChangeable = 'true' 
+          type = 'a3CF0FD2B00C9' >
+          <Model:AssociationEnd.multiplicity>
+            <Model:MultiplicityType lower = '0' upper = '1' is_ordered = 'false' is_unique = 'false' />
+          </Model:AssociationEnd.multiplicity>
+        </Model:AssociationEnd>
+        <Model:AssociationEnd xmi.id = 'a3CF0FD2B00EC' 
+          name = 'parameter' annotation = '' 
+          isNavigable = 'true' aggregation = 'none' isChangeable = 'true' 
+          type = 'a3CF0FD2B00CC' >
+          <Model:AssociationEnd.multiplicity>
+            <Model:MultiplicityType lower = '0' upper = '-1' is_ordered = 'true' is_unique = 'true' />
+          </Model:AssociationEnd.multiplicity>
+        </Model:AssociationEnd>
+      </Model:Namespace.contents>
+    </Model:Association>
+    <!-- ==================== Core.A_typedParameter_type    [Association] ==================== -->
+    <Model:Association xmi.id = 'a3CF0FD2B00ED' 
+      name = 'A_typedParameter_type' annotation = '' 
+      isRoot = 'true' isLeaf = 'true' isAbstract = 'false' visibility = 'public_vis' 
+      isDerived = 'false' >
+      <Model:Namespace.contents>
+        <Model:AssociationEnd xmi.id = 'a3CF0FD2B00EE' 
+          name = 'typedParameter' annotation = '' 
+          isNavigable = 'true' aggregation = 'none' isChangeable = 'true' 
+          type = 'a3CF0FD2B00CC' >
+          <Model:AssociationEnd.multiplicity>
+            <Model:MultiplicityType lower = '0' upper = '-1' is_ordered = 'false' is_unique = 'true' />
+          </Model:AssociationEnd.multiplicity>
+        </Model:AssociationEnd>
+        <Model:AssociationEnd xmi.id = 'a3CF0FD2B00EF' 
+          name = 'type' annotation = '' 
+          isNavigable = 'true' aggregation = 'none' isChangeable = 'true' 
+          type = 'a3CF0FD2B00B4' >
+          <Model:AssociationEnd.multiplicity>
+            <Model:MultiplicityType lower = '1' upper = '1' is_ordered = 'false' is_unique = 'false' />
+          </Model:AssociationEnd.multiplicity>
+        </Model:AssociationEnd>
+      </Model:Namespace.contents>
+    </Model:Association>
+    <!-- ==================== Core.A_child_generalization    [Association] ==================== -->
+    <Model:Association xmi.id = 'a3CF0FD2B00F0' 
+      name = 'A_child_generalization' annotation = '' 
+      isRoot = 'true' isLeaf = 'true' isAbstract = 'false' visibility = 'public_vis' 
+      isDerived = 'false' >
+      <Model:Namespace.contents>
+        <Model:AssociationEnd xmi.id = 'a3CF0FD2B00F1' 
+          name = 'child' annotation = '' 
+          isNavigable = 'true' aggregation = 'none' isChangeable = 'true' 
+          type = 'a3CF0FD2B00AE' >
+          <Model:AssociationEnd.multiplicity>
+            <Model:MultiplicityType lower = '1' upper = '1' is_ordered = 'false' is_unique = 'false' />
+          </Model:AssociationEnd.multiplicity>
+        </Model:AssociationEnd>
+        <Model:AssociationEnd xmi.id = 'a3CF0FD2B00F2' 
+          name = 'generalization' annotation = '' 
+          isNavigable = 'true' aggregation = 'none' isChangeable = 'true' 
+          type = 'a3CF0FD2B00D1' >
+          <Model:AssociationEnd.multiplicity>
+            <Model:MultiplicityType lower = '0' upper = '-1' is_ordered = 'false' is_unique = 'true' />
+          </Model:AssociationEnd.multiplicity>
+        </Model:AssociationEnd>
+      </Model:Namespace.contents>
+    </Model:Association>
+    <!-- ==================== Core.A_parent_specialization    [Association] ==================== -->
+    <Model:Association xmi.id = 'a3CF0FD2B00F3' 
+      name = 'A_parent_specialization' annotation = '' 
+      isRoot = 'true' isLeaf = 'true' isAbstract = 'false' visibility = 'public_vis' 
+      isDerived = 'false' >
+      <Model:Namespace.contents>
+        <Model:AssociationEnd xmi.id = 'a3CF0FD2B00F4' 
+          name = 'parent' annotation = '' 
+          isNavigable = 'true' aggregation = 'none' isChangeable = 'true' 
+          type = 'a3CF0FD2B00AE' >
+          <Model:AssociationEnd.multiplicity>
+            <Model:MultiplicityType lower = '1' upper = '1' is_ordered = 'false' is_unique = 'false' />
+          </Model:AssociationEnd.multiplicity>
+        </Model:AssociationEnd>
+        <Model:AssociationEnd xmi.id = 'a3CF0FD2B00F5' 
+          name = 'specialization' annotation = '' 
+          isNavigable = 'true' aggregation = 'none' isChangeable = 'true' 
+          type = 'a3CF0FD2B00D1' >
+          <Model:AssociationEnd.multiplicity>
+            <Model:MultiplicityType lower = '0' upper = '-1' is_ordered = 'false' is_unique = 'true' />
+          </Model:AssociationEnd.multiplicity>
+        </Model:AssociationEnd>
+      </Model:Namespace.contents>
+    </Model:Association>
+    <!-- ==================== Core.A_participant_association    [Association] ==================== -->
+    <Model:Association xmi.id = 'a3CF0FD2B00F6' 
+      name = 'A_participant_association' annotation = '' 
+      isRoot = 'true' isLeaf = 'true' isAbstract = 'false' visibility = 'public_vis' 
+      isDerived = 'false' >
+      <Model:Namespace.contents>
+        <Model:AssociationEnd xmi.id = 'a3CF0FD2B00F7' 
+          name = 'participant' annotation = '' 
+          isNavigable = 'true' aggregation = 'none' isChangeable = 'true' 
+          type = 'a3CF0FD2B00B4' >
+          <Model:AssociationEnd.multiplicity>
+            <Model:MultiplicityType lower = '1' upper = '1' is_ordered = 'false' is_unique = 'false' />
+          </Model:AssociationEnd.multiplicity>
+        </Model:AssociationEnd>
+        <Model:AssociationEnd xmi.id = 'a3CF0FD2B00F8' 
+          name = 'association' annotation = '' 
+          isNavigable = 'true' aggregation = 'none' isChangeable = 'true' 
+          type = 'a3CF0FD2B00B9' >
+          <Model:AssociationEnd.multiplicity>
+            <Model:MultiplicityType lower = '0' upper = '-1' is_ordered = 'false' is_unique = 'true' />
+          </Model:AssociationEnd.multiplicity>
+        </Model:AssociationEnd>
+      </Model:Namespace.contents>
+    </Model:Association>
+    <!-- ==================== Core.A_client_clientDependency    [Association] ==================== -->
+    <Model:Association xmi.id = 'a3CF0FD2B00F9' 
+      name = 'A_client_clientDependency' annotation = '' 
+      isRoot = 'true' isLeaf = 'true' isAbstract = 'false' visibility = 'public_vis' 
+      isDerived = 'false' >
+      <Model:Namespace.contents>
+        <Model:AssociationEnd xmi.id = 'a3CF0FD2B00FA' 
+          name = 'client' annotation = '' 
+          isNavigable = 'true' aggregation = 'none' isChangeable = 'true' 
+          type = 'a3CF0FD2B00A9' >
+          <Model:AssociationEnd.multiplicity>
+            <Model:MultiplicityType lower = '1' upper = '1' is_ordered = 'false' is_unique = 'false' />
+          </Model:AssociationEnd.multiplicity>
+        </Model:AssociationEnd>
+        <Model:AssociationEnd xmi.id = 'a3CF0FD2B00FB' 
+          name = 'clientDependency' annotation = '' 
+          isNavigable = 'true' aggregation = 'none' isChangeable = 'true' 
+          type = 'a3CF0FD2B00D5' >
+          <Model:AssociationEnd.multiplicity>
+            <Model:MultiplicityType lower = '0' upper = '-1' is_ordered = 'false' is_unique = 'true' />
+          </Model:AssociationEnd.multiplicity>
+        </Model:AssociationEnd>
+      </Model:Namespace.contents>
+    </Model:Association>
+    <!-- ==================== Core.A_constrainedElement_constraint    [Association] ==================== -->
+    <Model:Association xmi.id = 'a3CF0FD2B00FC' 
+      name = 'A_constrainedElement_constraint' annotation = '' 
+      isRoot = 'true' isLeaf = 'true' isAbstract = 'false' visibility = 'public_vis' 
+      isDerived = 'false' >
+      <Model:Namespace.contents>
+        <Model:AssociationEnd xmi.id = 'a3CF0FD2B00FD' 
+          name = 'constrainedElement' annotation = '' 
+          isNavigable = 'true' aggregation = 'none' isChangeable = 'true' 
+          type = 'a3CF0FD2B00A9' >
+          <Model:AssociationEnd.multiplicity>
+            <Model:MultiplicityType lower = '0' upper = '-1' is_ordered = 'true' is_unique = 'true' />
+          </Model:AssociationEnd.multiplicity>
+        </Model:AssociationEnd>
+        <Model:AssociationEnd xmi.id = 'a3CF0FD2B00FE' 
+          name = 'constraint' annotation = '' 
+          isNavigable = 'true' aggregation = 'none' isChangeable = 'true' 
+          type = 'a3CF0FD2B00C0' >
+          <Model:AssociationEnd.multiplicity>
+            <Model:MultiplicityType lower = '0' upper = '-1' is_ordered = 'false' is_unique = 'true' />
+          </Model:AssociationEnd.multiplicity>
+        </Model:AssociationEnd>
+      </Model:Namespace.contents>
+    </Model:Association>
+    <!-- ==================== Core.org.omg.mof.idl_substitute_name=umlConstraint    [Tag] ==================== -->
+    <Model:Tag xmi.id = 'G.147' 
+      name = 'org.omg.mof.idl_substitute_name=umlConstraint' annotation = '' 
+      tagId = 'org.omg.mof.idl_substitute_name' 
+      elements = 'a3CF0FD2B00FE' >
+      <Model:Tag.values>
+        <XMI.any xmi.type = 'string' xmi.name = ''>umlConstraint</XMI.any>
+      </Model:Tag.values>
+    </Model:Tag>
+    <!-- ==================== Core.A_supplier_supplierDependency    [Association] ==================== -->
+    <Model:Association xmi.id = 'a3CF0FD2B00FF' 
+      name = 'A_supplier_supplierDependency' annotation = '' 
+      isRoot = 'true' isLeaf = 'true' isAbstract = 'false' visibility = 'public_vis' 
+      isDerived = 'false' >
+      <Model:Namespace.contents>
+        <Model:AssociationEnd xmi.id = 'a3CF0FD2B0100' 
+          name = 'supplier' annotation = '' 
+          isNavigable = 'true' aggregation = 'none' isChangeable = 'true' 
+          type = 'a3CF0FD2B00A9' >
+          <Model:AssociationEnd.multiplicity>
+            <Model:MultiplicityType lower = '1' upper = '1' is_ordered = 'false' is_unique = 'false' />
+          </Model:AssociationEnd.multiplicity>
+        </Model:AssociationEnd>
+        <Model:AssociationEnd xmi.id = 'a3CF0FD2B0101' 
+          name = 'supplierDependency' annotation = '' 
+          isNavigable = 'true' aggregation = 'none' isChangeable = 'true' 
+          type = 'a3CF0FD2B00D5' >
+          <Model:AssociationEnd.multiplicity>
+            <Model:MultiplicityType lower = '0' upper = '-1' is_ordered = 'false' is_unique = 'true' />
+          </Model:AssociationEnd.multiplicity>
+        </Model:AssociationEnd>
+      </Model:Namespace.contents>
+    </Model:Association>
+    <!-- ==================== Core.A_presentation_subject    [Association] ==================== -->
+    <Model:Association xmi.id = 'a3CF0FD2B0102' 
+      name = 'A_presentation_subject' annotation = '' 
+      isRoot = 'true' isLeaf = 'true' isAbstract = 'false' visibility = 'public_vis' 
+      isDerived = 'false' >
+      <Model:Namespace.contents>
+        <Model:AssociationEnd xmi.id = 'a3CF0FD2B0103' 
+          name = 'presentation' annotation = '' 
+          isNavigable = 'true' aggregation = 'none' isChangeable = 'true' 
+          type = 'a3CF0FD2B00D9' >
+          <Model:AssociationEnd.multiplicity>
+            <Model:MultiplicityType lower = '0' upper = '-1' is_ordered = 'false' is_unique = 'true' />
+          </Model:AssociationEnd.multiplicity>
+        </Model:AssociationEnd>
+        <Model:AssociationEnd xmi.id = 'a3CF0FD2B0104' 
+          name = 'subject' annotation = '' 
+          isNavigable = 'true' aggregation = 'none' isChangeable = 'true' 
+          type = 'a3CF0FD2B00A9' >
+          <Model:AssociationEnd.multiplicity>
+            <Model:MultiplicityType lower = '1' upper = '1' is_ordered = 'false' is_unique = 'false' />
+          </Model:AssociationEnd.multiplicity>
+        </Model:AssociationEnd>
+      </Model:Namespace.contents>
+    </Model:Association>
+  </Model:Namespace.contents>
+</Model:Package>
+<!-- ==================== Model_Management    [Package] ==================== -->
+<Model:Package xmi.id = 'a3CF0FD2B0109' 
+  name = 'Model_Management' annotation = '' 
+  isRoot = 'false' isLeaf = 'false' isAbstract = 'false' visibility = 'public_vis' >
+  <Model:Namespace.contents>
+    <!-- ==================== Model_Management.org.omg.mof.idl_prefix=org.omg.spem.Foundation    [Tag] ==================== -->
+    <Model:Tag xmi.id = 'G.148' 
+      name = 'org.omg.mof.idl_prefix=org.omg.spem.Foundation' annotation = '' 
+      tagId = 'org.omg.mof.idl_prefix' 
+      elements = 'a3CF0FD2B0109' >
+      <Model:Tag.values>
+        <XMI.any xmi.type = 'string' xmi.name = ''>org.omg.spem.Foundation</XMI.any>
+      </Model:Tag.values>
+    </Model:Tag>
+    <!-- ==================== Model_Management.org.omg.xmi.namespace=SPEM    [Tag] ==================== -->
+    <Model:Tag xmi.id = 'G.149' 
+      name = 'org.omg.xmi.namespace=SPEM' annotation = '' 
+      tagId = 'org.omg.xmi.namespace' 
+      elements = 'a3CF0FD2B0109' >
+      <Model:Tag.values>
+        <XMI.any xmi.type = 'string' xmi.name = ''>SPEM</XMI.any>
+      </Model:Tag.values>
+    </Model:Tag>
+    <!-- ==================== Model_Management.com.urep.jcr.java_prefix=org.omg.java.spem.Foundation    [Tag] ==================== -->
+    <Model:Tag xmi.id = 'G.150' 
+      name = 'com.urep.jcr.java_prefix=org.omg.java.spem.Foundation' annotation = '' 
+      tagId = 'com.urep.jcr.java_prefix' 
+      elements = 'a3CF0FD2B0109' >
+      <Model:Tag.values>
+        <XMI.any xmi.type = 'string' xmi.name = ''>org.omg.java.spem.Foundation</XMI.any>
+      </Model:Tag.values>
+    </Model:Tag>
+    <Model:Import xmi.id = 'G.151' 
+      name = 'Core' annotation = '' 
+      visibility = 'public_vis' isClustered = 'true' 
+      importedNamespace = 'a3CF0FD2B00A6' />
+    <!-- ==================== Model_Management.Package    [Class] ==================== -->
+    <Model:Class xmi.id = 'a3CF0FD2B010D' 
+      name = 'Package' annotation = '' 
+      isRoot = 'false' isLeaf = 'false' isAbstract = 'false' visibility = 'public_vis' 
+      isSingleton = 'false' 
+      supertypes = 'a3CF0FD2B00B1' />
+    <!-- ==================== Model_Management.com.urep.jcr.java_substitute_name=UmlPackage    [Tag] ==================== -->
+    <Model:Tag xmi.id = 'G.152' 
+      name = 'com.urep.jcr.java_substitute_name=UmlPackage' annotation = '' 
+      tagId = 'com.urep.jcr.java_substitute_name' 
+      elements = 'a3CF0FD2B010D' >
+      <Model:Tag.values>
+        <XMI.any xmi.type = 'string' xmi.name = ''>UmlPackage</XMI.any>
+      </Model:Tag.values>
+    </Model:Tag>
+  </Model:Namespace.contents>
+</Model:Package>
+<!-- ==================== State_Machines    [Package] ==================== -->
+<Model:Package xmi.id = 'a3CF0FD2B0110' 
+  name = 'State_Machines' annotation = '' 
+  isRoot = 'false' isLeaf = 'false' isAbstract = 'false' visibility = 'public_vis' >
+  <Model:Namespace.contents>
+    <!-- ==================== State_Machines.org.omg.mof.idl_prefix=org.omg.spem.Foundation    [Tag] ==================== -->
+    <Model:Tag xmi.id = 'G.153' 
+      name = 'org.omg.mof.idl_prefix=org.omg.spem.Foundation' annotation = '' 
+      tagId = 'org.omg.mof.idl_prefix' 
+      elements = 'a3CF0FD2B0110' >
+      <Model:Tag.values>
+        <XMI.any xmi.type = 'string' xmi.name = ''>org.omg.spem.Foundation</XMI.any>
+      </Model:Tag.values>
+    </Model:Tag>
+    <!-- ==================== State_Machines.org.omg.xmi.namespace=SPEM    [Tag] ==================== -->
+    <Model:Tag xmi.id = 'G.154' 
+      name = 'org.omg.xmi.namespace=SPEM' annotation = '' 
+      tagId = 'org.omg.xmi.namespace' 
+      elements = 'a3CF0FD2B0110' >
+      <Model:Tag.values>
+        <XMI.any xmi.type = 'string' xmi.name = ''>SPEM</XMI.any>
+      </Model:Tag.values>
+    </Model:Tag>
+    <!-- ==================== State_Machines.com.urep.jcr.java_prefix=org.omg.java.spem.Foundation    [Tag] ==================== -->
+    <Model:Tag xmi.id = 'G.155' 
+      name = 'com.urep.jcr.java_prefix=org.omg.java.spem.Foundation' annotation = '' 
+      tagId = 'com.urep.jcr.java_prefix' 
+      elements = 'a3CF0FD2B0110' >
+      <Model:Tag.values>
+        <XMI.any xmi.type = 'string' xmi.name = ''>org.omg.java.spem.Foundation</XMI.any>
+      </Model:Tag.values>
+    </Model:Tag>
+    <Model:Import xmi.id = 'G.156' 
+      name = 'Core' annotation = '' 
+      visibility = 'public_vis' isClustered = 'true' 
+      importedNamespace = 'a3CF0FD2B00A6' />
+    <Model:Import xmi.id = 'G.157' 
+      name = 'Actions' annotation = '' 
+      visibility = 'public_vis' isClustered = 'true' 
+      importedNamespace = 'a3CF0FD2B014D' />
+    <!-- ==================== State_Machines.StateMachine    [Class] ==================== -->
+    <Model:Class xmi.id = 'a3CF0FD2B0113' 
+      name = 'StateMachine' annotation = '' 
+      isRoot = 'false' isLeaf = 'false' isAbstract = 'false' visibility = 'public_vis' 
+      isSingleton = 'false' 
+      supertypes = 'a3CF0FD2B00A9' >
+      <Model:Namespace.contents>
+        <!-- ==================== State_Machines.StateMachine.context    [Reference] ==================== -->
+        <Model:Reference xmi.id = 'a3CF0FD2B0115' 
+          name = 'context' annotation = '' 
+          scope = 'instance_level' visibility = 'public_vis' 
+          isChangeable = 'true' 
+          type = 'a3CF0FD2B00A9' 
+          referencedEnd = 'a3CF0FD2B0148' >
+          <Model:StructuralFeature.multiplicity>
+            <Model:MultiplicityType lower = '0' upper = '1' is_ordered = 'false' is_unique = 'false' />
+          </Model:StructuralFeature.multiplicity>
+        </Model:Reference>
+        <!-- ==================== State_Machines.StateMachine.top    [Reference] ==================== -->
+        <Model:Reference xmi.id = 'a3CF0FD2B0116' 
+          name = 'top' annotation = '' 
+          scope = 'instance_level' visibility = 'public_vis' 
+          isChangeable = 'true' 
+          type = 'a3CF0FD2B0127' 
+          referencedEnd = 'a3CF0FD2B0135' >
+          <Model:StructuralFeature.multiplicity>
+            <Model:MultiplicityType lower = '1' upper = '1' is_ordered = 'false' is_unique = 'false' />
+          </Model:StructuralFeature.multiplicity>
+        </Model:Reference>
+        <!-- ==================== State_Machines.StateMachine.transitions    [Reference] ==================== -->
+        <Model:Reference xmi.id = 'a3CF0FD2B0117' 
+          name = 'transitions' annotation = '' 
+          scope = 'instance_level' visibility = 'public_vis' 
+          isChangeable = 'true' 
+          type = 'a3CF0FD2B011D' 
+          referencedEnd = 'a3CF0FD2B013E' >
+          <Model:StructuralFeature.multiplicity>
+            <Model:MultiplicityType lower = '0' upper = '-1' is_ordered = 'false' is_unique = 'true' />
+          </Model:StructuralFeature.multiplicity>
+        </Model:Reference>
+      </Model:Namespace.contents>
+    </Model:Class>
+    <!-- ==================== State_Machines.org.omg.mof.idl_substitute_name=umlContext    [Tag] ==================== -->
+    <Model:Tag xmi.id = 'G.158' 
+      name = 'org.omg.mof.idl_substitute_name=umlContext' annotation = '' 
+      tagId = 'org.omg.mof.idl_substitute_name' 
+      elements = 'a3CF0FD2B0115 a3CF0FD2B0148' >
+      <Model:Tag.values>
+        <XMI.any xmi.type = 'string' xmi.name = ''>umlContext</XMI.any>
+      </Model:Tag.values>
+    </Model:Tag>
+    <!-- ==================== State_Machines.StateVertex    [Class] ==================== -->
+    <Model:Class xmi.id = 'a3CF0FD2B0118' 
+      name = 'StateVertex' annotation = '' 
+      isRoot = 'false' isLeaf = 'false' isAbstract = 'true' visibility = 'public_vis' 
+      isSingleton = 'false' 
+      supertypes = 'a3CF0FD2B00A9' >
+      <Model:Namespace.contents>
+        <!-- ==================== State_Machines.StateVertex.outgoing    [Reference] ==================== -->
+        <Model:Reference xmi.id = 'a3CF0FD2B011A' 
+          name = 'outgoing' annotation = '' 
+          scope = 'instance_level' visibility = 'public_vis' 
+          isChangeable = 'true' 
+          type = 'a3CF0FD2B011D' 
+          referencedEnd = 'a3CF0FD2B0141' >
+          <Model:StructuralFeature.multiplicity>
+            <Model:MultiplicityType lower = '0' upper = '-1' is_ordered = 'false' is_unique = 'true' />
+          </Model:StructuralFeature.multiplicity>
+        </Model:Reference>
+        <!-- ==================== State_Machines.StateVertex.incoming    [Reference] ==================== -->
+        <Model:Reference xmi.id = 'a3CF0FD2B011B' 
+          name = 'incoming' annotation = '' 
+          scope = 'instance_level' visibility = 'public_vis' 
+          isChangeable = 'true' 
+          type = 'a3CF0FD2B011D' 
+          referencedEnd = 'a3CF0FD2B0144' >
+          <Model:StructuralFeature.multiplicity>
+            <Model:MultiplicityType lower = '0' upper = '-1' is_ordered = 'false' is_unique = 'true' />
+          </Model:StructuralFeature.multiplicity>
+        </Model:Reference>
+        <!-- ==================== State_Machines.StateVertex.container    [Reference] ==================== -->
+        <Model:Reference xmi.id = 'a3CF0FD2B011C' 
+          name = 'container' annotation = '' 
+          scope = 'instance_level' visibility = 'public_vis' 
+          isChangeable = 'true' 
+          type = 'a3CF0FD2B012D' 
+          referencedEnd = 'a3CF0FD2B0139' >
+          <Model:StructuralFeature.multiplicity>
+            <Model:MultiplicityType lower = '0' upper = '1' is_ordered = 'false' is_unique = 'false' />
+          </Model:StructuralFeature.multiplicity>
+        </Model:Reference>
+      </Model:Namespace.contents>
+    </Model:Class>
+    <!-- ==================== State_Machines.Transition    [Class] ==================== -->
+    <Model:Class xmi.id = 'a3CF0FD2B011D' 
+      name = 'Transition' annotation = '' 
+      isRoot = 'false' isLeaf = 'false' isAbstract = 'false' visibility = 'public_vis' 
+      isSingleton = 'false' 
+      supertypes = 'a3CF0FD2B00A9' >
+      <Model:Namespace.contents>
+        <!-- ==================== State_Machines.Transition.guard    [Reference] ==================== -->
+        <Model:Reference xmi.id = 'a3CF0FD2B011F' 
+          name = 'guard' annotation = '' 
+          scope = 'instance_level' visibility = 'public_vis' 
+          isChangeable = 'true' 
+          type = 'a3CF0FD2B0123' 
+          referencedEnd = 'a3CF0FD2B013B' >
+          <Model:StructuralFeature.multiplicity>
+            <Model:MultiplicityType lower = '0' upper = '1' is_ordered = 'false' is_unique = 'false' />
+          </Model:StructuralFeature.multiplicity>
+        </Model:Reference>
+        <!-- ==================== State_Machines.Transition.source    [Reference] ==================== -->
+        <Model:Reference xmi.id = 'a3CF0FD2B0120' 
+          name = 'source' annotation = '' 
+          scope = 'instance_level' visibility = 'public_vis' 
+          isChangeable = 'true' 
+          type = 'a3CF0FD2B0118' 
+          referencedEnd = 'a3CF0FD2B0142' >
+          <Model:StructuralFeature.multiplicity>
+            <Model:MultiplicityType lower = '1' upper = '1' is_ordered = 'false' is_unique = 'false' />
+          </Model:StructuralFeature.multiplicity>
+        </Model:Reference>
+        <!-- ==================== State_Machines.Transition.target    [Reference] ==================== -->
+        <Model:Reference xmi.id = 'a3CF0FD2B0121' 
+          name = 'target' annotation = '' 
+          scope = 'instance_level' visibility = 'public_vis' 
+          isChangeable = 'true' 
+          type = 'a3CF0FD2B0118' 
+          referencedEnd = 'a3CF0FD2B0145' >
+          <Model:StructuralFeature.multiplicity>
+            <Model:MultiplicityType lower = '1' upper = '1' is_ordered = 'false' is_unique = 'false' />
+          </Model:StructuralFeature.multiplicity>
+        </Model:Reference>
+        <!-- ==================== State_Machines.Transition.stateMachine    [Reference] ==================== -->
+        <Model:Reference xmi.id = 'a3CF0FD2B0122' 
+          name = 'stateMachine' annotation = '' 
+          scope = 'instance_level' visibility = 'public_vis' 
+          isChangeable = 'true' 
+          type = 'a3CF0FD2B0113' 
+          referencedEnd = 'a3CF0FD2B013F' >
+          <Model:StructuralFeature.multiplicity>
+            <Model:MultiplicityType lower = '0' upper = '1' is_ordered = 'false' is_unique = 'false' />
+          </Model:StructuralFeature.multiplicity>
+        </Model:Reference>
+      </Model:Namespace.contents>
+    </Model:Class>
+    <!-- ==================== State_Machines.Guard    [Class] ==================== -->
+    <Model:Class xmi.id = 'a3CF0FD2B0123' 
+      name = 'Guard' annotation = '' 
+      isRoot = 'false' isLeaf = 'false' isAbstract = 'false' visibility = 'public_vis' 
+      isSingleton = 'false' 
+      supertypes = 'a3CF0FD2B00A9' >
+      <Model:Namespace.contents>
+        <!-- ==================== State_Machines.Guard.expression    [Attribute] ==================== -->
+        <Model:Attribute xmi.id = 'a3CF0FD2B0125' 
+          name = 'expression' annotation = '' 
+          scope = 'instance_level' visibility = 'public_vis' 
+          isChangeable = 'true' 
+          isDerived = 'false' 
+          type = 'a3CF0FD2B009A' >
+          <Model:StructuralFeature.multiplicity>
+            <Model:MultiplicityType lower = '1' upper = '1' is_ordered = 'false' is_unique = 'false' />
+          </Model:StructuralFeature.multiplicity>
+        </Model:Attribute>
+        <!-- ==================== State_Machines.Guard.transition    [Reference] ==================== -->
+        <Model:Reference xmi.id = 'a3CF0FD2B0126' 
+          name = 'transition' annotation = '' 
+          scope = 'instance_level' visibility = 'public_vis' 
+          isChangeable = 'true' 
+          type = 'a3CF0FD2B011D' 
+          referencedEnd = 'a3CF0FD2B013C' >
+          <Model:StructuralFeature.multiplicity>
+            <Model:MultiplicityType lower = '1' upper = '1' is_ordered = 'false' is_unique = 'false' />
+          </Model:StructuralFeature.multiplicity>
+        </Model:Reference>
+      </Model:Namespace.contents>
+    </Model:Class>
+    <Model:Import xmi.id = 'G.159' 
+      name = 'Data_Types' annotation = '' 
+      visibility = 'public_vis' isClustered = 'false' 
+      importedNamespace = 'a3CF0FD2B0082' />
+    <!-- ==================== State_Machines.State    [Class] ==================== -->
+    <Model:Class xmi.id = 'a3CF0FD2B0127' 
+      name = 'State' annotation = '' 
+      isRoot = 'false' isLeaf = 'false' isAbstract = 'false' visibility = 'public_vis' 
+      isSingleton = 'false' 
+      supertypes = 'a3CF0FD2B0118' >
+      <Model:Namespace.contents>
+        <!-- ==================== State_Machines.State.entry    [Reference] ==================== -->
+        <Model:Reference xmi.id = 'a3CF0FD2B0129' 
+          name = 'entry' annotation = '' 
+          scope = 'instance_level' visibility = 'public_vis' 
+          isChangeable = 'true' 
+          type = 'a3CF0FD2B014F' 
+          referencedEnd = 'a3CF0FD2B014A' >
+          <Model:StructuralFeature.multiplicity>
+            <Model:MultiplicityType lower = '0' upper = '1' is_ordered = 'false' is_unique = 'false' />
+          </Model:StructuralFeature.multiplicity>
+        </Model:Reference>
+      </Model:Namespace.contents>
+    </Model:Class>
+    <!-- ==================== State_Machines.PseudoState    [Class] ==================== -->
+    <Model:Class xmi.id = 'a3CF0FD2B012A' 
+      name = 'PseudoState' annotation = '' 
+      isRoot = 'false' isLeaf = 'false' isAbstract = 'false' visibility = 'public_vis' 
+      isSingleton = 'false' 
+      supertypes = 'a3CF0FD2B0118' >
+      <Model:Namespace.contents>
+        <!-- ==================== State_Machines.PseudoState.kind    [Attribute] ==================== -->
+        <Model:Attribute xmi.id = 'a3CF0FD2B012C' 
+          name = 'kind' annotation = '' 
+          scope = 'instance_level' visibility = 'public_vis' 
+          isChangeable = 'true' 
+          isDerived = 'false' 
+          type = 'a3CF0FD2B009C' >
+          <Model:StructuralFeature.multiplicity>
+            <Model:MultiplicityType lower = '1' upper = '1' is_ordered = 'false' is_unique = 'false' />
+          </Model:StructuralFeature.multiplicity>
+        </Model:Attribute>
+      </Model:Namespace.contents>
+    </Model:Class>
+    <!-- ==================== State_Machines.CompositeState    [Class] ==================== -->
+    <Model:Class xmi.id = 'a3CF0FD2B012D' 
+      name = 'CompositeState' annotation = '' 
+      isRoot = 'false' isLeaf = 'false' isAbstract = 'false' visibility = 'public_vis' 
+      isSingleton = 'false' 
+      supertypes = 'a3CF0FD2B0127' >
+      <Model:Namespace.contents>
+        <!-- ==================== State_Machines.CompositeState.subvertex    [Reference] ==================== -->
+        <Model:Reference xmi.id = 'a3CF0FD2B012F' 
+          name = 'subvertex' annotation = '' 
+          scope = 'instance_level' visibility = 'public_vis' 
+          isChangeable = 'true' 
+          type = 'a3CF0FD2B0118' 
+          referencedEnd = 'a3CF0FD2B0138' >
+          <Model:StructuralFeature.multiplicity>
+            <Model:MultiplicityType lower = '0' upper = '-1' is_ordered = 'false' is_unique = 'true' />
+          </Model:StructuralFeature.multiplicity>
+        </Model:Reference>
+      </Model:Namespace.contents>
+    </Model:Class>
+    <!-- ==================== State_Machines.FinalState    [Class] ==================== -->
+    <Model:Class xmi.id = 'a3CF0FD2B0130' 
+      name = 'FinalState' annotation = '' 
+      isRoot = 'false' isLeaf = 'false' isAbstract = 'false' visibility = 'public_vis' 
+      isSingleton = 'false' 
+      supertypes = 'a3CF0FD2B0127' />
+    <!-- ==================== State_Machines.SimpleState    [Class] ==================== -->
+    <Model:Class xmi.id = 'a3CF0FD2B0132' 
+      name = 'SimpleState' annotation = '' 
+      isRoot = 'false' isLeaf = 'false' isAbstract = 'false' visibility = 'public_vis' 
+      isSingleton = 'false' 
+      supertypes = 'a3CF0FD2B0127' />
+    <!-- ==================== State_Machines.A_top_stateMachine    [Association] ==================== -->
+    <Model:Association xmi.id = 'a3CF0FD2B0134' 
+      name = 'A_top_stateMachine' annotation = '' 
+      isRoot = 'true' isLeaf = 'true' isAbstract = 'false' visibility = 'public_vis' 
+      isDerived = 'false' >
+      <Model:Namespace.contents>
+        <Model:AssociationEnd xmi.id = 'a3CF0FD2B0135' 
+          name = 'top' annotation = '' 
+          isNavigable = 'true' aggregation = 'none' isChangeable = 'true' 
+          type = 'a3CF0FD2B0127' >
+          <Model:AssociationEnd.multiplicity>
+            <Model:MultiplicityType lower = '1' upper = '1' is_ordered = 'false' is_unique = 'false' />
+          </Model:AssociationEnd.multiplicity>
+        </Model:AssociationEnd>
+        <Model:AssociationEnd xmi.id = 'a3CF0FD2B0136' 
+          name = 'stateMachine' annotation = '' 
+          isNavigable = 'true' aggregation = 'composite' isChangeable = 'true' 
+          type = 'a3CF0FD2B0113' >
+          <Model:AssociationEnd.multiplicity>
+            <Model:MultiplicityType lower = '0' upper = '1' is_ordered = 'false' is_unique = 'false' />
+          </Model:AssociationEnd.multiplicity>
+        </Model:AssociationEnd>
+      </Model:Namespace.contents>
+    </Model:Association>
+    <!-- ==================== State_Machines.A_subvertex_container    [Association] ==================== -->
+    <Model:Association xmi.id = 'a3CF0FD2B0137' 
+      name = 'A_subvertex_container' annotation = '' 
+      isRoot = 'true' isLeaf = 'true' isAbstract = 'false' visibility = 'public_vis' 
+      isDerived = 'false' >
+      <Model:Namespace.contents>
+        <Model:AssociationEnd xmi.id = 'a3CF0FD2B0138' 
+          name = 'subvertex' annotation = '' 
+          isNavigable = 'true' aggregation = 'none' isChangeable = 'true' 
+          type = 'a3CF0FD2B0118' >
+          <Model:AssociationEnd.multiplicity>
+            <Model:MultiplicityType lower = '0' upper = '-1' is_ordered = 'false' is_unique = 'true' />
+          </Model:AssociationEnd.multiplicity>
+        </Model:AssociationEnd>
+        <Model:AssociationEnd xmi.id = 'a3CF0FD2B0139' 
+          name = 'container' annotation = '' 
+          isNavigable = 'true' aggregation = 'composite' isChangeable = 'true' 
+          type = 'a3CF0FD2B012D' >
+          <Model:AssociationEnd.multiplicity>
+            <Model:MultiplicityType lower = '0' upper = '1' is_ordered = 'false' is_unique = 'false' />
+          </Model:AssociationEnd.multiplicity>
+        </Model:AssociationEnd>
+      </Model:Namespace.contents>
+    </Model:Association>
+    <!-- ==================== State_Machines.A_guard_transition    [Association] ==================== -->
+    <Model:Association xmi.id = 'a3CF0FD2B013A' 
+      name = 'A_guard_transition' annotation = '' 
+      isRoot = 'true' isLeaf = 'true' isAbstract = 'false' visibility = 'public_vis' 
+      isDerived = 'false' >
+      <Model:Namespace.contents>
+        <Model:AssociationEnd xmi.id = 'a3CF0FD2B013B' 
+          name = 'guard' annotation = '' 
+          isNavigable = 'true' aggregation = 'none' isChangeable = 'true' 
+          type = 'a3CF0FD2B0123' >
+          <Model:AssociationEnd.multiplicity>
+            <Model:MultiplicityType lower = '0' upper = '1' is_ordered = 'false' is_unique = 'false' />
+          </Model:AssociationEnd.multiplicity>
+        </Model:AssociationEnd>
+        <Model:AssociationEnd xmi.id = 'a3CF0FD2B013C' 
+          name = 'transition' annotation = '' 
+          isNavigable = 'true' aggregation = 'composite' isChangeable = 'true' 
+          type = 'a3CF0FD2B011D' >
+          <Model:AssociationEnd.multiplicity>
+            <Model:MultiplicityType lower = '1' upper = '1' is_ordered = 'false' is_unique = 'false' />
+          </Model:AssociationEnd.multiplicity>
+        </Model:AssociationEnd>
+      </Model:Namespace.contents>
+    </Model:Association>
+    <!-- ==================== State_Machines.A_transitions_stateMachine    [Association] ==================== -->
+    <Model:Association xmi.id = 'a3CF0FD2B013D' 
+      name = 'A_transitions_stateMachine' annotation = '' 
+      isRoot = 'true' isLeaf = 'true' isAbstract = 'false' visibility = 'public_vis' 
+      isDerived = 'false' >
+      <Model:Namespace.contents>
+        <Model:AssociationEnd xmi.id = 'a3CF0FD2B013E' 
+          name = 'transitions' annotation = '' 
+          isNavigable = 'true' aggregation = 'none' isChangeable = 'true' 
+          type = 'a3CF0FD2B011D' >
+          <Model:AssociationEnd.multiplicity>
+            <Model:MultiplicityType lower = '0' upper = '-1' is_ordered = 'false' is_unique = 'true' />
+          </Model:AssociationEnd.multiplicity>
+        </Model:AssociationEnd>
+        <Model:AssociationEnd xmi.id = 'a3CF0FD2B013F' 
+          name = 'stateMachine' annotation = '' 
+          isNavigable = 'true' aggregation = 'composite' isChangeable = 'true' 
+          type = 'a3CF0FD2B0113' >
+          <Model:AssociationEnd.multiplicity>
+            <Model:MultiplicityType lower = '0' upper = '1' is_ordered = 'false' is_unique = 'false' />
+          </Model:AssociationEnd.multiplicity>
+        </Model:AssociationEnd>
+      </Model:Namespace.contents>
+    </Model:Association>
+    <!-- ==================== State_Machines.A_outgoing_source    [Association] ==================== -->
+    <Model:Association xmi.id = 'a3CF0FD2B0140' 
+      name = 'A_outgoing_source' annotation = '' 
+      isRoot = 'true' isLeaf = 'true' isAbstract = 'false' visibility = 'public_vis' 
+      isDerived = 'false' >
+      <Model:Namespace.contents>
+        <Model:AssociationEnd xmi.id = 'a3CF0FD2B0141' 
+          name = 'outgoing' annotation = '' 
+          isNavigable = 'true' aggregation = 'none' isChangeable = 'true' 
+          type = 'a3CF0FD2B011D' >
+          <Model:AssociationEnd.multiplicity>
+            <Model:MultiplicityType lower = '0' upper = '-1' is_ordered = 'false' is_unique = 'true' />
+          </Model:AssociationEnd.multiplicity>
+        </Model:AssociationEnd>
+        <Model:AssociationEnd xmi.id = 'a3CF0FD2B0142' 
+          name = 'source' annotation = '' 
+          isNavigable = 'true' aggregation = 'none' isChangeable = 'true' 
+          type = 'a3CF0FD2B0118' >
+          <Model:AssociationEnd.multiplicity>
+            <Model:MultiplicityType lower = '1' upper = '1' is_ordered = 'false' is_unique = 'false' />
+          </Model:AssociationEnd.multiplicity>
+        </Model:AssociationEnd>
+      </Model:Namespace.contents>
+    </Model:Association>
+    <!-- ==================== State_Machines.A_incoming_target    [Association] ==================== -->
+    <Model:Association xmi.id = 'a3CF0FD2B0143' 
+      name = 'A_incoming_target' annotation = '' 
+      isRoot = 'true' isLeaf = 'true' isAbstract = 'false' visibility = 'public_vis' 
+      isDerived = 'false' >
+      <Model:Namespace.contents>
+        <Model:AssociationEnd xmi.id = 'a3CF0FD2B0144' 
+          name = 'incoming' annotation = '' 
+          isNavigable = 'true' aggregation = 'none' isChangeable = 'true' 
+          type = 'a3CF0FD2B011D' >
+          <Model:AssociationEnd.multiplicity>
+            <Model:MultiplicityType lower = '0' upper = '-1' is_ordered = 'false' is_unique = 'true' />
+          </Model:AssociationEnd.multiplicity>
+        </Model:AssociationEnd>
+        <Model:AssociationEnd xmi.id = 'a3CF0FD2B0145' 
+          name = 'target' annotation = '' 
+          isNavigable = 'true' aggregation = 'none' isChangeable = 'true' 
+          type = 'a3CF0FD2B0118' >
+          <Model:AssociationEnd.multiplicity>
+            <Model:MultiplicityType lower = '1' upper = '1' is_ordered = 'false' is_unique = 'false' />
+          </Model:AssociationEnd.multiplicity>
+        </Model:AssociationEnd>
+      </Model:Namespace.contents>
+    </Model:Association>
+    <!-- ==================== State_Machines.A_behavior_context    [Association] ==================== -->
+    <Model:Association xmi.id = 'a3CF0FD2B0146' 
+      name = 'A_behavior_context' annotation = '' 
+      isRoot = 'true' isLeaf = 'true' isAbstract = 'false' visibility = 'public_vis' 
+      isDerived = 'false' >
+      <Model:Namespace.contents>
+        <Model:AssociationEnd xmi.id = 'a3CF0FD2B0147' 
+          name = 'behavior' annotation = '' 
+          isNavigable = 'true' aggregation = 'none' isChangeable = 'true' 
+          type = 'a3CF0FD2B0113' >
+          <Model:AssociationEnd.multiplicity>
+            <Model:MultiplicityType lower = '0' upper = '-1' is_ordered = 'false' is_unique = 'true' />
+          </Model:AssociationEnd.multiplicity>
+        </Model:AssociationEnd>
+        <Model:AssociationEnd xmi.id = 'a3CF0FD2B0148' 
+          name = 'context' annotation = '' 
+          isNavigable = 'true' aggregation = 'composite' isChangeable = 'true' 
+          type = 'a3CF0FD2B00A9' >
+          <Model:AssociationEnd.multiplicity>
+            <Model:MultiplicityType lower = '0' upper = '1' is_ordered = 'false' is_unique = 'false' />
+          </Model:AssociationEnd.multiplicity>
+        </Model:AssociationEnd>
+      </Model:Namespace.contents>
+    </Model:Association>
+    <!-- ==================== State_Machines.A_entry_state    [Association] ==================== -->
+    <Model:Association xmi.id = 'a3CF0FD2B0149' 
+      name = 'A_entry_state' annotation = '' 
+      isRoot = 'true' isLeaf = 'true' isAbstract = 'false' visibility = 'public_vis' 
+      isDerived = 'false' >
+      <Model:Namespace.contents>
+        <Model:AssociationEnd xmi.id = 'a3CF0FD2B014A' 
+          name = 'entry' annotation = '' 
+          isNavigable = 'true' aggregation = 'none' isChangeable = 'true' 
+          type = 'a3CF0FD2B014F' >
+          <Model:AssociationEnd.multiplicity>
+            <Model:MultiplicityType lower = '0' upper = '1' is_ordered = 'false' is_unique = 'false' />
+          </Model:AssociationEnd.multiplicity>
+        </Model:AssociationEnd>
+        <Model:AssociationEnd xmi.id = 'a3CF0FD2B014B' 
+          name = 'state' annotation = '' 
+          isNavigable = 'true' aggregation = 'composite' isChangeable = 'true' 
+          type = 'a3CF0FD2B0127' >
+          <Model:AssociationEnd.multiplicity>
+            <Model:MultiplicityType lower = '0' upper = '1' is_ordered = 'false' is_unique = 'false' />
+          </Model:AssociationEnd.multiplicity>
+        </Model:AssociationEnd>
+      </Model:Namespace.contents>
+    </Model:Association>
+  </Model:Namespace.contents>
+</Model:Package>
+<!-- ==================== Actions    [Package] ==================== -->
+<Model:Package xmi.id = 'a3CF0FD2B014D' 
+  name = 'Actions' annotation = '' 
+  isRoot = 'false' isLeaf = 'false' isAbstract = 'false' visibility = 'public_vis' >
+  <Model:Namespace.contents>
+    <!-- ==================== Actions.org.omg.mof.idl_prefix=org.omg.spem.Foundation    [Tag] ==================== -->
+    <Model:Tag xmi.id = 'G.160' 
+      name = 'org.omg.mof.idl_prefix=org.omg.spem.Foundation' annotation = '' 
+      tagId = 'org.omg.mof.idl_prefix' 
+      elements = 'a3CF0FD2B014D' >
+      <Model:Tag.values>
+        <XMI.any xmi.type = 'string' xmi.name = ''>org.omg.spem.Foundation</XMI.any>
+      </Model:Tag.values>
+    </Model:Tag>
+    <!-- ==================== Actions.com.urep.jcr.java_prefix=org.omg.java.spem.Foundation    [Tag] ==================== -->
+    <Model:Tag xmi.id = 'G.161' 
+      name = 'com.urep.jcr.java_prefix=org.omg.java.spem.Foundation' annotation = '' 
+      tagId = 'com.urep.jcr.java_prefix' 
+      elements = 'a3CF0FD2B014D' >
+      <Model:Tag.values>
+        <XMI.any xmi.type = 'string' xmi.name = ''>org.omg.java.spem.Foundation</XMI.any>
+      </Model:Tag.values>
+    </Model:Tag>
+    <Model:Import xmi.id = 'G.162' 
+      name = 'Core' annotation = '' 
+      visibility = 'public_vis' isClustered = 'true' 
+      importedNamespace = 'a3CF0FD2B00A6' />
+    <!-- ==================== Actions.Action    [Class] ==================== -->
+    <Model:Class xmi.id = 'a3CF0FD2B014F' 
+      name = 'Action' annotation = '' 
+      isRoot = 'false' isLeaf = 'false' isAbstract = 'true' visibility = 'public_vis' 
+      isSingleton = 'false' 
+      supertypes = 'a3CF0FD2B00A9' />
+    <!-- ==================== Actions.CallAction    [Class] ==================== -->
+    <Model:Class xmi.id = 'a3CF0FD2B0151' 
+      name = 'CallAction' annotation = '' 
+      isRoot = 'false' isLeaf = 'false' isAbstract = 'false' visibility = 'public_vis' 
+      isSingleton = 'false' 
+      supertypes = 'a3CF0FD2B014F' >
+      <Model:Namespace.contents>
+        <!-- ==================== Actions.CallAction.operation    [Reference] ==================== -->
+        <Model:Reference xmi.id = 'a3CF0FD2B0153' 
+          name = 'operation' annotation = '' 
+          scope = 'instance_level' visibility = 'public_vis' 
+          isChangeable = 'true' 
+          type = 'a3CF0FD2B00E2' 
+          referencedEnd = 'a3CF0FD2B0155' >
+          <Model:StructuralFeature.multiplicity>
+            <Model:MultiplicityType lower = '1' upper = '1' is_ordered = 'false' is_unique = 'false' />
+          </Model:StructuralFeature.multiplicity>
+        </Model:Reference>
+      </Model:Namespace.contents>
+    </Model:Class>
+    <!-- ==================== Actions.A_operation_callAction    [Association] ==================== -->
+    <Model:Association xmi.id = 'a3CF0FD2B0154' 
+      name = 'A_operation_callAction' annotation = '' 
+      isRoot = 'true' isLeaf = 'true' isAbstract = 'false' visibility = 'public_vis' 
+      isDerived = 'false' >
+      <Model:Namespace.contents>
+        <Model:AssociationEnd xmi.id = 'a3CF0FD2B0155' 
+          name = 'operation' annotation = '' 
+          isNavigable = 'true' aggregation = 'none' isChangeable = 'true' 
+          type = 'a3CF0FD2B00E2' >
+          <Model:AssociationEnd.multiplicity>
+            <Model:MultiplicityType lower = '1' upper = '1' is_ordered = 'false' is_unique = 'false' />
+          </Model:AssociationEnd.multiplicity>
+        </Model:AssociationEnd>
+        <Model:AssociationEnd xmi.id = 'a3CF0FD2B0156' 
+          name = 'callAction' annotation = '' 
+          isNavigable = 'true' aggregation = 'none' isChangeable = 'true' 
+          type = 'a3CF0FD2B0151' >
+          <Model:AssociationEnd.multiplicity>
+            <Model:MultiplicityType lower = '0' upper = '-1' is_ordered = 'false' is_unique = 'true' />
+          </Model:AssociationEnd.multiplicity>
+        </Model:AssociationEnd>
+      </Model:Namespace.contents>
+    </Model:Association>
+  </Model:Namespace.contents>
+</Model:Package>
+<!-- ==================== ActivityGraphs    [Package] ==================== -->
+<Model:Package xmi.id = 'a3CF0FD2B0158' 
+  name = 'ActivityGraphs' annotation = '' 
+  isRoot = 'false' isLeaf = 'false' isAbstract = 'false' visibility = 'public_vis' >
+  <Model:Namespace.contents>
+    <!-- ==================== ActivityGraphs.org.omg.mof.idl_prefix=org.omg.spem.Foundation    [Tag] ==================== -->
+    <Model:Tag xmi.id = 'G.163' 
+      name = 'org.omg.mof.idl_prefix=org.omg.spem.Foundation' annotation = '' 
+      tagId = 'org.omg.mof.idl_prefix' 
+      elements = 'a3CF0FD2B0158' >
+      <Model:Tag.values>
+        <XMI.any xmi.type = 'string' xmi.name = ''>org.omg.spem.Foundation</XMI.any>
+      </Model:Tag.values>
+    </Model:Tag>
+    <!-- ==================== ActivityGraphs.org.omg.xmi.namespace=SPEM    [Tag] ==================== -->
+    <Model:Tag xmi.id = 'G.164' 
+      name = 'org.omg.xmi.namespace=SPEM' annotation = '' 
+      tagId = 'org.omg.xmi.namespace' 
+      elements = 'a3CF0FD2B0158' >
+      <Model:Tag.values>
+        <XMI.any xmi.type = 'string' xmi.name = ''>SPEM</XMI.any>
+      </Model:Tag.values>
+    </Model:Tag>
+    <!-- ==================== ActivityGraphs.com.urep.jcr.java_prefix=org.omg.java.spem.Foundation    [Tag] ==================== -->
+    <Model:Tag xmi.id = 'G.165' 
+      name = 'com.urep.jcr.java_prefix=org.omg.java.spem.Foundation' annotation = '' 
+      tagId = 'com.urep.jcr.java_prefix' 
+      elements = 'a3CF0FD2B0158' >
+      <Model:Tag.values>
+        <XMI.any xmi.type = 'string' xmi.name = ''>org.omg.java.spem.Foundation</XMI.any>
+      </Model:Tag.values>
+    </Model:Tag>
+    <Model:Import xmi.id = 'G.166' 
+      name = 'Core' annotation = '' 
+      visibility = 'public_vis' isClustered = 'true' 
+      importedNamespace = 'a3CF0FD2B00A6' />
+    <Model:Import xmi.id = 'G.167' 
+      name = 'State_Machines' annotation = '' 
+      visibility = 'public_vis' isClustered = 'true' 
+      importedNamespace = 'a3CF0FD2B0110' />
+    <!-- ==================== ActivityGraphs.ActivityGraph    [Class] ==================== -->
+    <Model:Class xmi.id = 'a3CF0FD2B015B' 
+      name = 'ActivityGraph' annotation = '' 
+      isRoot = 'false' isLeaf = 'false' isAbstract = 'false' visibility = 'public_vis' 
+      isSingleton = 'false' 
+      supertypes = 'a3CF0FD2B0113' />
+    <!-- ==================== ActivityGraphs.ActionState    [Class] ==================== -->
+    <Model:Class xmi.id = 'a3CF0FD2B015D' 
+      name = 'ActionState' annotation = '' 
+      isRoot = 'false' isLeaf = 'false' isAbstract = 'false' visibility = 'public_vis' 
+      isSingleton = 'false' 
+      supertypes = 'a3CF0FD2B0132' />
+    <!-- ==================== ActivityGraphs.ObjectFlowState    [Class] ==================== -->
+    <Model:Class xmi.id = 'a3CF0FD2B015F' 
+      name = 'ObjectFlowState' annotation = '' 
+      isRoot = 'false' isLeaf = 'false' isAbstract = 'false' visibility = 'public_vis' 
+      isSingleton = 'false' 
+      supertypes = 'a3CF0FD2B0132' >
+      <Model:Namespace.contents>
+        <!-- ==================== ActivityGraphs.ObjectFlowState.parameter    [Reference] ==================== -->
+        <Model:Reference xmi.id = 'a3CF0FD2B0161' 
+          name = 'parameter' annotation = '' 
+          scope = 'instance_level' visibility = 'public_vis' 
+          isChangeable = 'true' 
+          type = 'a3CF0FD2B00CC' 
+          referencedEnd = 'a3CF0FD2B0168' >
+          <Model:StructuralFeature.multiplicity>
+            <Model:MultiplicityType lower = '0' upper = '-1' is_ordered = 'false' is_unique = 'true' />
+          </Model:StructuralFeature.multiplicity>
+        </Model:Reference>
+        <!-- ==================== ActivityGraphs.ObjectFlowState.type    [Reference] ==================== -->
+        <Model:Reference xmi.id = 'a3CF0FD2B0162' 
+          name = 'type' annotation = '' 
+          scope = 'instance_level' visibility = 'public_vis' 
+          isChangeable = 'true' 
+          type = 'a3CF0FD2B00B4' 
+          referencedEnd = 'a3CF0FD2B0171' >
+          <Model:StructuralFeature.multiplicity>
+            <Model:MultiplicityType lower = '1' upper = '1' is_ordered = 'false' is_unique = 'false' />
+          </Model:StructuralFeature.multiplicity>
+        </Model:Reference>
+      </Model:Namespace.contents>
+    </Model:Class>
+    <!-- ==================== ActivityGraphs.ClassifierInState    [Class] ==================== -->
+    <Model:Class xmi.id = 'a3CF0FD2B0163' 
+      name = 'ClassifierInState' annotation = '' 
+      isRoot = 'false' isLeaf = 'false' isAbstract = 'false' visibility = 'public_vis' 
+      isSingleton = 'false' 
+      supertypes = 'a3CF0FD2B00B4' >
+      <Model:Namespace.contents>
+        <!-- ==================== ActivityGraphs.ClassifierInState.type    [Reference] ==================== -->
+        <Model:Reference xmi.id = 'a3CF0FD2B0165' 
+          name = 'type' annotation = '' 
+          scope = 'instance_level' visibility = 'public_vis' 
+          isChangeable = 'true' 
+          type = 'a3CF0FD2B00B4' 
+          referencedEnd = 'a3CF0FD2B016B' >
+          <Model:StructuralFeature.multiplicity>
+            <Model:MultiplicityType lower = '1' upper = '1' is_ordered = 'false' is_unique = 'false' />
+          </Model:StructuralFeature.multiplicity>
+        </Model:Reference>
+        <!-- ==================== ActivityGraphs.ClassifierInState.inState    [Reference] ==================== -->
+        <Model:Reference xmi.id = 'a3CF0FD2B0166' 
+          name = 'inState' annotation = '' 
+          scope = 'instance_level' visibility = 'public_vis' 
+          isChangeable = 'true' 
+          type = 'a3CF0FD2B0127' 
+          referencedEnd = 'a3CF0FD2B016E' >
+          <Model:StructuralFeature.multiplicity>
+            <Model:MultiplicityType lower = '1' upper = '-1' is_ordered = 'false' is_unique = 'true' />
+          </Model:StructuralFeature.multiplicity>
+        </Model:Reference>
+      </Model:Namespace.contents>
+    </Model:Class>
+    <!-- ==================== ActivityGraphs.A_parameter_state    [Association] ==================== -->
+    <Model:Association xmi.id = 'a3CF0FD2B0167' 
+      name = 'A_parameter_state' annotation = '' 
+      isRoot = 'true' isLeaf = 'true' isAbstract = 'false' visibility = 'public_vis' 
+      isDerived = 'false' >
+      <Model:Namespace.contents>
+        <Model:AssociationEnd xmi.id = 'a3CF0FD2B0168' 
+          name = 'parameter' annotation = '' 
+          isNavigable = 'true' aggregation = 'none' isChangeable = 'true' 
+          type = 'a3CF0FD2B00CC' >
+          <Model:AssociationEnd.multiplicity>
+            <Model:MultiplicityType lower = '0' upper = '-1' is_ordered = 'false' is_unique = 'true' />
+          </Model:AssociationEnd.multiplicity>
+        </Model:AssociationEnd>
+        <Model:AssociationEnd xmi.id = 'a3CF0FD2B0169' 
+          name = 'state' annotation = '' 
+          isNavigable = 'true' aggregation = 'none' isChangeable = 'true' 
+          type = 'a3CF0FD2B015F' >
+          <Model:AssociationEnd.multiplicity>
+            <Model:MultiplicityType lower = '0' upper = '-1' is_ordered = 'false' is_unique = 'true' />
+          </Model:AssociationEnd.multiplicity>
+        </Model:AssociationEnd>
+      </Model:Namespace.contents>
+    </Model:Association>
+    <!-- ==================== ActivityGraphs.A_type_classifierInState    [Association] ==================== -->
+    <Model:Association xmi.id = 'a3CF0FD2B016A' 
+      name = 'A_type_classifierInState' annotation = '' 
+      isRoot = 'true' isLeaf = 'true' isAbstract = 'false' visibility = 'public_vis' 
+      isDerived = 'false' >
+      <Model:Namespace.contents>
+        <Model:AssociationEnd xmi.id = 'a3CF0FD2B016B' 
+          name = 'type' annotation = '' 
+          isNavigable = 'true' aggregation = 'none' isChangeable = 'true' 
+          type = 'a3CF0FD2B00B4' >
+          <Model:AssociationEnd.multiplicity>
+            <Model:MultiplicityType lower = '1' upper = '1' is_ordered = 'false' is_unique = 'false' />
+          </Model:AssociationEnd.multiplicity>
+        </Model:AssociationEnd>
+        <Model:AssociationEnd xmi.id = 'a3CF0FD2B016C' 
+          name = 'classifierInState' annotation = '' 
+          isNavigable = 'true' aggregation = 'none' isChangeable = 'true' 
+          type = 'a3CF0FD2B0163' >
+          <Model:AssociationEnd.multiplicity>
+            <Model:MultiplicityType lower = '0' upper = '-1' is_ordered = 'false' is_unique = 'true' />
+          </Model:AssociationEnd.multiplicity>
+        </Model:AssociationEnd>
+      </Model:Namespace.contents>
+    </Model:Association>
+    <!-- ==================== ActivityGraphs.A_inState_classifierInState    [Association] ==================== -->
+    <Model:Association xmi.id = 'a3CF0FD2B016D' 
+      name = 'A_inState_classifierInState' annotation = '' 
+      isRoot = 'true' isLeaf = 'true' isAbstract = 'false' visibility = 'public_vis' 
+      isDerived = 'false' >
+      <Model:Namespace.contents>
+        <Model:AssociationEnd xmi.id = 'a3CF0FD2B016E' 
+          name = 'inState' annotation = '' 
+          isNavigable = 'true' aggregation = 'none' isChangeable = 'true' 
+          type = 'a3CF0FD2B0127' >
+          <Model:AssociationEnd.multiplicity>
+            <Model:MultiplicityType lower = '1' upper = '-1' is_ordered = 'false' is_unique = 'true' />
+          </Model:AssociationEnd.multiplicity>
+        </Model:AssociationEnd>
+        <Model:AssociationEnd xmi.id = 'a3CF0FD2B016F' 
+          name = 'classifierInState' annotation = '' 
+          isNavigable = 'true' aggregation = 'none' isChangeable = 'true' 
+          type = 'a3CF0FD2B0163' >
+          <Model:AssociationEnd.multiplicity>
+            <Model:MultiplicityType lower = '0' upper = '-1' is_ordered = 'false' is_unique = 'true' />
+          </Model:AssociationEnd.multiplicity>
+        </Model:AssociationEnd>
+      </Model:Namespace.contents>
+    </Model:Association>
+    <!-- ==================== ActivityGraphs.A_type_objectFlowState    [Association] ==================== -->
+    <Model:Association xmi.id = 'a3CF0FD2B0170' 
+      name = 'A_type_objectFlowState' annotation = '' 
+      isRoot = 'true' isLeaf = 'true' isAbstract = 'false' visibility = 'public_vis' 
+      isDerived = 'false' >
+      <Model:Namespace.contents>
+        <Model:AssociationEnd xmi.id = 'a3CF0FD2B0171' 
+          name = 'type' annotation = '' 
+          isNavigable = 'true' aggregation = 'none' isChangeable = 'true' 
+          type = 'a3CF0FD2B00B4' >
+          <Model:AssociationEnd.multiplicity>
+            <Model:MultiplicityType lower = '1' upper = '1' is_ordered = 'false' is_unique = 'false' />
+          </Model:AssociationEnd.multiplicity>
+        </Model:AssociationEnd>
+        <Model:AssociationEnd xmi.id = 'a3CF0FD2B0172' 
+          name = 'objectFlowState' annotation = '' 
+          isNavigable = 'true' aggregation = 'none' isChangeable = 'true' 
+          type = 'a3CF0FD2B015F' >
+          <Model:AssociationEnd.multiplicity>
+            <Model:MultiplicityType lower = '0' upper = '-1' is_ordered = 'false' is_unique = 'true' />
+          </Model:AssociationEnd.multiplicity>
+        </Model:AssociationEnd>
+      </Model:Namespace.contents>
+    </Model:Association>
+  </Model:Namespace.contents>
+</Model:Package>
+<!-- ==================== SPEM    [Package] ==================== -->
+<Model:Package xmi.id = 'a3CF0FD2B0174' 
+  name = 'SPEM' annotation = '' 
+  isRoot = 'false' isLeaf = 'false' isAbstract = 'false' visibility = 'public_vis' >
+  <Model:Namespace.contents>
+    <!-- ==================== SPEM.org.omg.xmi.namespace=SPEM    [Tag] ==================== -->
+    <Model:Tag xmi.id = 'G.168' 
+      name = 'org.omg.xmi.namespace=SPEM' annotation = '' 
+      tagId = 'org.omg.xmi.namespace' 
+      elements = 'a3CF0FD2B0174' >
+      <Model:Tag.values>
+        <XMI.any xmi.type = 'string' xmi.name = ''>SPEM</XMI.any>
+      </Model:Tag.values>
+    </Model:Tag>
+    <Model:Import xmi.id = 'G.169' 
+      name = 'Data_Types' annotation = '' 
+      visibility = 'public_vis' isClustered = 'true' 
+      importedNamespace = 'a3CF0FD2B0082' />
+    <Model:Import xmi.id = 'G.170' 
+      name = 'Core' annotation = '' 
+      visibility = 'public_vis' isClustered = 'true' 
+      importedNamespace = 'a3CF0FD2B00A6' />
+    <Model:Import xmi.id = 'G.171' 
+      name = 'Actions' annotation = '' 
+      visibility = 'public_vis' isClustered = 'true' 
+      importedNamespace = 'a3CF0FD2B014D' />
+    <Model:Import xmi.id = 'G.172' 
+      name = 'State_Machines' annotation = '' 
+      visibility = 'public_vis' isClustered = 'true' 
+      importedNamespace = 'a3CF0FD2B0110' />
+    <Model:Import xmi.id = 'G.173' 
+      name = 'ActivityGraphs' annotation = '' 
+      visibility = 'public_vis' isClustered = 'true' 
+      importedNamespace = 'a3CF0FD2B0158' />
+    <Model:Import xmi.id = 'G.174' 
+      name = 'Model_Management' annotation = '' 
+      visibility = 'public_vis' isClustered = 'true' 
+      importedNamespace = 'a3CF0FD2B0109' />
+    <Model:Import xmi.id = 'G.175' 
+      name = 'BasicElements' annotation = '' 
+      visibility = 'public_vis' isClustered = 'true' 
+      importedNamespace = 'a3CF0FD2B0035' />
+    <Model:Import xmi.id = 'G.176' 
+      name = 'Dependencies' annotation = '' 
+      visibility = 'public_vis' isClustered = 'true' 
+      importedNamespace = 'a3CF0FD2B006D' />
+    <Model:Import xmi.id = 'G.177' 
+      name = 'ProcessStructure' annotation = '' 
+      visibility = 'public_vis' isClustered = 'true' 
+      importedNamespace = 'a3CF0FD2B0006' />
+    <Model:Import xmi.id = 'G.178' 
+      name = 'ProcessComponents' annotation = '' 
+      visibility = 'public_vis' isClustered = 'true' 
+      importedNamespace = 'a3CF0FD2B004A' />
+    <Model:Import xmi.id = 'G.179' 
+      name = 'ProcessLifecycle' annotation = '' 
+      visibility = 'public_vis' isClustered = 'true' 
+      importedNamespace = 'a3CF0FD2B0054' />
+  </Model:Namespace.contents>
+</Model:Package>
+</XMI.content>
+</XMI>
