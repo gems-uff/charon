@@ -1,0 +1,54 @@
+<?xml version = '1.0' encoding = 'ISO-8859-1' ?>
+<XMI xmi.version = '1.2' xmlns:SPEM = 'org.omg.xmi.namespace.SPEM' timestamp = 'Mon Jun 27 12:37:21 BRT 2005'>
+  <XMI.header>
+    <XMI.documentation>
+      <XMI.exporter>Netbeans XMI Writer</XMI.exporter>
+      <XMI.exporterVersion>1.0</XMI.exporterVersion>
+    </XMI.documentation>
+  </XMI.header>
+  <XMI.content>
+    <SPEM:Package xmi.id = 'a1' name = 'SPEM Modeller View'>
+      <SPEM:Namespace.ownedElement>
+        <SPEM:ProcessPerformer xmi.id = 'a2' name = 'NewProcessPerformer'>
+          <SPEM:Namespace.ownedElement>
+            <SPEM:ActivityGraph xmi.id = 'a3' name = 'NewProcessPerformer'>
+              <SPEM:StateMachine.top>
+                <SPEM:CompositeState xmi.id = 'a4'/>
+              </SPEM:StateMachine.top>
+            </SPEM:ActivityGraph>
+          </SPEM:Namespace.ownedElement>
+          <SPEM:ProcessPerformer.work>
+            <SPEM:WorkDefinition xmi.id = 'a5' name = 'NewWorkDefinition'/>
+          </SPEM:ProcessPerformer.work>
+        </SPEM:ProcessPerformer>
+        <SPEM:ProcessRole xmi.id = 'a6' name = 'NewProcessRole'/>
+      </SPEM:Namespace.ownedElement>
+    </SPEM:Package>
+    <SPEM:Activity xmi.id = 'a7' name = 'NewActivity'>
+      <SPEM:WorkDefinition.parentWork>
+        <SPEM:WorkDefinition xmi.idref = 'a5'/>
+      </SPEM:WorkDefinition.parentWork>
+    </SPEM:Activity>
+    <SPEM:ActivityGraph xmi.id = 'a8' name = 'NewWorkDefinition'>
+      <SPEM:StateMachine.top>
+        <SPEM:CompositeState xmi.id = 'a9'>
+          <SPEM:CompositeState.subvertex>
+            <SPEM:ActionState xmi.id = 'a10' name = 'NewActivity'>
+              <SPEM:State.entry>
+                <Actions.CallAction xmi.id = 'a11'>
+                  <Actions.CallAction.operation>
+                    <SPEM:Activity xmi.idref = 'a7'/>
+                  </Actions.CallAction.operation>
+                </Actions.CallAction>
+              </SPEM:State.entry>
+            </SPEM:ActionState>
+          </SPEM:CompositeState.subvertex>
+        </SPEM:CompositeState>
+      </SPEM:StateMachine.top>
+    </SPEM:ActivityGraph>
+    <SPEM:A_behavior_context>
+      <SPEM:ActivityGraph xmi.idref = 'a8'/>
+      <SPEM:WorkDefinition xmi.idref = 'a5'/>
+    </SPEM:A_behavior_context>
+  </XMI.content>
+</XMI>
