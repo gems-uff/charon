@@ -78,7 +78,7 @@
 
 	<!-- RUN TARGET -->
     <target name="run" depends="compile">
-		<java classpathref="class.path" classname="${main.class}" fork="true" >
+		<java classpathref="class.path" classname="${test.main.class}" fork="true" >
 			<jvmarg value="${jvm.arg}"/>
 		</java>
     </target>

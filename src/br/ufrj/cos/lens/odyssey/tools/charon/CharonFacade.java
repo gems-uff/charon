@@ -216,8 +216,9 @@ public class CharonFacade implements Serializable {
 	 * @param contexto Contexto em que o processo será instanciado
 	 * @param jmiPackage instancia de pacote jmi com a definicao do processo
 	 */
-	public void instanciaProcesso(Object contexto, Package jmiPackage) {
-		
+	public void instanciaProcesso(Object context, WorkDefinition rootProcess) {
+		System.out.println("Context: " + context);
+		System.out.println("Root process: " + rootProcess);
 	}
 
 //	/**

@@ -18,7 +18,7 @@
             </SPEM:ActivityGraph>
           </SPEM:Namespace.ownedElement>
           <SPEM:ProcessPerformer.work>
-            <SPEM:WorkDefinition xmi.id = 'a5' name = 'NewWorkDefinition'/>
+            <SPEM:WorkDefinition xmi.id = 'a5' name = 'WorkDefinition'/>
           </SPEM:ProcessPerformer.work>
         </SPEM:ProcessPerformer>
         <SPEM:ProcessRole xmi.id = 'a6' name = 'NewProcessRole'/>

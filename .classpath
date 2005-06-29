@@ -10,5 +10,8 @@
 	<classpathentry kind="lib" path="lib/jmi.jar"/>
 	<classpathentry kind="lib" path="test/lib/mdrapi.jar"/>
 	<classpathentry kind="lib" path="test/lib/mof.jar"/>
+	<classpathentry kind="lib" path="test/lib/nbmdr.jar"/>
+	<classpathentry kind="lib" path="test/lib/jmiutils.jar"/>
+	<classpathentry kind="lib" path="test/lib/openide-util.jar"/>
 	<classpathentry kind="output" path="build"/>
 </classpath>

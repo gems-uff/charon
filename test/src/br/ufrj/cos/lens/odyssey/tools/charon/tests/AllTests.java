@@ -16,9 +16,7 @@ public class AllTests extends TestSuite {
 		TestSuite suite = new TestSuite("Test for Charon");
 
 		// Include tests here
-		// Tests removed to avoid long nightly builds (tests should be rewritten to access local repository)
-		suite.addTest(new TestSuite(GenericTest.class));
-		//suite.addTest(new TestSuite(XArchADTConnectorTest.class));
+		suite.addTest(new TestSuite(CharonFacadeTest.class));
 		
 		return suite;
 	}

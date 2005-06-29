@@ -1,60 +1,109 @@
 package br.ufrj.cos.lens.odyssey.tools.charon.tests;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Collection;
+import java.net.URL;
+import java.util.HashMap;
 import java.util.Iterator;
-import java.util.logging.Logger;
+import java.util.Map;
 
-import javax.jmi.xmi.MalformedXMIException;
+import javax.jmi.model.ModelPackage;
+import javax.jmi.model.MofPackage;
+import javax.jmi.xmi.XmiReader;
 
 import junit.framework.TestCase;
 
-import org.netbeans.api.mdr.CreationFailedException;
+import org.netbeans.api.mdr.MDRepository;
+import org.netbeans.api.xmi.XMIReaderFactory;
+import org.netbeans.mdr.NBMDRepositoryImpl;
 
 import processstructure.WorkDefinition;
+import spem.SpemPackage;
 import br.ufrj.cos.lens.odyssey.tools.charon.CharonFacade;
 
 public class CharonFacadeTest extends TestCase {
 
-	private static final String XMI_INPUT_FILE = "resource/input.xmi";
+	/**
+	 * Metamodel extent
+	 */
+    private static final String METAMODEL_EXTENT = "METAMODEL";
 	
-	public CharonFacadeTest(String arg0) {
-		super(arg0);
-	}
+	/**
+	 * Model extent
+	 */
+    private static final String MODEL_EXTENT = "MODEL";
+    
+	/**
+	 * SPEM metamodel
+	 */
+    private static final String SPEM_METAMODEL = "/resource/02-05-06.xml";
+    
+	/**
+	 * Test instance of SPEM metamodel
+	 */
+	private static final String SPEM_MODEL = "/resource/input.xmi";
+	
+	/**
+	 * MDR repository
+	 */
+	private MDRepository repository = null;
+	
+	/**
+	 * Spem model (instance)
+	 */
+	private SpemPackage spemPackage = null;
 
-	public void testInstanciaProcesso() {
-		//CharonFacade.getInstancia().instanciaProcesso(getWorkDefinition());
-	}
-	
-	private WorkDefinition getWorkDefinition(){
-		InputStream input = ClassLoader.getSystemResourceAsStream(XMI_INPUT_FILE);
-		Collection jmiCollection = null;
-		try {
-			jmiCollection = XMIManager.getInstance().read(input);
-			
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (MalformedXMIException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (CreationFailedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+	/**
+	 * Initializes the repository and loads the test model
+	 */
+	protected void setUp() throws Exception {
+		super.setUp();
+
+		// Create instance of xmi reader
+		XmiReader xmiReader = XMIReaderFactory.getDefault().createXMIReader();
 		
-		/*
-		 * Considerando que o arquivo xmi possui um WorkDefinition:
-		 */
-		for(Iterator i = jmiCollection.iterator(); i.hasNext();){
-			Object jmiObject = i.next();
-			if (jmiObject instanceof WorkDefinition){
-				Logger.global.info("WorkDefinition: "+((WorkDefinition)jmiObject).getName());
-				return (WorkDefinition)jmiObject;
+		// Create a in-memory repository
+		Map<String,String> properties = new HashMap<String,String>();
+		properties.put("storage", "org.netbeans.mdr.persistence.memoryimpl.StorageFactoryImpl");            
+		repository = new NBMDRepositoryImpl(properties);
+
+		// Init Repository with SPEM metamodel
+		ModelPackage modelPackage = (ModelPackage)repository.createExtent(METAMODEL_EXTENT);
+		URL xmiSpemMetamodel = this.getClass().getResource(SPEM_METAMODEL);
+		xmiReader.read(xmiSpemMetamodel.toString(), modelPackage);			
+
+		// Init the SPEM model extent
+		Iterator iterator = modelPackage.getMofPackage().refAllOfClass().iterator();
+		while (iterator.hasNext()) {
+			MofPackage mofPackage = (MofPackage)iterator.next();
+			if ("SPEM".equals(mofPackage.getName())) {
+				spemPackage = (SpemPackage)repository.createExtent(MODEL_EXTENT, mofPackage);
+				URL xmiSpemModel = this.getClass().getResource(SPEM_MODEL);
+				xmiReader.read(xmiSpemModel.toString(), spemPackage);
+				break;
 			}
 		}
-		return null;
 	}
+	
+	/**
+	 * Test method for 'br.ufrj.cos.lens.odyssey.tools.charon.CharonFacade.instanciaProcesso(Object, Package)'
+	 */
+	public final void testInstanciaProcesso() {
+		// Search for a Work Definition
+		WorkDefinition workDefinition = null;
+		Iterator iterator = spemPackage.getProcessStructure().getWorkDefinition().refAllOfClass().iterator();
+		while (iterator.hasNext()) {
+			workDefinition = (WorkDefinition)iterator.next();
+			if ("WorkDefinition".equals(workDefinition.getName()))
+				break;
+		}
 
+		CharonFacade.getInstancia().instanciaProcesso("Test Context", workDefinition);
+	}
+	
+	/**
+	 * Shutdown the repository
+	 */
+	protected void tearDown() throws Exception {
+		repository.shutdown();
+		super.tearDown();		
+	}
 }
