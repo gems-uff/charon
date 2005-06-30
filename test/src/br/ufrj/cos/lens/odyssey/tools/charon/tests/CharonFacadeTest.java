@@ -96,7 +96,7 @@ public class CharonFacadeTest extends TestCase {
 				break;
 		}
 
-		CharonFacade.getInstancia().instanciaProcesso("Test Context", workDefinition);
+		CharonFacade.getInstancia().instanciaProcesso("Test Context", spemPackage, workDefinition);
 	}
 	
 	/**

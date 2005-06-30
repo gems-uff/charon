@@ -9,6 +9,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import processstructure.WorkDefinition;
+import spem.SpemPackage;
+
 import br.ufrj.cos.lens.odyssey.tools.charon.agents.Agente;
 import br.ufrj.cos.lens.odyssey.tools.charon.agents.Disparador;
 import br.ufrj.cos.lens.odyssey.tools.inference.MaquinaInferenciaJIP;
@@ -87,12 +90,6 @@ public class BaseConhecimento implements Serializable {
 	private transient MaquinaInferenciaJIP prolog = null;
 
 	/**
-	 * Mapeador do processo. Contém todas as informações sobre a ligaçao entre
-	 * os objetos de processo e os IDs prolog gerados
-	 */
-	private Mapeador mapeador = null;
-
-	/**
 	 * Agente que está conectado à base
 	 */
 	private transient Agente agente = null;
@@ -102,17 +99,29 @@ public class BaseConhecimento implements Serializable {
 	 */
 	public BaseConhecimento() {}
 
-//	/**
-//	 * Constroi a base de conhecimento do processo
-//	 *
-//	 * @param processo Processo raiz da base de conhecimento
-//	 */
-//	public BaseConhecimento(NoProcesso processo) {
-//		mapeador = new Mapeador(processo);
+	/**
+	 * Package with all SPEM elements
+	 */
+	private SpemPackage spemPackage = null;
+
+	/**
+	 * Root process
+	 */
+	private WorkDefinition rootProcess = null;
+	
+	/**
+	 * Constroi a base de conhecimento do processo
+	 *
+	 * @param processo Processo raiz da base de conhecimento
+	 */
+	public BaseConhecimento(SpemPackage spemPackage, WorkDefinition rootProcess) {
+		this.spemPackage = spemPackage;
+		this.rootProcess = rootProcess;
+		System.out.println(Mapper.getInstance().map(spemPackage, rootProcess));
 //		getProlog().addClausulas(mapeador.getFatosProlog());
-//		Agente agenteSimulacao = GerenteProcesso.getInstancia().getAgente(GerenteProcesso.AGENTE_SIMULACAO);
+//		Agente agenteSimulacao = CharonFacade.getInstancia().getAgente(CharonFacade.AGENTE_SIMULACAO);
 //		new Disparador(this, agenteSimulacao, this);
-//	}
+	}
 
 	/**
 	 * Fornece a instância da máquina de inferência. Todas as requisições devem
@@ -122,14 +131,6 @@ public class BaseConhecimento implements Serializable {
 		if (prolog == null)
 			inicializaMaquinaInferencia();
 		return prolog;
-	}
-
-	/**
-	 * Fornece o mapeador da base de conhecimento. Útil para fazer consultas em
-	 * relação a qual elemento foi mapeado para qual id, e vice versa.
-	 */
-	public synchronized Mapeador getMapeador() {
-		return mapeador;
 	}
 
 	/**
@@ -178,22 +179,21 @@ public class BaseConhecimento implements Serializable {
 		getProlog().addClausulas(fatosExecucaoAntigos.iterator());
 	}
 
-//	/**
-//	 * Regera a base de conhecimento para refletir um novo mapeamento do processo
-//	 */
-//	public synchronized void atualizaBase() {
-//		// Esvazia o mapeamento antigo
-//		fatosMapeamento.clear();
-//
-//		// recria o mapeamento e insere na base
-//		mapeador.remapeia();
-//		inicializaMaquinaInferencia();
-//		getProlog().addClausulas(mapeador.getFatosProlog());
-//
-//		// ressimula o processo mapeado
-//		Agente agenteSimulacao = GerenteProcesso.getInstancia().getAgente(GerenteProcesso.AGENTE_SIMULACAO);
-//		new Disparador(this, agenteSimulacao, this);
-//	}
+	/**
+	 * Regera a base de conhecimento para refletir um novo mapeamento do processo
+	 */
+	public synchronized void atualizaBase() {
+		// Esvazia o mapeamento antigo
+		fatosMapeamento.clear();
+
+		// recria o mapeamento e insere na base
+		inicializaMaquinaInferencia();
+		getProlog().addClausulas(Mapper.getInstance().map(spemPackage, rootProcess).iterator());
+
+		// ressimula o processo mapeado
+		Agente agenteSimulacao = CharonFacade.getInstancia().getAgente(CharonFacade.AGENTE_SIMULACAO);
+		new Disparador(this, agenteSimulacao, this);
+	}
 
 	/**
 	 * Conecta um agente à base
@@ -296,8 +296,8 @@ public class BaseConhecimento implements Serializable {
 
 		// Transforma o path para prolog (invertendo a ordem)
 		List path = new ArrayList();
-		for (int i = 0; i < pathObjetos.size(); i++)
-			path.add(0, "processo(" + mapeador.getMapeamento(pathObjetos.get(i)) + ")");
+//		for (int i = 0; i < pathObjetos.size(); i++)
+//			path.add(0, "processo(" + mapeador.getMapeamento(pathObjetos.get(i)) + ")");
 		path.add("processo(raiz)");
 
 		// Monta a lista de cores em função do tempo de simulação e dos tempos de execuçao

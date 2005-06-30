@@ -1,7 +1,5 @@
 package br.ufrj.cos.lens.odyssey.tools.charon;
 
-import java.awt.Dimension;
-import java.awt.Toolkit;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -9,12 +7,8 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
-import javax.swing.JFrame;
-
-import modelmanagement.Package;
-
 import processstructure.WorkDefinition;
-
+import spem.SpemPackage;
 import br.ufrj.cos.lens.odyssey.tools.charon.agents.Agente;
 import br.ufrj.cos.lens.odyssey.tools.charon.agents.AgenteAcompanhamento;
 import br.ufrj.cos.lens.odyssey.tools.charon.agents.AgenteExecucao;
@@ -82,7 +76,7 @@ public class CharonFacade implements Serializable {
 	 * Bases de conhecimento existentes indexadas pelos contextos em que elas
 	 * foram criadas
 	 */
-	private Map basesConhecimento = null;
+	private Map<Object,BaseConhecimento> basesConhecimento = null;
 
 	/**
 	 * Profiles dos usuários (indexados pelo login do usuário)
@@ -93,7 +87,7 @@ public class CharonFacade implements Serializable {
 	 * Constroi o gerente singleton
 	 */
 	public CharonFacade() {
-		basesConhecimento = new HashMap();
+		basesConhecimento = new HashMap<Object,BaseConhecimento>();
 	}
 
 	/**
@@ -211,29 +205,23 @@ public class CharonFacade implements Serializable {
 	}
 	
 	/**
-	 * Instancia um processo dentro de um contexto.
+	 * Instancia um processo em um dado contexto.
 	 *
-	 * @param contexto Contexto em que o processo será instanciado
-	 * @param jmiPackage instancia de pacote jmi com a definicao do processo
+	 * @param context Context em que o processo será instanciado. Esse objeto será usado
+	 * futuramente para referenciar o processo.
+	 * @param spemPackage pacote que contem todos os elementos do processo que está sendo
+	 * instanciado.
+	 * @param rootProcess Processo que deve ser utilizado como raiz.
 	 */
-	public void instanciaProcesso(Object context, WorkDefinition rootProcess) {
-		System.out.println("Context: " + context);
-		System.out.println("Root process: " + rootProcess);
+	public void instanciaProcesso(Object context, SpemPackage spemPackage, WorkDefinition rootProcess) {
+		BaseConhecimento base = basesConhecimento.get(context);
+		if (base == null) {
+			base = new BaseConhecimento(spemPackage, rootProcess);
+			basesConhecimento.put(context, base);
+		} else {
+			base.atualizaBase();
+		}
 	}
-
-//	/**
-//	 * Instancia um processo dentro de um contexto.
-//	 *
-//	 * @param contexto Contexto em que o processo será instanciado
-//	 */
-//	public void instanciaProcesso(JFrame janelaModal, ConjuntoModelos contexto) {
-//		BaseConhecimento base = (BaseConhecimento)basesConhecimento.get(contexto);
-//		InstanciadorProcesso instanciador = new InstanciadorProcesso(janelaModal, base);
-//		if (instanciador.isInstanciado()) {
-//			base = instanciador.getBaseConhecimento();
-//			basesConhecimento.put(contexto, base);
-//		}
-//	}
 
 	/**
 	 * Retrocede um processo dentro de um contexto.
@@ -247,13 +235,6 @@ public class CharonFacade implements Serializable {
 		}
 	}
 
-//	/**
-//	 * Instancia um processo em uma base de conhecimento
-//	 */
-//	public void instanciaProcesso(JFrame janelaModal, BaseConhecimento base) {
-//		new InstanciadorProcesso(janelaModal, base);
-//	}
-
 	/**
 	 * Acompanha a execução de um processo
 	 */
@@ -264,29 +245,12 @@ public class CharonFacade implements Serializable {
 		}
 	}
 
-//	/**
-//	 * Fornece a base de conhecimento de um determinado contexto
-//	 *
-//	 * @return Base de conhecimento do contexto ou null se ela não existir
-//	 */
-//	public BaseConhecimento getBaseConhecimento(ConjuntoModelos contexto) {
-//		//System.out.println("getBaseConhecimento");
-//		return (BaseConhecimento)basesConhecimento.get(contexto);
-//	}
-
 	/**
-	 * Posiciona a janela no canto direito inferior da tela
+	 * Fornece a base de conhecimento de um determinado contexto
+	 *
+	 * @return Base de conhecimento do contexto ou null se ela não existir
 	 */
-	public void posicionaJanela(JFrame janela) {
-		janela.validate();
-		Dimension tamanhoTela = Toolkit.getDefaultToolkit().getScreenSize();
-		Dimension tamanhoJanela = janela.getSize();
-
-		if (tamanhoJanela.height > tamanhoTela.height)
-			tamanhoJanela.height = tamanhoTela.height;
-		if (tamanhoJanela.width > tamanhoTela.width)
-			tamanhoJanela.width = tamanhoTela.width;
-
-		janela.setLocation((tamanhoTela.width - tamanhoJanela.width) / 2, (tamanhoTela.height - tamanhoJanela.height) / 2);
+	public BaseConhecimento getBaseConhecimento(Object context) {
+		return (BaseConhecimento)basesConhecimento.get(context);
 	}
 }
