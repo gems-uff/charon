@@ -1,6 +1,7 @@
 package br.ufrj.cos.lens.odyssey.tools.charon.agents;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -46,7 +47,7 @@ public class AgenteSimulacao extends Agente {
 	/**
 	 * Lista de regras do agente
 	 */
-	private List regras = null;
+	private List<String> regras = null;
 
 	/**
 	 * Thread da simulação (null caso não exista simulação em andamento)
@@ -389,10 +390,10 @@ public class AgenteSimulacao extends Agente {
 	/**
 	 * Fornece a lista de regras existentes no agente
 	 */
-	public Iterator getRegras() {
+	public Collection<String> getRegras() {
 		if (regras == null)
-			regras = new ArrayList();
+			regras = new ArrayList<String>();
 
-		return regras.iterator();
+		return regras;
 	}
 }

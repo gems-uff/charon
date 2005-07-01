@@ -1,6 +1,7 @@
 package br.ufrj.cos.lens.odyssey.tools.charon.agents;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
@@ -18,7 +19,7 @@ public class AgenteRetrocesso extends Agente {
 	/**
 	 * Lista de regras do agente
 	 */
-	private List regras = null;
+	private List<String> regras = null;
 
 	public AgenteRetrocesso() {
 		super(0);
@@ -64,9 +65,9 @@ public class AgenteRetrocesso extends Agente {
 	/**
 	 * Fornece a lista de regras existentes no agente
 	 */
-	public Iterator getRegras() {
+	public Collection<String> getRegras() {
 		if (regras == null) {
-			regras = new ArrayList();
+			regras = new ArrayList<String>();
 
 			regras.add("(desloca(T) :- " + "executando(E, C, Ti), " + "Ti > T, " + "retract(executando(E, C, Ti)), " + "!, " + "desloca(T))");
 			regras.add("(desloca(T) :- " + "executado(E, C, Ti, Tf), " + "Ti > T, " + "retract(executado(E, C, Ti, Tf)), " + "!, " + "desloca(T))");
@@ -75,6 +76,6 @@ public class AgenteRetrocesso extends Agente {
 			regras.add("(desloca(T) :- " + "executado(E, C, Ti, Tf), " + "Ti <= T, " + "Tf > T, " + "retract(executado(E, C, Ti, Tf)), " + "assertz(executando(E, C, Ti)), " + "!, " + "desloca(T))");
 		}
 
-		return regras.iterator();
+		return regras;
 	}
 }

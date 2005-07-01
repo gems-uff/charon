@@ -1,5 +1,6 @@
 package br.ufrj.cos.lens.odyssey.tools.charon.agents;
 
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
@@ -19,7 +20,7 @@ public abstract class Agente {
 	 * Conjunto de agentes que devem ser avisados quando este agente fizer algo
 	 * (propriedade reativa)
 	 */
-	private Set escutadores = new HashSet();
+	private Set<Agente> escutadores = new HashSet<Agente>();
 
 	/**
 	 * Temporizador que faz com que o agente seja autonomo, procurando por seu
@@ -107,7 +108,7 @@ public abstract class Agente {
 	/**
 	 * Fornece a lista de regras existentes no agente
 	 */
-	public abstract Iterator getRegras();
+	public abstract Collection<String> getRegras();
 
 	/**
 	 * Executa este agente após a notificação de que aconteceu algum evento

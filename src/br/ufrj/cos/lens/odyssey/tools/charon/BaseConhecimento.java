@@ -3,6 +3,7 @@ package br.ufrj.cos.lens.odyssey.tools.charon;
 import java.awt.Color;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -77,12 +78,12 @@ public class BaseConhecimento implements Serializable {
 	/**
 	 * Lista de fatos de mapeamento
 	 */
-	private Set fatosMapeamento = new HashSet();
+	private Set<String> fatosMapeamento = new HashSet<String>();
 
 	/**
 	 * Lista de fatos de execucao
 	 */
-	private Set fatosExecucao = new HashSet();
+	private Set<String> fatosExecucao = new HashSet<String>();
 
 	/**
 	 * Máquina de inferência atrelada ao ambiente
@@ -117,8 +118,7 @@ public class BaseConhecimento implements Serializable {
 	public BaseConhecimento(SpemPackage spemPackage, WorkDefinition rootProcess) {
 		this.spemPackage = spemPackage;
 		this.rootProcess = rootProcess;
-		System.out.println(Mapper.getInstance().map(spemPackage, rootProcess));
-//		getProlog().addClausulas(mapeador.getFatosProlog());
+		getProlog().addClausulas(Mapper.getInstance().map(spemPackage, rootProcess));
 //		Agente agenteSimulacao = CharonFacade.getInstancia().getAgente(CharonFacade.AGENTE_SIMULACAO);
 //		new Disparador(this, agenteSimulacao, this);
 	}
@@ -153,30 +153,30 @@ public class BaseConhecimento implements Serializable {
 	 */
 	private synchronized void inicializaMaquinaInferencia() {
 		// Guarda os fatos antigos para serem reinseridos na nova máquina
-		List fatosMapeamentoAntigos = new ArrayList(this.fatosMapeamento);
+		Collection<String> fatosMapeamentoAntigos = new ArrayList<String>(this.fatosMapeamento);
 		this.fatosMapeamento.clear();
-		List fatosExecucaoAntigos = new ArrayList(this.fatosExecucao);
+		Collection<String> fatosExecucaoAntigos = new ArrayList<String>(this.fatosExecucao);
 		this.fatosExecucao.clear();
 
 		// Cria a nova máquina de inferência
 		prolog = new MaquinaInferenciaJIP();
 
 		// Constroi as clausulas de configuração das bases externas
-		List clausulas = new ArrayList();
+		Collection<String> clausulas = new ArrayList<String>();
 		for (int i = 0; i < predicadosMapeamento.length; i++)
-			clausulas.add("extern(" + predicadosMapeamento[i] + ", 'br.ufrj.cos.lens.odyssey.tools.process.BaseClausulas', '" + BaseClausulas.MAPEAMENTO + "')");
+			clausulas.add("extern(" + predicadosMapeamento[i] + ", 'br.ufrj.cos.lens.odyssey.tools.charon.BaseClausulas', '" + BaseClausulas.MAPEAMENTO + "')");
 		for (int i = 0; i < predicadosExecucao.length; i++)
-			clausulas.add("extern(" + predicadosExecucao[i] + ", 'br.ufrj.cos.lens.odyssey.tools.process.BaseClausulas', '" + BaseClausulas.EXECUCAO + "')");
+			clausulas.add("extern(" + predicadosExecucao[i] + ", 'br.ufrj.cos.lens.odyssey.tools.charon.BaseClausulas', '" + BaseClausulas.EXECUCAO + "')");
 		for (int i = 0; i < predicadosAgentes.length; i++)
-			clausulas.add("extern(" + predicadosAgentes[i] + ", 'br.ufrj.cos.lens.odyssey.tools.process.BaseClausulas', '" + BaseClausulas.AGENTES + "')");
+			clausulas.add("extern(" + predicadosAgentes[i] + ", 'br.ufrj.cos.lens.odyssey.tools.charon.BaseClausulas', '" + BaseClausulas.AGENTES + "')");
 
 		// Cria as bases externas com esta base de conhecimento com responsável
 		BaseClausulas.setBaseConhecimentoResponsavel(this);
 		getProlog().getRespostaBooleana(clausulas.iterator());
 
 		// Reinsere os fatos antigos
-		getProlog().addClausulas(fatosMapeamentoAntigos.iterator());
-		getProlog().addClausulas(fatosExecucaoAntigos.iterator());
+		getProlog().addClausulas(fatosMapeamentoAntigos);
+		getProlog().addClausulas(fatosExecucaoAntigos);
 	}
 
 	/**
@@ -188,7 +188,7 @@ public class BaseConhecimento implements Serializable {
 
 		// recria o mapeamento e insere na base
 		inicializaMaquinaInferencia();
-		getProlog().addClausulas(Mapper.getInstance().map(spemPackage, rootProcess).iterator());
+		getProlog().addClausulas(Mapper.getInstance().map(spemPackage, rootProcess));
 
 		// ressimula o processo mapeado
 		Agente agenteSimulacao = CharonFacade.getInstancia().getAgente(CharonFacade.AGENTE_SIMULACAO);

@@ -4,6 +4,7 @@ import java.awt.Window;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -51,10 +52,12 @@ public class MaquinaInferenciaJIP {
 	 *                  clausula é do tipo String e não contém ponto no final.
 	 *                  Se a clausula for uma regra, deve estar entre parênteses.
 	 */
-	public synchronized void addClausulas(Iterator clausulas) {
-		List asserts = new ArrayList();
-		while (clausulas.hasNext())
-			asserts.add("assertz(" + (String)clausulas.next() + ")");
+	public synchronized void addClausulas(Collection<String> clausulas) {
+		Collection<String> asserts = new ArrayList<String>();
+
+		for (String clausula : clausulas) {
+			asserts.add("assertz(" + clausula + ")");			
+		}
 
 		getRespostaBooleana(asserts.iterator());
 	}

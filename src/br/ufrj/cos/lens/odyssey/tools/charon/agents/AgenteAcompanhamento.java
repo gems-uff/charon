@@ -1,6 +1,7 @@
 package br.ufrj.cos.lens.odyssey.tools.charon.agents;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -21,7 +22,7 @@ public class AgenteAcompanhamento extends Agente {
 	/**
 	 * Lista de regras do agente
 	 */
-	private List regras = null;
+	private List<String> regras = null;
 
 	/**
 	 * Constroi o agente de acompanhamento
@@ -117,7 +118,7 @@ public class AgenteAcompanhamento extends Agente {
 //			prolog.add("respondido(" + decisao.getId() + ", " + decisao.getContexto() + ", " + decisao.getResposta() + ", " + tempo + ", '" + usuario + "')");
 //		}
 
-		getBase().getProlog().addClausulas(prolog.iterator());
+		getBase().getProlog().addClausulas(prolog);
 
 //		GerenteProcesso.getInstancia().getProfile(usuario).setOpcaoAparecimento(janela.getOpcaoAparecimento());
 
@@ -145,9 +146,9 @@ public class AgenteAcompanhamento extends Agente {
 	/**
 	 * Fornece a lista de regras existentes no agente
 	 */
-	public Iterator getRegras() {
+	public Collection<String> getRegras() {
 		if (regras == null) {
-			regras = new ArrayList();
+			regras = new ArrayList<String>();
 
 			regras.add("(processoPendente(U, IdP, C) :- " + "findall(PU, usuario(U,PU), PUs), " + "!, " + "executando(processo(IdP), C, _), " + "classeProcesso(IdP, IdC), " + "processoPrimitivo(IdC), " + "findall(PP, papel(IdC, PP), PPs), " + "intersecao(PUs, PPs))");
 
@@ -158,6 +159,6 @@ public class AgenteAcompanhamento extends Agente {
 
 		}
 
-		return regras.iterator();
+		return regras;
 	}
 }

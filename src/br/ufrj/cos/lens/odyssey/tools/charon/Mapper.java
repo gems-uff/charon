@@ -6,7 +6,6 @@ import java.util.HashSet;
 import java.util.Iterator;
 
 import processstructure.Activity;
-import processstructure.ProcessRole;
 import processstructure.WorkDefinition;
 import spem.SpemPackage;
 import statemachines.FinalState;
@@ -87,13 +86,14 @@ public class Mapper implements Serializable {
 	 */
 	private void map(Activity activity, Collection<String> facts) {
 		facts.add("processoPrimitivo('" + activity.refMofId() + "')");
-
-		// Map the roles
-		Iterator i = activity.getAssistant().iterator();
-		while (i.hasNext()) {
-			ProcessRole processRole = (ProcessRole) i.next();
-			facts.add("papel('" + activity.refMofId() + "','" + processRole.refMofId() + "')");
-		}
+		facts.add("papel('" + activity.refMofId() + "','" + activity.getPerformer().refMofId() + "')");
+		
+		// Assistent Roles
+//		Iterator i = activity.getAssistant().iterator();
+//		while (i.hasNext()) {
+//			ProcessRole processRole = (ProcessRole) i.next();
+//			facts.add("papel('" + activity.refMofId() + "','" + processRole.refMofId() + "')");
+//		}
 	}
 
 	/**
@@ -138,7 +138,7 @@ public class Mapper implements Serializable {
 		} else if (stateVertex.refIsInstanceOf(spemPackage.getStateMachines().getFinalState().refMetaObject(), true)) {
 			result = map((FinalState)stateVertex);
 		} else {
-			throw new RuntimeException("Undetected type of StateVertex object.");
+			throw new RuntimeException("Undetected type of StateVertex object: " + stateVertex.getName());
 		}
 		
 		return result;
@@ -162,6 +162,8 @@ public class Mapper implements Serializable {
 		} else if (PseudoStateKindEnum.PK_JUNCTION.equals(pseudoState.getKind())) {
 			facts.add("papel('" + pseudoState.refMofId() + "','" + workDefinition.getPerformer().refMofId() + "')");
 			result = "decisao('" + pseudoState.refMofId() + "')";
+		} else {
+			throw new RuntimeException("Undetected type of PseudoState object: " + pseudoState.getName());
 		}
 
 		return result;

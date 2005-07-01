@@ -1,6 +1,7 @@
 package br.ufrj.cos.lens.odyssey.tools.charon.agents;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
@@ -17,7 +18,7 @@ public class AgenteExecucao extends Agente {
 	/**
 	 * Lista de regras do agente
 	 */
-	private List regras = null;
+	private List<String> regras = null;
 
 	/**
 	 * Constroi o agente se cadastrando como escutador do agente de acompanhamento
@@ -79,9 +80,9 @@ public class AgenteExecucao extends Agente {
 	/**
 	 * Fornece a lista de regras existentes no agente
 	 */
-	public Iterator getRegras() {
+	public Collection<String> getRegras() {
 		if (regras == null) {
-			regras = new ArrayList();
+			regras = new ArrayList<String>();
 
 			regras.add("inicia([],_,_)");
 			regras.add("(inicia([E|Es], P, T) :- " + "inicia(E, P, T), " + "!, " + "inicia(Es, P, T))");
@@ -114,6 +115,6 @@ public class AgenteExecucao extends Agente {
 			regras.add("(finaliza(termino, [processo(IdP)|P], T) :- " + "!, " + "finaliza(processo(IdP), P, T))");
 		}
 
-		return regras.iterator();
+		return regras;
 	}
 }

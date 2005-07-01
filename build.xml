@@ -77,7 +77,7 @@
     </target>
 
 	<!-- RUN TARGET -->
-    <target name="run" depends="compile">
+    <target name="run" depends="compileTest">
 		<java classpathref="class.path" classname="${test.main.class}" fork="true" >
 			<jvmarg value="${jvm.arg}"/>
 		</java>
