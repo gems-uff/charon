@@ -16,7 +16,7 @@ import spem.SpemPackage;
 import br.ufrj.cos.lens.odyssey.tools.charon.agents.Agent;
 import br.ufrj.cos.lens.odyssey.tools.charon.agents.AgenteSimulacao;
 import br.ufrj.cos.lens.odyssey.tools.charon.agents.Dispatcher;
-import br.ufrj.cos.lens.odyssey.tools.inference.MaquinaInferenciaJIP;
+import br.ufrj.cos.lens.odyssey.tools.inference.InferenceMachine;
 
 /**
  * Classe respossável por representar a base de conhecimento de um processo.
@@ -87,9 +87,9 @@ public class KnowledgeBase implements Serializable {
 	private Set<String> fatosExecucao = new HashSet<String>();
 
 	/**
-	 * Máquina de inferência atrelada ao ambiente
+	 * Inference machine that phisically holds the knowledge base
 	 */
-	private transient MaquinaInferenciaJIP prolog = null;
+	private transient InferenceMachine inferenceMachine = null;
 
 	/**
 	 * Agente que está conectado à base
@@ -119,7 +119,10 @@ public class KnowledgeBase implements Serializable {
 	public KnowledgeBase(SpemPackage spemPackage, WorkDefinition rootProcess) {
 		this.spemPackage = spemPackage;
 		this.rootProcess = rootProcess;
-		getProlog().addClausulas(Mapper.getInstance().map(spemPackage, rootProcess));
+		inferenceMachine = new InferenceMachine();
+		
+		System.out.println(Mapper.getInstance().map(spemPackage, rootProcess));
+		getInferenceMachine().addClauses(Mapper.getInstance().map(spemPackage, rootProcess));
 //		Agente agenteSimulacao = CharonFacade.getInstancia().getAgente(CharonFacade.AGENTE_SIMULACAO);
 //		new Disparador(this, agenteSimulacao, this);
 	}
@@ -128,10 +131,8 @@ public class KnowledgeBase implements Serializable {
 	 * Fornece a instância da máquina de inferência. Todas as requisições devem
 	 * ser feitas por esse método.
 	 */
-	public synchronized MaquinaInferenciaJIP getProlog() {
-		if (prolog == null)
-			inicializaMaquinaInferencia();
-		return prolog;
+	public synchronized InferenceMachine getInferenceMachine() {
+		return inferenceMachine;
 	}
 
 	/**
@@ -148,37 +149,37 @@ public class KnowledgeBase implements Serializable {
 		return estado;
 	}
 
-	/**
-	 * Constroi uma instância da máquina de inferência configurando uma base de
-	 * clausulas externa
-	 */
-	private synchronized void inicializaMaquinaInferencia() {
-		// Guarda os fatos antigos para serem reinseridos na nova máquina
-		Collection<String> fatosMapeamentoAntigos = new ArrayList<String>(this.fatosMapeamento);
-		this.fatosMapeamento.clear();
-		Collection<String> fatosExecucaoAntigos = new ArrayList<String>(this.fatosExecucao);
-		this.fatosExecucao.clear();
-
-		// Cria a nova máquina de inferência
-		prolog = new MaquinaInferenciaJIP();
-
-		// Constroi as clausulas de configuração das bases externas
-		Collection<String> clausulas = new ArrayList<String>();
-		for (int i = 0; i < predicadosMapeamento.length; i++)
-			clausulas.add("extern(" + predicadosMapeamento[i] + ", 'br.ufrj.cos.lens.odyssey.tools.charon.BaseClausulas', '" + BaseClausulas.MAPEAMENTO + "')");
-		for (int i = 0; i < predicadosExecucao.length; i++)
-			clausulas.add("extern(" + predicadosExecucao[i] + ", 'br.ufrj.cos.lens.odyssey.tools.charon.BaseClausulas', '" + BaseClausulas.EXECUCAO + "')");
-		for (int i = 0; i < predicadosAgentes.length; i++)
-			clausulas.add("extern(" + predicadosAgentes[i] + ", 'br.ufrj.cos.lens.odyssey.tools.charon.BaseClausulas', '" + BaseClausulas.AGENTES + "')");
-
-		// Cria as bases externas com esta base de conhecimento com responsável
-		BaseClausulas.setBaseConhecimentoResponsavel(this);
-		getProlog().getRespostaBooleana(clausulas.iterator());
-
-		// Reinsere os fatos antigos
-		getProlog().addClausulas(fatosMapeamentoAntigos);
-		getProlog().addClausulas(fatosExecucaoAntigos);
-	}
+//	/**
+//	 * Constroi uma instância da máquina de inferência configurando uma base de
+//	 * clausulas externa
+//	 */
+//	private synchronized void initializeInferenceMachine() {
+//		// Guarda os fatos antigos para serem reinseridos na nova máquina
+//		Collection<String> fatosMapeamentoAntigos = new ArrayList<String>(this.fatosMapeamento);
+//		this.fatosMapeamento.clear();
+//		Collection<String> fatosExecucaoAntigos = new ArrayList<String>(this.fatosExecucao);
+//		this.fatosExecucao.clear();
+//
+//		// Cria a nova máquina de inferência
+//		prolog = new InferenceMachine();
+//
+//		// Constroi as clausulas de configuração das bases externas
+//		Collection<String> clausulas = new ArrayList<String>();
+//		for (int i = 0; i < predicadosMapeamento.length; i++)
+//			clausulas.add("extern(" + predicadosMapeamento[i] + ", 'br.ufrj.cos.lens.odyssey.tools.charon.BaseClausulas', '" + BaseClausulas.MAPEAMENTO + "')");
+//		for (int i = 0; i < predicadosExecucao.length; i++)
+//			clausulas.add("extern(" + predicadosExecucao[i] + ", 'br.ufrj.cos.lens.odyssey.tools.charon.BaseClausulas', '" + BaseClausulas.EXECUCAO + "')");
+//		for (int i = 0; i < predicadosAgentes.length; i++)
+//			clausulas.add("extern(" + predicadosAgentes[i] + ", 'br.ufrj.cos.lens.odyssey.tools.charon.BaseClausulas', '" + BaseClausulas.AGENTES + "')");
+//
+//		// Cria as bases externas com esta base de conhecimento com responsável
+//		BaseClausulas.setBaseConhecimentoResponsavel(this);
+//		getProlog().getBooleanAnswer(clausulas);
+//
+//		// Reinsere os fatos antigos
+//		getProlog().addClauses(fatosMapeamentoAntigos);
+//		getProlog().addClauses(fatosExecucaoAntigos);
+//	}
 
 	/**
 	 * Regera a base de conhecimento para refletir um novo mapeamento do processo
@@ -188,8 +189,8 @@ public class KnowledgeBase implements Serializable {
 		fatosMapeamento.clear();
 
 		// recria o mapeamento e insere na base
-		inicializaMaquinaInferencia();
-		getProlog().addClausulas(Mapper.getInstance().map(spemPackage, rootProcess));
+//		initializeInferenceMachine();
+		getInferenceMachine().addClauses(Mapper.getInstance().map(spemPackage, rootProcess));
 
 		// ressimula o processo mapeado
 		Agent agenteSimulacao = AgentManager.getInstance().getAgent(AgenteSimulacao.class);
@@ -209,7 +210,7 @@ public class KnowledgeBase implements Serializable {
 
 		this.agente = agente;
 
-		getProlog().addClausulas(agente.getRegras());
+		getInferenceMachine().addClauses(agente.getRegras());
 	}
 
 	/**
@@ -217,7 +218,7 @@ public class KnowledgeBase implements Serializable {
 	 */
 	public synchronized void desconecta() {
 		if (this.agente != null) {
-			BaseClausulas.removeClausulasAgentes(this);
+			removeClausulasAgentes();
 
 			// Notifica os escutadores do agente atual que ele está sendo removido
 			Iterator iterator = agente.getEscutadores();
@@ -239,7 +240,7 @@ public class KnowledgeBase implements Serializable {
 	 * @return Nome do processo raiz
 	 */
 	public synchronized String getProcessoRaiz() {
-		Map resposta = getProlog().getResposta("processoRaiz(P),nome(P,N)");
+		Map resposta = getInferenceMachine().getSolution("processoRaiz(P),nome(P,N)");
 		if (resposta != null) {
 			String nomeProcesso = (String)resposta.get("N");
 			return nomeProcesso.substring(1, (nomeProcesso.length() - 1));
@@ -255,7 +256,7 @@ public class KnowledgeBase implements Serializable {
 	public synchronized List getPapeis() {
 		List papeis = new ArrayList();
 		Set encontrados = new HashSet();
-		Iterator respostas = getProlog().getRespostas("papel(_,P)");
+		Iterator respostas = getInferenceMachine().getAllSolutions("papel(_,P)").iterator();
 		while (respostas.hasNext()) {
 			Map resposta = (Map)respostas.next();
 			String papel = (String)resposta.get("P");
@@ -279,7 +280,7 @@ public class KnowledgeBase implements Serializable {
 		List cores = new ArrayList();
 
 		// Obtem o tempo de simulação
-		Map resposta = getProlog().getResposta("simulado(" + idSimulado + ", T)");
+		Map resposta = getInferenceMachine().getSolution("simulado(" + idSimulado + ", T)");
 		double tempoSimulacao;
 		if (resposta != null) {
 			String tempo = (String)resposta.get("T");
@@ -302,7 +303,7 @@ public class KnowledgeBase implements Serializable {
 		path.add("processo(raiz)");
 
 		// Monta a lista de cores em função do tempo de simulação e dos tempos de execuçao
-		Iterator respostas = getProlog().getRespostas("executado(" + elemento + ", P, Ti, Tf), P = " + path + ", T is (Tf - Ti)");
+		Iterator respostas = getInferenceMachine().getAllSolutions("executado(" + elemento + ", P, Ti, Tf), P = " + path + ", T is (Tf - Ti)").iterator();
 		while (respostas.hasNext()) {
 			resposta = (Map)respostas.next();
 			long tempoExecucao;
@@ -321,7 +322,7 @@ public class KnowledgeBase implements Serializable {
 
 		// Verifica se o processo está em execução, adicionando a cor amarela
 		// Obtem o tempo de simulação
-		if (getProlog().getRespostaBooleana("executando(" + elemento + ", P, _), P = " + path))
+		if (getInferenceMachine().isSolvable("executando(" + elemento + ", P, _), P = " + path))
 			cores.add(Color.yellow);
 
 		// Se nenhuma cor foi inserida é porque o elemento nunca entrou em execução
@@ -347,5 +348,17 @@ public class KnowledgeBase implements Serializable {
 	 */
 	public Set getFatosExecucao() {
 		return fatosExecucao;
+	}
+	
+	/**
+	 * Remove as clausulas de agentes que estão armazenadas nas bases de clausulas
+	 * vinculadas com uma determinada base de conhecimento
+	 */
+	public static void removeClausulasAgentes() {
+//		for (int i = 0; i < basesClausulas.size(); i++) {
+//			BaseClausulas baseClausulas = (BaseClausulas)basesClausulas.get(i);
+//			if ((baseClausulas.isResponsavel(base)) && (baseClausulas.isTipo(AGENTES)))
+//				baseClausulas.clear();
+//		}
 	}
 }

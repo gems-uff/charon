@@ -51,7 +51,7 @@ public class BacktrackingAgent extends Agent {
 
 //		getBase().getProlog().getRespostaBooleana("desloca(" + janela.getTempo() + ")");
 
-		if ((!getBase().getProlog().getRespostaBooleana("executando(processo(raiz), [], _)")) && (!getBase().getProlog().getRespostaBooleana("executado(processo(raiz), [], _, _)")))
+		if ((!getBase().getInferenceMachine().isSolvable("executando(processo(raiz), [], _)")) && (!getBase().getInferenceMachine().isSolvable("executado(processo(raiz), [], _, _)")))
 			getBase().setEstado(KnowledgeBase.BASE_PENDENTE);
 
 		desconecta();

@@ -104,7 +104,7 @@ public class FollowingThroughAgent extends Agent {
 		// Pega o tempo atual
 		long tempo = System.currentTimeMillis() / 1000;
 
-		List prolog = new ArrayList();
+		List<String> prolog = new ArrayList<String>();
 
 //		Iterator processos2 = janela.getProcessosFinalizados();
 //		while (processos2.hasNext()) {
@@ -118,7 +118,7 @@ public class FollowingThroughAgent extends Agent {
 //			prolog.add("respondido(" + decisao.getId() + ", " + decisao.getContexto() + ", " + decisao.getResposta() + ", " + tempo + ", '" + usuario + "')");
 //		}
 
-		getBase().getProlog().addClausulas(prolog);
+		getBase().getInferenceMachine().addClauses(prolog);
 
 //		GerenteProcesso.getInstancia().getProfile(usuario).setOpcaoAparecimento(janela.getOpcaoAparecimento());
 

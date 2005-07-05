@@ -47,14 +47,14 @@ public class AgenteExecucao extends Agent {
 
 		// Finaliza os processos primitivos finalizados pelo usuário
 		String finalizaProcesso = "processoPrimitivo(IdC), classeProcesso(IdP, IdC), finaliza(processo(IdP), _, " + tempo + ")";
-		while (base.getProlog().getRespostaBooleana(finalizaProcesso));
+		while (base.getInferenceMachine().isSolvable(finalizaProcesso));
 
 		// Finaliza as decisões respondidas pelo usuário
 		String finalizaDecisao = "finaliza(decisao(_), _, " + tempo + ")";
-		while (base.getProlog().getRespostaBooleana(finalizaDecisao));
+		while (base.getInferenceMachine().isSolvable(finalizaDecisao));
 
 		// Vereifica se terminou a execução, mudando o estado da base
-		if (base.getProlog().getRespostaBooleana("executado(processo(raiz), [], _, _))"))
+		if (base.getInferenceMachine().isSolvable("executado(processo(raiz), [], _, _))"))
 			base.setEstado(KnowledgeBase.BASE_FINALIZADA);
 
 		desconecta();
@@ -71,7 +71,7 @@ public class AgenteExecucao extends Agent {
 
 			long tempo = System.currentTimeMillis() / 1000;
 
-			knowledgeBase.getProlog().getRespostaBooleana("processoRaiz(P), assertz(classeProcesso(raiz, P)), inicia(processo(raiz), [], " + tempo + ")");
+			knowledgeBase.getInferenceMachine().isSolvable("processoRaiz(P), assertz(classeProcesso(raiz, P)), inicia(processo(raiz), [], " + tempo + ")");
 
 			knowledgeBase.setEstado(KnowledgeBase.BASE_EXECUTANDO);
 			desconecta();
