@@ -7,7 +7,7 @@ import java.util.Set;
 
 import javax.swing.Timer;
 
-import br.ufrj.cos.lens.odyssey.tools.charon.BaseConhecimento;
+import br.ufrj.cos.lens.odyssey.tools.charon.KnowledgeBase;
 
 /**
  * Classe que representa um agente. Nela são implementados os mecanismos básicos
@@ -15,12 +15,12 @@ import br.ufrj.cos.lens.odyssey.tools.charon.BaseConhecimento;
  * @author Leo Murta
  * @version 1.0, 11/12/2001
  */
-public abstract class Agente {
+public abstract class Agent {
 	/**
 	 * Conjunto de agentes que devem ser avisados quando este agente fizer algo
 	 * (propriedade reativa)
 	 */
-	private Set<Agente> escutadores = new HashSet<Agente>();
+	private Set<Agent> escutadores = new HashSet<Agent>();
 
 	/**
 	 * Temporizador que faz com que o agente seja autonomo, procurando por seu
@@ -31,7 +31,7 @@ public abstract class Agente {
 	/**
 	 * Base de conhecimento em que o agente está conectado
 	 */
-	private BaseConhecimento base = null;
+	private KnowledgeBase base = null;
 
 	/**
 	 * Constroi o agente iniciando seu temporizador
@@ -39,22 +39,22 @@ public abstract class Agente {
 	 * @param intervaloEventoProativo Define o tempo entre os eventos proativos
 	 *                                (em milisegundos)
 	 */
-	public Agente(int intervaloEventoProativo) {
-		temporizador = new Timer(intervaloEventoProativo, new Disparador(this));
+	public Agent(int intervaloEventoProativo) {
+		temporizador = new Timer(intervaloEventoProativo, new Dispatcher(this));
 		temporizador.start();
 	}
 
 	/**
 	 * Adiciona um agente no conjunto de agentes interessados em ações deste agente
 	 */
-	public void addEscutador(Agente agente) {
+	public void addEscutador(Agent agente) {
 		escutadores.add(agente);
 	}
 
 	/**
 	 * Remove um agente do conjunto de agentes interessados em ações deste agente
 	 */
-	public void removeEscutador(Agente agente) {
+	public void removeEscutador(Agent agente) {
 		escutadores.remove(agente);
 	}
 
@@ -69,7 +69,7 @@ public abstract class Agente {
 	 *
 	 * @param base Base de conhecimento que o agente se conectará
 	 */
-	protected void conecta(BaseConhecimento base) {
+	protected void conecta(KnowledgeBase base) {
 		base.conecta(this);
 		this.base = base;
 	}
@@ -101,7 +101,7 @@ public abstract class Agente {
 	/**
 	 * Fornece a base em que o agente está atualmente conectado
 	 */
-	protected BaseConhecimento getBase() {
+	protected KnowledgeBase getBase() {
 		return base;
 	}
 
@@ -119,7 +119,7 @@ public abstract class Agente {
 	 * @param origem Origem do evento
 	 * @param base Base que está relacionada com o evanto
 	 */
-	public abstract void executaReativo(Object origem, BaseConhecimento base);
+	public abstract void executaReativo(Object origem, KnowledgeBase base);
 
 	/**
 	 * Executa este agente após a notificaçao vinda do temporizador, fazendo com

@@ -9,6 +9,12 @@ import JIP.engine.JIPClause;
 import JIP.engine.JIPClausesDatabase;
 
 public class BaseClausulas extends JIPClausesDatabase {
+	
+	/**
+	 * Indica se a máquina de processo está em modo DEBUG
+	 */
+	public static final boolean DEBUG = false;
+	
 	/**
 	 * Tipo de base utilizada para armazenar clausulas de mapeamento
 	 */
@@ -40,12 +46,12 @@ public class BaseClausulas extends JIPClausesDatabase {
 	 * Gambiarra necessária para permitir que exista conexão entre a base de
 	 * conhecimento e a base de clausulas.
 	 */
-	private static BaseConhecimento baseConhecimentoResponsavel = null;
+	private static KnowledgeBase baseConhecimentoResponsavel = null;
 
 	/**
 	 * Base de conhecimento associada a base de cláusulas
 	 */
-	private BaseConhecimento baseConhecimento = null;
+	private KnowledgeBase baseConhecimento = null;
 
 	/**
 	 * Lista com as clausulas
@@ -65,7 +71,7 @@ public class BaseClausulas extends JIPClausesDatabase {
 	 * Atribui uma base de conhecimento responsável. Essa base receberá o callback
 	 * para o armazenamento dos fatos de mapeamento e execução
 	 */
-	public static void setBaseConhecimentoResponsavel(BaseConhecimento responsavel) {
+	public static void setBaseConhecimentoResponsavel(KnowledgeBase responsavel) {
 		baseConhecimentoResponsavel = responsavel;
 	}
 
@@ -73,7 +79,7 @@ public class BaseClausulas extends JIPClausesDatabase {
 	 * Remove as clausulas de agentes que estão armazenadas nas bases de clausulas
 	 * vinculadas com uma determinada base de conhecimento
 	 */
-	public static void removeClausulasAgentes(BaseConhecimento base) {
+	public static void removeClausulasAgentes(KnowledgeBase base) {
 		for (int i = 0; i < basesClausulas.size(); i++) {
 			BaseClausulas baseClausulas = (BaseClausulas)basesClausulas.get(i);
 			if ((baseClausulas.isResponsavel(base)) && (baseClausulas.isTipo(AGENTES)))
@@ -84,7 +90,7 @@ public class BaseClausulas extends JIPClausesDatabase {
 	/**
 	 * Verifica se uma determinada base de conhecimento é responsável pela base de clausulas
 	 */
-	public boolean isResponsavel(BaseConhecimento base) {
+	public boolean isResponsavel(KnowledgeBase base) {
 		return (baseConhecimento == base);
 	}
 
@@ -100,7 +106,7 @@ public class BaseClausulas extends JIPClausesDatabase {
 	 */
 	public void clear() {
 		// Mostra o que foi feito
-		if (CharonFacade.DEBUG)
+		if (DEBUG)
 			System.out.println("clear: " + clausulas);
 
 		clausulas.clear();
@@ -121,7 +127,7 @@ public class BaseClausulas extends JIPClausesDatabase {
 		tipo = atributos;
 
 		// Mostra o que foi feito
-		if (CharonFacade.DEBUG)
+		if (DEBUG)
 			System.out.println("setAttributes: " + atributos);
 	}
 
@@ -138,7 +144,7 @@ public class BaseClausulas extends JIPClausesDatabase {
 			baseConhecimento.getFatosExecucao().add(clausula.toString());
 
 		// Mostra o que foi feito
-		if (CharonFacade.DEBUG)
+		if (DEBUG)
 			System.out.println("addClauseAt (" + tipo + "): " + posicao + " -> " + clausula);
 
 		return true;
@@ -157,7 +163,7 @@ public class BaseClausulas extends JIPClausesDatabase {
 			baseConhecimento.getFatosExecucao().add(clausula.toString());
 
 		// Mostra o que foi feito
-		if (CharonFacade.DEBUG)
+		if (DEBUG)
 			System.out.println("addClause (" + tipo + "): " + clausula);
 
 		return true;
@@ -186,7 +192,7 @@ public class BaseClausulas extends JIPClausesDatabase {
 			baseConhecimento.getFatosExecucao().remove(clausula.toString());
 
 		// Mostra o que foi feito
-		if (CharonFacade.DEBUG)
+		if (DEBUG)
 			System.out.println("removeClause (" + tipo + "): " + clausula);
 
 		return true;

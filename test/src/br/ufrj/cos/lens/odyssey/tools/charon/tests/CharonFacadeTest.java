@@ -17,6 +17,7 @@ import org.netbeans.mdr.NBMDRepositoryImpl;
 
 import processstructure.WorkDefinition;
 import spem.SpemPackage;
+import br.ufrj.cos.lens.odyssey.tools.charon.CharonException;
 import br.ufrj.cos.lens.odyssey.tools.charon.CharonFacade;
 
 public class CharonFacadeTest extends TestCase {
@@ -86,7 +87,7 @@ public class CharonFacadeTest extends TestCase {
 	/**
 	 * Test method for 'br.ufrj.cos.lens.odyssey.tools.charon.CharonFacade.instanciaProcesso(Object, Package)'
 	 */
-	public final void testInstanciaProcesso() {
+	public final void testInstanciaProcesso() throws CharonException {
 		// Search for a Work Definition
 		WorkDefinition workDefinition = null;
 		Iterator iterator = spemPackage.getProcessStructure().getWorkDefinition().refAllOfClass().iterator();
@@ -96,7 +97,7 @@ public class CharonFacadeTest extends TestCase {
 				break;
 		}
 
-		CharonFacade.getInstancia().instanciaProcesso("Test Context", spemPackage, workDefinition);
+		CharonFacade.getInstance().instantiateProcess("Test Context", spemPackage, workDefinition);
 	}
 	
 	/**

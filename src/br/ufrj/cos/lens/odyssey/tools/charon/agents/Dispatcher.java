@@ -3,7 +3,7 @@ package br.ufrj.cos.lens.odyssey.tools.charon.agents;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import br.ufrj.cos.lens.odyssey.tools.charon.BaseConhecimento;
+import br.ufrj.cos.lens.odyssey.tools.charon.KnowledgeBase;
 
 /**
  * Classe responsável por disparar a execução reativa ou pró-ativa em um
@@ -12,7 +12,7 @@ import br.ufrj.cos.lens.odyssey.tools.charon.BaseConhecimento;
  * @author Leo Murta
  * @version 1.0, 11/12/2001
  */
-public class Disparador implements ActionListener, Runnable {
+public class Dispatcher implements ActionListener, Runnable {
 	/**
 	 * Execução do tipo reativa
 	 */
@@ -31,17 +31,17 @@ public class Disparador implements ActionListener, Runnable {
 	/**
 	 * Agente de origem do evento, usado no caso reativo
 	 */
-	private Agente agenteFonte = null;
+	private Agent agenteFonte = null;
 
 	/**
 	 * Agente alvo do evento
 	 */
-	private Agente agenteAlvo = null;
+	private Agent agenteAlvo = null;
 
 	/**
 	 * Base em que o agente origem se desconectou, usado no caso reativo
 	 */
-	private BaseConhecimento base = null;
+	private KnowledgeBase base = null;
 
 	/**
 	 * Constroi o disparador configurando o agente alvo para execução reativa
@@ -50,7 +50,7 @@ public class Disparador implements ActionListener, Runnable {
 	 * @param agenteAlvo Agente destino do evento
 	 * @param base Base que teve o agente origem desconectado
 	 */
-	public Disparador(Object origem, Agente agenteAlvo, BaseConhecimento base) {
+	public Dispatcher(Object origem, Agent agenteAlvo, KnowledgeBase base) {
 		tipo = REATIVO;
 
 		this.agenteAlvo = agenteAlvo;
@@ -64,7 +64,7 @@ public class Disparador implements ActionListener, Runnable {
 	 *
 	 * @param agenteAlvo Agente destino do evento
 	 */
-	public Disparador(Agente agenteAlvo) {
+	public Dispatcher(Agent agenteAlvo) {
 		tipo = PROATIVO;
 
 		this.agenteAlvo = agenteAlvo;

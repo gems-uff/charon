@@ -5,8 +5,11 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
-import br.ufrj.cos.lens.odyssey.tools.charon.BaseConhecimento;
+import br.ufrj.cos.lens.odyssey.tools.charon.AgentManager;
+import br.ufrj.cos.lens.odyssey.tools.charon.CharonException;
+import br.ufrj.cos.lens.odyssey.tools.charon.KnowledgeBase;
 import br.ufrj.cos.lens.odyssey.tools.charon.CharonFacade;
+import br.ufrj.cos.lens.odyssey.tools.charon.KnowledgeBaseManager;
 
 /**
  * Agente responsável por executar o processo
@@ -14,7 +17,7 @@ import br.ufrj.cos.lens.odyssey.tools.charon.CharonFacade;
  * @author Leo Murta
  * @version 1.0, 14/12/2001
  */
-public class AgenteExecucao extends Agente {
+public class AgenteExecucao extends Agent {
 	/**
 	 * Lista de regras do agente
 	 */
@@ -23,9 +26,9 @@ public class AgenteExecucao extends Agente {
 	/**
 	 * Constroi o agente se cadastrando como escutador do agente de acompanhamento
 	 */
-	public AgenteExecucao() {
+	public AgenteExecucao() throws CharonException {
 		super(5000);
-		Agente agenteAcompanhamento = CharonFacade.getInstancia().getAgente(CharonFacade.AGENTE_ACOMPANHAMENTO);
+		Agent agenteAcompanhamento = AgentManager.getInstance().getAgent(FollowingThroughAgent.class);
 		agenteAcompanhamento.addEscutador(this);
 	}
 
@@ -33,8 +36,8 @@ public class AgenteExecucao extends Agente {
 	 * Responde ao evento de desconexão do agente de acompanhamento verificando se
 	 * algo novo que entrou na base motiva a continuação da execução
 	 */
-	public void executaReativo(Object origem, BaseConhecimento base) {
-		if ((base == null) || (base.getEstado() != BaseConhecimento.BASE_EXECUTANDO))
+	public void executaReativo(Object origem, KnowledgeBase base) {
+		if ((base == null) || (base.getState() != KnowledgeBase.BASE_EXECUTANDO))
 			return;
 
 		conecta(base);
@@ -52,7 +55,7 @@ public class AgenteExecucao extends Agente {
 
 		// Vereifica se terminou a execução, mudando o estado da base
 		if (base.getProlog().getRespostaBooleana("executado(processo(raiz), [], _, _))"))
-			base.setEstado(BaseConhecimento.BASE_FINALIZADA);
+			base.setEstado(KnowledgeBase.BASE_FINALIZADA);
 
 		desconecta();
 	}
@@ -62,16 +65,15 @@ public class AgenteExecucao extends Agente {
 	 */
 	public void executaProativo() {
 		setProativo(false);
-		Iterator basesPendentes = CharonFacade.getInstancia().getBasesEstado(BaseConhecimento.BASE_PENDENTE);
-		while (basesPendentes.hasNext()) {
-			BaseConhecimento base = (BaseConhecimento)basesPendentes.next();
-			conecta(base);
+		
+		for (KnowledgeBase knowledgeBase : KnowledgeBaseManager.getInstance().getKnowledgeBases(KnowledgeBase.BASE_PENDENTE)) {
+			conecta(knowledgeBase);
 
 			long tempo = System.currentTimeMillis() / 1000;
 
-			base.getProlog().getRespostaBooleana("processoRaiz(P), assertz(classeProcesso(raiz, P)), inicia(processo(raiz), [], " + tempo + ")");
+			knowledgeBase.getProlog().getRespostaBooleana("processoRaiz(P), assertz(classeProcesso(raiz, P)), inicia(processo(raiz), [], " + tempo + ")");
 
-			base.setEstado(BaseConhecimento.BASE_EXECUTANDO);
+			knowledgeBase.setEstado(KnowledgeBase.BASE_EXECUTANDO);
 			desconecta();
 		}
 		setProativo(true);

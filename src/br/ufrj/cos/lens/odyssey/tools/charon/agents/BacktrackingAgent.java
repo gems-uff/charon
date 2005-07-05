@@ -7,7 +7,7 @@ import java.util.List;
 
 import javax.swing.JOptionPane;
 
-import br.ufrj.cos.lens.odyssey.tools.charon.BaseConhecimento;
+import br.ufrj.cos.lens.odyssey.tools.charon.KnowledgeBase;
 
 /**
  * Agente responsável por retroceder a execução do processo
@@ -15,13 +15,13 @@ import br.ufrj.cos.lens.odyssey.tools.charon.BaseConhecimento;
  * @author Leo Murta
  * @version 1.0, 23/12/2001
  */
-public class AgenteRetrocesso extends Agente {
+public class BacktrackingAgent extends Agent {
 	/**
 	 * Lista de regras do agente
 	 */
 	private List<String> regras = null;
 
-	public AgenteRetrocesso() {
+	public BacktrackingAgent() {
 		super(0);
 		setProativo(false);
 	}
@@ -33,17 +33,17 @@ public class AgenteRetrocesso extends Agente {
 	 * @param origem Origem do evento
 	 * @param base Base que está relacionada com o evanto
 	 */
-	public void executaReativo(Object origem, BaseConhecimento base) {
-		switch (base.getEstado()) {
-			case BaseConhecimento.BASE_SIMULANDO :
+	public void executaReativo(Object origem, KnowledgeBase base) {
+		switch (base.getState()) {
+			case KnowledgeBase.BASE_SIMULANDO :
 				JOptionPane.showMessageDialog(null, "The process is being simulated. Please, wait a moment and try again.", "Process Backtracking Agent", JOptionPane.INFORMATION_MESSAGE);
 				return;
 
-			case BaseConhecimento.BASE_PENDENTE :
+			case KnowledgeBase.BASE_PENDENTE :
 				JOptionPane.showMessageDialog(null, "The process is waiting for its initialization. Please, wait a moment and try again.", "Process Backtracking Agent", JOptionPane.INFORMATION_MESSAGE);
 				return;
 
-			case BaseConhecimento.BASE_ERRO :
+			case KnowledgeBase.BASE_ERRO :
 				JOptionPane.showMessageDialog(null, "The process has some errors. Please, correct them and reinstantiate it.", "Process Backtracking Agent", JOptionPane.INFORMATION_MESSAGE);
 				return;
 		}
@@ -52,7 +52,7 @@ public class AgenteRetrocesso extends Agente {
 //		getBase().getProlog().getRespostaBooleana("desloca(" + janela.getTempo() + ")");
 
 		if ((!getBase().getProlog().getRespostaBooleana("executando(processo(raiz), [], _)")) && (!getBase().getProlog().getRespostaBooleana("executado(processo(raiz), [], _, _)")))
-			getBase().setEstado(BaseConhecimento.BASE_PENDENTE);
+			getBase().setEstado(KnowledgeBase.BASE_PENDENTE);
 
 		desconecta();
 	}

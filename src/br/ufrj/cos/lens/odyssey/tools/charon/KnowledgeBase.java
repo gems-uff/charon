@@ -13,8 +13,9 @@ import java.util.Set;
 import processstructure.WorkDefinition;
 import spem.SpemPackage;
 
-import br.ufrj.cos.lens.odyssey.tools.charon.agents.Agente;
-import br.ufrj.cos.lens.odyssey.tools.charon.agents.Disparador;
+import br.ufrj.cos.lens.odyssey.tools.charon.agents.Agent;
+import br.ufrj.cos.lens.odyssey.tools.charon.agents.AgenteSimulacao;
+import br.ufrj.cos.lens.odyssey.tools.charon.agents.Dispatcher;
 import br.ufrj.cos.lens.odyssey.tools.inference.MaquinaInferenciaJIP;
 
 /**
@@ -23,7 +24,7 @@ import br.ufrj.cos.lens.odyssey.tools.inference.MaquinaInferenciaJIP;
  * @author Leonardo Murta
  * @version 1.0, 22/11/2001
  */
-public class BaseConhecimento implements Serializable {
+public class KnowledgeBase implements Serializable {
 	/**
 	 * Base de conhecimento sendo simulada
 	 */
@@ -60,7 +61,7 @@ public class BaseConhecimento implements Serializable {
 	 * Os seguintes elementos nÃo são predicados (são funtores):
 	 * "inicio/1", "processo/1", "decisao/1", "sincronismo/1", "termino/0"
 	 */
-	private static final String[] predicadosMapeamento = { "processoPrimitivo/1", "processoComposto/1", "processoRaiz/1", "nome/2", "roteiro/2", "ferramenta/2", "papel/2", "artefatoEntrada/2", "artefatoSaida/2", "classeProcesso/2", "pergunta/2", "resposta/3", "fluxo/2", "usuario/2", "simulado/2" };
+	private static final String[] predicadosMapeamento = { "processoPrimitivo/1", "processoComposto/1", "processoRaiz/1", "papel/2", "classeProcesso/2", "fluxo/2", "simulado/2" };
 
 	/**
 	 * Predicados utilizadas na execução
@@ -93,12 +94,12 @@ public class BaseConhecimento implements Serializable {
 	/**
 	 * Agente que está conectado à base
 	 */
-	private transient Agente agente = null;
+	private transient Agent agente = null;
 
 	/**
 	 * Construtor sem parâmetro para reflection
 	 */
-	public BaseConhecimento() {}
+	public KnowledgeBase() {}
 
 	/**
 	 * Package with all SPEM elements
@@ -115,7 +116,7 @@ public class BaseConhecimento implements Serializable {
 	 *
 	 * @param processo Processo raiz da base de conhecimento
 	 */
-	public BaseConhecimento(SpemPackage spemPackage, WorkDefinition rootProcess) {
+	public KnowledgeBase(SpemPackage spemPackage, WorkDefinition rootProcess) {
 		this.spemPackage = spemPackage;
 		this.rootProcess = rootProcess;
 		getProlog().addClausulas(Mapper.getInstance().map(spemPackage, rootProcess));
@@ -143,7 +144,7 @@ public class BaseConhecimento implements Serializable {
 	/**
 	 * Pega o estado atual da base
 	 */
-	public synchronized int getEstado() {
+	public synchronized int getState() {
 		return estado;
 	}
 
@@ -182,7 +183,7 @@ public class BaseConhecimento implements Serializable {
 	/**
 	 * Regera a base de conhecimento para refletir um novo mapeamento do processo
 	 */
-	public synchronized void atualizaBase() {
+	public synchronized void update() throws CharonException {
 		// Esvazia o mapeamento antigo
 		fatosMapeamento.clear();
 
@@ -191,14 +192,14 @@ public class BaseConhecimento implements Serializable {
 		getProlog().addClausulas(Mapper.getInstance().map(spemPackage, rootProcess));
 
 		// ressimula o processo mapeado
-		Agente agenteSimulacao = CharonFacade.getInstancia().getAgente(CharonFacade.AGENTE_SIMULACAO);
-		new Disparador(this, agenteSimulacao, this);
+		Agent agenteSimulacao = AgentManager.getInstance().getAgent(AgenteSimulacao.class);
+		new Dispatcher(this, agenteSimulacao, this);
 	}
 
 	/**
 	 * Conecta um agente à base
 	 */
-	public synchronized void conecta(Agente agente) {
+	public synchronized void conecta(Agent agente) {
 		while (this.agente != null)
 			try {
 				wait();
@@ -221,8 +222,8 @@ public class BaseConhecimento implements Serializable {
 			// Notifica os escutadores do agente atual que ele está sendo removido
 			Iterator iterator = agente.getEscutadores();
 			while (iterator.hasNext()) {
-				Agente agenteAlvo = (Agente)iterator.next();
-				new Disparador(agente, agenteAlvo, this);
+				Agent agenteAlvo = (Agent)iterator.next();
+				new Dispatcher(agente, agenteAlvo, this);
 			}
 
 			this.agente = null;
@@ -259,7 +260,7 @@ public class BaseConhecimento implements Serializable {
 			Map resposta = (Map)respostas.next();
 			String papel = (String)resposta.get("P");
 			if (!encontrados.contains(papel)) {
-				papeis.add(new Papel(papel.substring(1, (papel.length() - 1))));
+				papeis.add(papel.substring(1, (papel.length() - 1)));
 				encontrados.add(papel);
 			}
 		}

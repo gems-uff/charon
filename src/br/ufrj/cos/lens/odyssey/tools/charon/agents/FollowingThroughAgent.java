@@ -8,7 +8,7 @@ import java.util.Map;
 
 import javax.swing.JOptionPane;
 
-import br.ufrj.cos.lens.odyssey.tools.charon.BaseConhecimento;
+import br.ufrj.cos.lens.odyssey.tools.charon.KnowledgeBase;
 import br.ufrj.cos.lens.odyssey.tools.charon.CharonFacade;
 
 /**
@@ -18,7 +18,7 @@ import br.ufrj.cos.lens.odyssey.tools.charon.CharonFacade;
  * @author Leo Murta
  * @version 1.0, 16/12/2001
  */
-public class AgenteAcompanhamento extends Agente {
+public class FollowingThroughAgent extends Agent {
 	/**
 	 * Lista de regras do agente
 	 */
@@ -27,7 +27,7 @@ public class AgenteAcompanhamento extends Agente {
 	/**
 	 * Constroi o agente de acompanhamento
 	 */
-	public AgenteAcompanhamento() {
+	public FollowingThroughAgent() {
 		super(5000);
 	}
 
@@ -38,21 +38,21 @@ public class AgenteAcompanhamento extends Agente {
 	 * @param origem Origem do evento
 	 * @param base Base que está relacionada com o evanto
 	 */
-	public void executaReativo(Object origem, BaseConhecimento base) {
-		switch (base.getEstado()) {
-			case BaseConhecimento.BASE_FINALIZADA :
+	public void executaReativo(Object origem, KnowledgeBase base) {
+		switch (base.getState()) {
+			case KnowledgeBase.BASE_FINALIZADA :
 				JOptionPane.showMessageDialog(null, "The process has been finished.", "Process Accompaniment Agent", JOptionPane.INFORMATION_MESSAGE);
 				return;
 
-			case BaseConhecimento.BASE_SIMULANDO :
+			case KnowledgeBase.BASE_SIMULANDO :
 				JOptionPane.showMessageDialog(null, "The process is being simulated. Please, wait a moment and try again.", "Process Accompaniment Agent", JOptionPane.INFORMATION_MESSAGE);
 				return;
 
-			case BaseConhecimento.BASE_PENDENTE :
+			case KnowledgeBase.BASE_PENDENTE :
 				JOptionPane.showMessageDialog(null, "The process is waiting for its initialization. Please, wait a moment and try again.", "Process Accompaniment Agent", JOptionPane.INFORMATION_MESSAGE);
 				return;
 
-			case BaseConhecimento.BASE_ERRO :
+			case KnowledgeBase.BASE_ERRO :
 				JOptionPane.showMessageDialog(null, "The process has some errors. Please, correct them and reinstantiate it.", "Process Accompaniment Agent", JOptionPane.INFORMATION_MESSAGE);
 				return;
 		}
@@ -131,16 +131,18 @@ public class AgenteAcompanhamento extends Agente {
 	 * usuário
 	 */
 	public void executaProativo() {
-		// Pega o login do usuário corrente
-//		String usuario = GerenteUsuario.getInstancia().getUsuarioLogado().getLogin();
-		String usuario = "test";
-		
-		BaseConhecimento base = CharonFacade.getInstancia().getBaseUsuario();
 
-		if ((base != null) && (CharonFacade.getInstancia().getProfile(usuario).mostraAgora())) {
-			setProativo(false);
-			new Disparador(this, this, CharonFacade.getInstancia().getBaseUsuario());
-		}
+		// TODO: Definir comportamento proativo 
+		//		// Pega o login do usuário corrente
+////		String usuario = GerenteUsuario.getInstancia().getUsuarioLogado().getLogin();
+//		String usuario = "test";
+//		
+//		KnowledgeBase base = CharonFacade.getInstance().getBaseUsuario();
+//
+//		if ((base != null) && (CharonFacade.getInstance().getProfile(usuario).mostraAgora())) {
+//			setProativo(false);
+//			new Disparador(this, this, CharonFacade.getInstance().getBaseUsuario());
+//		}
 	}
 
 	/**

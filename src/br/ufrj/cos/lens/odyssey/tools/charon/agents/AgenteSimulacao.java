@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import br.ufrj.cos.lens.odyssey.tools.charon.BaseConhecimento;
+import br.ufrj.cos.lens.odyssey.tools.charon.KnowledgeBase;
 
 /**
  * Agente responsável por executar o processo
@@ -17,7 +17,7 @@ import br.ufrj.cos.lens.odyssey.tools.charon.BaseConhecimento;
  * @author Leo Murta
  * @version 1.0, 14/12/2001
  */
-public class AgenteSimulacao extends Agente {
+public class AgenteSimulacao extends Agent {
 	/**
 	 * Estado livre
 	 */
@@ -98,7 +98,7 @@ public class AgenteSimulacao extends Agente {
 	 * @param origem Não utilizado
 	 * @param base Base que deverá receber as informações do processo simulado
 	 */
-	public synchronized void executaReativo(Object origem, BaseConhecimento base) {
+	public synchronized void executaReativo(Object origem, KnowledgeBase base) {
 		if (base == null)
 			return;
 
@@ -113,7 +113,7 @@ public class AgenteSimulacao extends Agente {
 		estado = SIMULANDO;
 
 		conecta(base);
-		base.setEstado(BaseConhecimento.BASE_SIMULANDO);
+		base.setEstado(KnowledgeBase.BASE_SIMULANDO);
 
 //		// Pega o processo raiz
 //		processoRaiz = base.getMapeador().getProcessoRaiz();
