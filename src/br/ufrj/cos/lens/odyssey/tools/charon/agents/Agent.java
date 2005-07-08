@@ -1,129 +1,131 @@
 package br.ufrj.cos.lens.odyssey.tools.charon.agents;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Set;
+import java.util.logging.Logger;
 
 import javax.swing.Timer;
 
 import br.ufrj.cos.lens.odyssey.tools.charon.KnowledgeBase;
 
 /**
- * Classe que representa um agente. Nela são implementados os mecanismos básicos
- * para que se possa construir um agente inteligente.
+ * This class represents a generic agent
  * @author Leo Murta
  * @version 1.0, 11/12/2001
  */
 public abstract class Agent {
 	/**
-	 * Conjunto de agentes que devem ser avisados quando este agente fizer algo
-	 * (propriedade reativa)
+	 * Agents that should be notified when this agent finishes working
+	 * (reactive property)
 	 */
-	private Set<Agent> escutadores = new HashSet<Agent>();
+	private Collection<Agent> disconnectionListeners = new HashSet<Agent>();
 
 	/**
-	 * Temporizador que faz com que o agente seja autonomo, procurando por seu
-	 * objetivo a cada segundo.
+	 * Timer for autonomous execution
+	 * (proactive property)
 	 */
-	private Timer temporizador = null;
+	private Timer timer = null;
 
 	/**
-	 * Base de conhecimento em que o agente está conectado
+	 * Knowledge base where this agent is connected
 	 */
-	private KnowledgeBase base = null;
+	private KnowledgeBase knowledgeBase = null;
 
 	/**
-	 * Constroi o agente iniciando seu temporizador
+	 * Constructs a proactive (and reactive) agent
 	 *
-	 * @param intervaloEventoProativo Define o tempo entre os eventos proativos
-	 *                                (em milisegundos)
+	 * @param delay Delay between proactive executions (milisecods)
 	 */
-	public Agent(int intervaloEventoProativo) {
-		temporizador = new Timer(intervaloEventoProativo, new Dispatcher(this));
-		temporizador.start();
+	public Agent(int delay) {
+		timer = new Timer(delay, new Dispatcher(this));
+		timer.start();
+	}
+	
+	/**
+	 * Constructs a reactive agent
+	 */
+	public Agent() { }
+
+	/**
+	 * Adds a new listener of executions of this agent
+	 */
+	public void addDisconnectionListener(Agent agente) {
+		disconnectionListeners.add(agente);
 	}
 
 	/**
-	 * Adiciona um agente no conjunto de agentes interessados em ações deste agente
+	 * Adds a listener of executions of this agent
 	 */
-	public void addEscutador(Agent agente) {
-		escutadores.add(agente);
+	public void removeDisconnectionListener(Agent agente) {
+		disconnectionListeners.remove(agente);
 	}
 
 	/**
-	 * Remove um agente do conjunto de agentes interessados em ações deste agente
+	 * Fires the execution of the listeners of this agent
 	 */
-	public void removeEscutador(Agent agente) {
-		escutadores.remove(agente);
-	}
-
-	/**
-	 * Fornece um iterador de escutadores
-	 */
-	public Iterator getEscutadores() {
-		return escutadores.iterator();
-	}
-	/**
-	 * Conecta o agente em uma base de conhecimento
-	 *
-	 * @param base Base de conhecimento que o agente se conectará
-	 */
-	protected void conecta(KnowledgeBase base) {
-		base.conecta(this);
-		this.base = base;
-	}
-
-	/**
-	 * Desconecta o agente da base de conhecimento que ele está atualmente conectado
-	 */
-	protected void desconecta() {
-		if (base == null)
-			return;
-
-		base.desconecta();
-		this.base = null;
-	}
-
-	/**
-	 * Para o temporizador de interação pró-ativa
-	 */
-	protected void setProativo(boolean liga) {
-		if (liga) {
-			if (!temporizador.isRunning())
-				temporizador.start();
-		} else {
-			if (temporizador.isRunning())
-				temporizador.stop();
+	private void fireDisconnectionListeners() {
+		for (Agent agent : disconnectionListeners) {
+			agent.disconnectionPerformed(knowledgeBase);
 		}
 	}
-
+	
 	/**
-	 * Fornece a base em que o agente está atualmente conectado
+	 * Connects the agent to a knowledge base
 	 */
-	protected KnowledgeBase getBase() {
-		return base;
+	protected void connect(KnowledgeBase knowledgeBase) {
+		if (timer != null) {
+			timer.stop();
+		}			
+		knowledgeBase.connect(this);
+		this.knowledgeBase = knowledgeBase;
 	}
 
 	/**
-	 * Fornece a lista de regras existentes no agente
+	 * Disconnect the agent from the current knowledge base
 	 */
-	public abstract Collection<String> getRegras();
+	protected void disconnect() {
+		if (knowledgeBase != null) {
+			knowledgeBase.disconnect();
+			fireDisconnectionListeners();
+			this.knowledgeBase = null;
+		}
+		if (timer != null) {
+			timer.start();
+		}
+	}
+	
+/*
+ * 		******************************************************
+ * 		The following methods should be overrided if necessary
+ * 		******************************************************
+ */
 
 	/**
-	 * Executa este agente após a notificação de que aconteceu algum evento
-	 * Para que essa notificação aconteça, é necessário que o agente se cadastre
-	 * como escutador no outro agente (notificação automática). Ou que alguma
-	 * entidade externa lance a notificação através do Disparador.
-	 *
-	 * @param origem Origem do evento
-	 * @param base Base que está relacionada com o evanto
+	 * Provides the agent's rules.
+	 * OVERRIDE IT when the agent have specific prolog rules. These rules will be
+	 * automatically inserted and removed into the knowledge base when the agent
+	 * connects and disconnects to/from it.
 	 */
-	public abstract void executaReativo(Object origem, KnowledgeBase base);
+	public Collection<String> getRules() {
+		return Collections.emptyList();
+	}
 
 	/**
-	 * Executa este agente após a notificaçao vinda do temporizador, fazendo com
-	 * que o agente seja autônomo.
+	 * Runs the agent in a reactive mode, as a response to an external event
+	 * that occurs automatically when it is a listener of other agent.
+	 * OVERRIDE IT when this agent listens other agents.
+	 * @param knowledgeBase Knowledge base where the agent shoud run
 	 */
-	public abstract void executaProativo();
+	public void disconnectionPerformed(KnowledgeBase knowledgeBase) {
+		Logger.global.warning("Agent " + getClass().getName() + " should implement disconnectionPerformed(KnowledgeBase) to handle disconnection listening events.");
+	}
+
+	/**
+	 * Runs the agent in a proactive mode, as a response of the timer.
+	 * OVERRIDE IT when this agent is a proactive agent
+	 */
+	public void proactiveExecution() {
+		Logger.global.warning("Agent " + getClass().getName() + " should implement proactiveExecution() to act proactivelly.");
+	}
 }

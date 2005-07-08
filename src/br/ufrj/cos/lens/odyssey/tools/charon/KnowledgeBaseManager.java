@@ -5,8 +5,6 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-import processstructure.WorkDefinition;
-
 import spem.SpemPackage;
 
 /**
@@ -39,6 +37,13 @@ public class KnowledgeBaseManager {
 		if (instance == null)
 			instance = new KnowledgeBaseManager();
 		return instance;
+	}
+	
+	/**
+	 * Loads the stored knowledge bases
+	 */
+	public void init() {
+		// TODO: CODE!
 	}
 	
 	/**
@@ -76,14 +81,14 @@ public class KnowledgeBaseManager {
 	/**
 	 * Updates the knowledge base of a given context
 	 */
-	public void updateKnowledgeBase(Object context) throws CharonException {
-		knowledgeBases.get(context).update();
+	public void updateKnowledgeBase(Object context, SpemPackage spemPackage) throws CharonException {
+		knowledgeBases.get(context).update(spemPackage);
 	}
 	
 	/**
 	 * Adds a knowledge base to a given context
 	 */
-	public void addKnowledgeBase(Object context, SpemPackage spemPackage, WorkDefinition rootProcess) {
-		knowledgeBases.put(context, new KnowledgeBase(spemPackage, rootProcess));
+	public void addKnowledgeBase(Object context, SpemPackage spemPackage) throws CharonException {
+		knowledgeBases.put(context, new KnowledgeBase(spemPackage));
 	}
 }

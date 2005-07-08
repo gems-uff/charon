@@ -4,6 +4,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 import br.ufrj.cos.lens.odyssey.tools.charon.agents.Agent;
+import br.ufrj.cos.lens.odyssey.tools.charon.agents.BacktrackingAgent;
+import br.ufrj.cos.lens.odyssey.tools.charon.agents.EnactmentAgent;
+import br.ufrj.cos.lens.odyssey.tools.charon.agents.MappingAgent;
+import br.ufrj.cos.lens.odyssey.tools.charon.agents.SimulationAgent;
 
 public class AgentManager {
 	
@@ -34,6 +38,16 @@ public class AgentManager {
 	}
 	
 	/**
+	 * Loads all agents
+	 */
+	public void init() throws CharonException {
+		getAgent(MappingAgent.class);
+		getAgent(SimulationAgent.class);
+		getAgent(BacktrackingAgent.class);
+		getAgent(EnactmentAgent.class);
+	}
+	
+	/**
 	 * Provides an agent of a given type
 	 */
 	public <T extends Agent> T getAgent(Class<T> type) throws CharonException {
@@ -43,8 +57,7 @@ public class AgentManager {
 			}
 			return type.cast(agents.get(type));
 		} catch (Exception e) {
-			throw new CharonException("Could not find agent " + type.getName());
+			throw new CharonException("Could not load agent " + type.getName(), e);
 		}
 	}
-
 }

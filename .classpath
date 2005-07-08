@@ -6,12 +6,12 @@
 	<classpathentry kind="lib" path="test/lib/junit3.8.1.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="lib/jmi-spem.jar"/>
-	<classpathentry kind="lib" path="test/lib/mdrapi.jar"/>
 	<classpathentry kind="lib" path="test/lib/mof.jar"/>
 	<classpathentry kind="lib" path="test/lib/nbmdr.jar"/>
 	<classpathentry kind="lib" path="test/lib/jmiutils.jar"/>
 	<classpathentry kind="lib" path="test/lib/openide-util.jar"/>
 	<classpathentry kind="lib" path="lib/jmi.jar"/>
 	<classpathentry sourcepath="/tuprolog-1.3/src" kind="lib" path="lib/tuprolog-1.3.0.jar"/>
+	<classpathentry kind="lib" path="lib/mdrapi.jar"/>
 	<classpathentry kind="output" path="build"/>
 </classpath>

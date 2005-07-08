@@ -1,7 +1,12 @@
 package br.ufrj.cos.lens.odyssey.tools.charon;
 
 import java.awt.Color;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.io.Serializable;
+import java.io.StringReader;
+import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
@@ -9,12 +14,15 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import processstructure.WorkDefinition;
 import spem.SpemPackage;
 
 import br.ufrj.cos.lens.odyssey.tools.charon.agents.Agent;
-import br.ufrj.cos.lens.odyssey.tools.charon.agents.AgenteSimulacao;
+import br.ufrj.cos.lens.odyssey.tools.charon.agents.MappingAgent;
+import br.ufrj.cos.lens.odyssey.tools.charon.agents.SimulationAgent;
 import br.ufrj.cos.lens.odyssey.tools.charon.agents.Dispatcher;
 import br.ufrj.cos.lens.odyssey.tools.inference.InferenceMachine;
 
@@ -26,40 +34,41 @@ import br.ufrj.cos.lens.odyssey.tools.inference.InferenceMachine;
  */
 public class KnowledgeBase implements Serializable {
 	/**
-	 * Base de conhecimento sendo simulada
+	 * Knowledge base being simulated. No other agent can execute.
+	 * @TODO Is it possible to remove this (and other) states?
 	 */
-	public static final int BASE_SIMULANDO = 0;
+	public static final int SIMULATING = 0;
 
 	/**
-	 * Base de conhecimento pendente de inicializacao
+	 * Knowledge base ready to be enacted. The process has been simulated without errors.
 	 */
-	public static final int BASE_PENDENTE = 1;
+	public static final int PENDING = 1;
 
 	/**
-	 * Base de conhecimento com erro
+	 * Knowledge base with errors. The process cannot be executed.
 	 */
-	public static final int BASE_ERRO = 2;
+	public static final int CORRUPTED = 2;
 
 	/**
-	 * Base de conhecimento executando
+	 * Knowledge base being enacted. The process is being executed.
 	 */
-	public static final int BASE_EXECUTANDO = 3;
+	public static final int ENACTING = 3;
 
 	/**
-	 * Base de conhecimento inicializada
+	 * Knowledge base in the finished state. The process has already been executed.
 	 */
-	public static final int BASE_FINALIZADA = 4;
+	public static final int FINISHED = 4;
 
 	/**
-	 * Estado da base
+	 * Knowledge base state
 	 */
-	private int estado;
+	private int state;
 
 	/**
 	 * Predicados utilizadas no mapeamento
 	 * São reconstruidos sempre que o processo evoluir
 	 * Os seguintes elementos nÃo são predicados (são funtores):
-	 * "inicio/1", "processo/1", "decisao/1", "sincronismo/1", "termino/0"
+	 * "inicio/1", "processo/1", "decisao/1", "sincronismo/1", "termino/1"
 	 */
 	private static final String[] predicadosMapeamento = { "processoPrimitivo/1", "processoComposto/1", "processoRaiz/1", "papel/2", "classeProcesso/2", "fluxo/2", "simulado/2" };
 
@@ -77,24 +86,19 @@ public class KnowledgeBase implements Serializable {
 	private static final String[] predicadosAgentes = { "inicia/3", "finaliza/3", "desloca/1", "debug/1" };
 
 	/**
-	 * Lista de fatos de mapeamento
-	 */
-	private Set<String> fatosMapeamento = new HashSet<String>();
-
-	/**
-	 * Lista de fatos de execucao
-	 */
-	private Set<String> fatosExecucao = new HashSet<String>();
-
-	/**
 	 * Inference machine that phisically holds the knowledge base
 	 */
 	private transient InferenceMachine inferenceMachine = null;
 
 	/**
-	 * Agente que está conectado à base
+	 * Agent connected to the knowledge base
 	 */
-	private transient Agent agente = null;
+	private transient Agent agent = null;
+	
+	/**
+	 * Clauses used to define the process
+	 */
+	private Collection<String> processClauses = null;
 
 	/**
 	 * Construtor sem parâmetro para reflection
@@ -102,135 +106,82 @@ public class KnowledgeBase implements Serializable {
 	public KnowledgeBase() {}
 
 	/**
-	 * Package with all SPEM elements
-	 */
-	private SpemPackage spemPackage = null;
-
-	/**
-	 * Root process
-	 */
-	private WorkDefinition rootProcess = null;
-	
-	/**
-	 * Constroi a base de conhecimento do processo
+	 * Constructs a new knowledge base
 	 *
-	 * @param processo Processo raiz da base de conhecimento
+	 * @param spemPackage Package containing all elements of the process.
 	 */
-	public KnowledgeBase(SpemPackage spemPackage, WorkDefinition rootProcess) {
-		this.spemPackage = spemPackage;
-		this.rootProcess = rootProcess;
+	public KnowledgeBase(SpemPackage spemPackage) throws CharonException {
 		inferenceMachine = new InferenceMachine();
-		
-		System.out.println(Mapper.getInstance().map(spemPackage, rootProcess));
-		getInferenceMachine().addClauses(Mapper.getInstance().map(spemPackage, rootProcess));
-//		Agente agenteSimulacao = CharonFacade.getInstancia().getAgente(CharonFacade.AGENTE_SIMULACAO);
-//		new Disparador(this, agenteSimulacao, this);
+		processClauses = AgentManager.getInstance().getAgent(MappingAgent.class).map(spemPackage);
+		inferenceMachine.addClauses(processClauses);
+	}
+	
+	/** 
+	 * Updates the knowledge base to reflect changes made into the process contained in
+	 * the SPEM Package used to create this knowledge base.
+	 * IMPORTANT: The current implementation uses MOFID to identify processes. It will be
+	 * impossible to evolve the process if the new SpemPackage use different MOFIDs.
+	 * 
+	 * @param spemPackage Package containing all elements of the process.
+	 */
+	public synchronized void update(SpemPackage spemPackage) throws CharonException {
+		inferenceMachine.removeClauses(processClauses);
+		processClauses = AgentManager.getInstance().getAgent(MappingAgent.class).map(spemPackage);
+		inferenceMachine.addClauses(processClauses);
 	}
 
-	/**
-	 * Fornece a instância da máquina de inferência. Todas as requisições devem
-	 * ser feitas por esse método.
-	 */
-	public synchronized InferenceMachine getInferenceMachine() {
-		return inferenceMachine;
-	}
+//	/**
+//	 * Fornece a instância da máquina de inferência. Todas as requisições devem
+//	 * ser feitas por esse método.
+//	 */
+//	public synchronized InferenceMachine getInferenceMachine() {
+//		return inferenceMachine;
+//	}
 
 	/**
 	 * Atribui um novo estado para a base
 	 */
-	public synchronized void setEstado(int estado) {
-		this.estado = estado;
+	public synchronized void setState(int estado) {
+		this.state = estado;
 	}
 
 	/**
 	 * Pega o estado atual da base
 	 */
 	public synchronized int getState() {
-		return estado;
-	}
-
-//	/**
-//	 * Constroi uma instância da máquina de inferência configurando uma base de
-//	 * clausulas externa
-//	 */
-//	private synchronized void initializeInferenceMachine() {
-//		// Guarda os fatos antigos para serem reinseridos na nova máquina
-//		Collection<String> fatosMapeamentoAntigos = new ArrayList<String>(this.fatosMapeamento);
-//		this.fatosMapeamento.clear();
-//		Collection<String> fatosExecucaoAntigos = new ArrayList<String>(this.fatosExecucao);
-//		this.fatosExecucao.clear();
-//
-//		// Cria a nova máquina de inferência
-//		prolog = new InferenceMachine();
-//
-//		// Constroi as clausulas de configuração das bases externas
-//		Collection<String> clausulas = new ArrayList<String>();
-//		for (int i = 0; i < predicadosMapeamento.length; i++)
-//			clausulas.add("extern(" + predicadosMapeamento[i] + ", 'br.ufrj.cos.lens.odyssey.tools.charon.BaseClausulas', '" + BaseClausulas.MAPEAMENTO + "')");
-//		for (int i = 0; i < predicadosExecucao.length; i++)
-//			clausulas.add("extern(" + predicadosExecucao[i] + ", 'br.ufrj.cos.lens.odyssey.tools.charon.BaseClausulas', '" + BaseClausulas.EXECUCAO + "')");
-//		for (int i = 0; i < predicadosAgentes.length; i++)
-//			clausulas.add("extern(" + predicadosAgentes[i] + ", 'br.ufrj.cos.lens.odyssey.tools.charon.BaseClausulas', '" + BaseClausulas.AGENTES + "')");
-//
-//		// Cria as bases externas com esta base de conhecimento com responsável
-//		BaseClausulas.setBaseConhecimentoResponsavel(this);
-//		getProlog().getBooleanAnswer(clausulas);
-//
-//		// Reinsere os fatos antigos
-//		getProlog().addClauses(fatosMapeamentoAntigos);
-//		getProlog().addClauses(fatosExecucaoAntigos);
-//	}
-
-	/**
-	 * Regera a base de conhecimento para refletir um novo mapeamento do processo
-	 */
-	public synchronized void update() throws CharonException {
-		// Esvazia o mapeamento antigo
-		fatosMapeamento.clear();
-
-		// recria o mapeamento e insere na base
-//		initializeInferenceMachine();
-		getInferenceMachine().addClauses(Mapper.getInstance().map(spemPackage, rootProcess));
-
-		// ressimula o processo mapeado
-		Agent agenteSimulacao = AgentManager.getInstance().getAgent(AgenteSimulacao.class);
-		new Dispatcher(this, agenteSimulacao, this);
+		return state;
 	}
 
 	/**
-	 * Conecta um agente à base
+	 * Connects an agent to this knowledge base
 	 */
-	public synchronized void conecta(Agent agente) {
-		while (this.agente != null)
+	public synchronized void connect(Agent agent) {
+		while (this.agent != null)
 			try {
+				// Waits the other agent to finish its work
 				wait();
-			} catch (Exception ex) {
-				System.out.println(ex);
+			} catch (InterruptedException e) {
+				Logger.global.log(Level.WARNING, "Could not synchronize the connections of agents to the knowledge base", e);
+				return;
 			}
 
-		this.agente = agente;
-
-		getInferenceMachine().addClauses(agente.getRegras());
+		this.agent = agent;
+		
+		// Adds the agent's rules into the knowledge base
+		inferenceMachine.addClauses(agent.getRules());
 	}
 
 	/**
-	 * Desconecta o agente atualmente conectado na base
+	 * Disconnect the current connected agent from this knowledge base
 	 */
-	public synchronized void desconecta() {
-		if (this.agente != null) {
-			removeClausulasAgentes();
-
-			// Notifica os escutadores do agente atual que ele está sendo removido
-			Iterator iterator = agente.getEscutadores();
-			while (iterator.hasNext()) {
-				Agent agenteAlvo = (Agent)iterator.next();
-				new Dispatcher(agente, agenteAlvo, this);
-			}
-
-			this.agente = null;
+	public synchronized void disconnect() {
+		if (agent != null) {
+			// Removes the agent's rules from the knowledge base
+			inferenceMachine.removeClauses(agent.getRules());
+			agent = null;
 		}
 
-		// Libera outras conexões
+		// Lets other agents work
 		notify();
 	}
 
@@ -240,7 +191,7 @@ public class KnowledgeBase implements Serializable {
 	 * @return Nome do processo raiz
 	 */
 	public synchronized String getProcessoRaiz() {
-		Map resposta = getInferenceMachine().getSolution("processoRaiz(P),nome(P,N)");
+		Map resposta = inferenceMachine.getSolution("processoRaiz(P),nome(P,N)");
 		if (resposta != null) {
 			String nomeProcesso = (String)resposta.get("N");
 			return nomeProcesso.substring(1, (nomeProcesso.length() - 1));
@@ -256,7 +207,7 @@ public class KnowledgeBase implements Serializable {
 	public synchronized List getPapeis() {
 		List papeis = new ArrayList();
 		Set encontrados = new HashSet();
-		Iterator respostas = getInferenceMachine().getAllSolutions("papel(_,P)").iterator();
+		Iterator respostas = inferenceMachine.getAllSolutions("papel(_,P)").iterator();
 		while (respostas.hasNext()) {
 			Map resposta = (Map)respostas.next();
 			String papel = (String)resposta.get("P");
@@ -280,7 +231,7 @@ public class KnowledgeBase implements Serializable {
 		List cores = new ArrayList();
 
 		// Obtem o tempo de simulação
-		Map resposta = getInferenceMachine().getSolution("simulado(" + idSimulado + ", T)");
+		Map resposta = inferenceMachine.getSolution("simulado(" + idSimulado + ", T)");
 		double tempoSimulacao;
 		if (resposta != null) {
 			String tempo = (String)resposta.get("T");
@@ -303,7 +254,7 @@ public class KnowledgeBase implements Serializable {
 		path.add("processo(raiz)");
 
 		// Monta a lista de cores em função do tempo de simulação e dos tempos de execuçao
-		Iterator respostas = getInferenceMachine().getAllSolutions("executado(" + elemento + ", P, Ti, Tf), P = " + path + ", T is (Tf - Ti)").iterator();
+		Iterator respostas = inferenceMachine.getAllSolutions("executado(" + elemento + ", P, Ti, Tf), P = " + path + ", T is (Tf - Ti)").iterator();
 		while (respostas.hasNext()) {
 			resposta = (Map)respostas.next();
 			long tempoExecucao;
@@ -322,7 +273,7 @@ public class KnowledgeBase implements Serializable {
 
 		// Verifica se o processo está em execução, adicionando a cor amarela
 		// Obtem o tempo de simulação
-		if (getInferenceMachine().isSolvable("executando(" + elemento + ", P, _), P = " + path))
+		if (inferenceMachine.isSolvable("executando(" + elemento + ", P, _), P = " + path))
 			cores.add(Color.yellow);
 
 		// Se nenhuma cor foi inserida é porque o elemento nunca entrou em execução
@@ -333,32 +284,38 @@ public class KnowledgeBase implements Serializable {
 		return cores;
 	}
 
-	// Métodos para a manutenção das listas de clausulas
-	// Devem ser usados somente pela BaseClausulas
-
 	/**
-	 * Fornece a lista de fatos do tipo Mapeamento
+	 * @see br.ufrj.cos.lens.odyssey.tools.inference.InferenceMachine#getAllSolutions(java.lang.String)
 	 */
-	public Set getFatosMapeamento() {
-		return fatosMapeamento;
+	public List<Map<String, Object>> getAllSolutions(String goal) {
+		return inferenceMachine.getAllSolutions(goal);
 	}
 
 	/**
-	 * Fornece a lista de fatos do tipo Execucao
+	 * @see br.ufrj.cos.lens.odyssey.tools.inference.InferenceMachine#isSolvable(java.lang.String)
 	 */
-	public Set getFatosExecucao() {
-		return fatosExecucao;
+	public boolean isSolvable(String goal) {
+		return inferenceMachine.isSolvable(goal);
 	}
-	
+
 	/**
-	 * Remove as clausulas de agentes que estão armazenadas nas bases de clausulas
-	 * vinculadas com uma determinada base de conhecimento
+	 * @see br.ufrj.cos.lens.odyssey.tools.inference.InferenceMachine#addClauses(java.util.Collection)
 	 */
-	public static void removeClausulasAgentes() {
-//		for (int i = 0; i < basesClausulas.size(); i++) {
-//			BaseClausulas baseClausulas = (BaseClausulas)basesClausulas.get(i);
-//			if ((baseClausulas.isResponsavel(base)) && (baseClausulas.isTipo(AGENTES)))
-//				baseClausulas.clear();
-//		}
+	public void addClauses(Collection<String> clauses) {
+		inferenceMachine.addClauses(clauses);
+	}
+
+	/**
+	 * Saves the content of the knowledge base
+	 * (useful for debug)
+	 */
+	public void save(String fileName) {
+		try {
+			FileWriter fileWriter = new FileWriter(fileName);
+			fileWriter.write(inferenceMachine.getContent());
+			fileWriter.close();
+		} catch (IOException e) {
+			Logger.global.log(Level.WARNING, "Could not save the knowledge base", e);
+		}
 	}
 }

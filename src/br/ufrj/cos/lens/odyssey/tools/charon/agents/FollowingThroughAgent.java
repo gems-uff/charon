@@ -2,165 +2,118 @@ package br.ufrj.cos.lens.odyssey.tools.charon.agents;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 
-import javax.swing.JOptionPane;
-
 import br.ufrj.cos.lens.odyssey.tools.charon.KnowledgeBase;
-import br.ufrj.cos.lens.odyssey.tools.charon.CharonFacade;
+import br.ufrj.cos.lens.odyssey.tools.charon.entities.CharonActivity;
+import br.ufrj.cos.lens.odyssey.tools.charon.entities.CharonDecision;
 
 /**
- * Agente responsável por acompanhar a execução do processo fazendo interface com
- * o usuário
+ * This agent is responsible for following through the process
  *
  * @author Leo Murta
  * @version 1.0, 16/12/2001
  */
 public class FollowingThroughAgent extends Agent {
 	/**
-	 * Lista de regras do agente
+	 * Agent's rules
 	 */
-	private List<String> regras = null;
+	private Collection<String> rules = null;
 
 	/**
-	 * Constroi o agente de acompanhamento
+	 * Constructs the agent
 	 */
 	public FollowingThroughAgent() {
-		super(5000);
+		// TODO: May code a proactive behavior notifying an external component to send e-mail describing pending processes and decisions.
+		super();
 	}
 
 	/**
-	 * Exibe a jenela de acompanhamento. Reação à seleção de opção de menu por
-	 * parte do usuário.
-	 *
-	 * @param origem Origem do evento
-	 * @param base Base que está relacionada com o evanto
+	 * Provides the pending activities for a given collection of roles 
 	 */
-	public void executaReativo(Object origem, KnowledgeBase base) {
-		switch (base.getState()) {
-			case KnowledgeBase.BASE_FINALIZADA :
-				JOptionPane.showMessageDialog(null, "The process has been finished.", "Process Accompaniment Agent", JOptionPane.INFORMATION_MESSAGE);
-				return;
+	public Collection<CharonActivity> getPendingActivities(KnowledgeBase knowledgeBase, Collection<String> roles) {
+		Collection<CharonActivity> result = new ArrayList<CharonActivity>();		
+		connect(knowledgeBase);
 
-			case KnowledgeBase.BASE_SIMULANDO :
-				JOptionPane.showMessageDialog(null, "The process is being simulated. Please, wait a moment and try again.", "Process Accompaniment Agent", JOptionPane.INFORMATION_MESSAGE);
-				return;
-
-			case KnowledgeBase.BASE_PENDENTE :
-				JOptionPane.showMessageDialog(null, "The process is waiting for its initialization. Please, wait a moment and try again.", "Process Accompaniment Agent", JOptionPane.INFORMATION_MESSAGE);
-				return;
-
-			case KnowledgeBase.BASE_ERRO :
-				JOptionPane.showMessageDialog(null, "The process has some errors. Please, correct them and reinstantiate it.", "Process Accompaniment Agent", JOptionPane.INFORMATION_MESSAGE);
-				return;
+		for (Map<String,Object> solution : knowledgeBase.getAllSolutions("processoPendente('" + roles + "', IdP, C).")) {
+			String activityID = (String)solution.get("IdP");
+			String context = solution.get("C").toString();
+			result.add(new CharonActivity(activityID, context));
 		}
-
-		setProativo(false);
-		conecta(base);
-
-		// Pega o login do usuário corrente
-//		String usuario = GerenteUsuario.getInstancia().getUsuarioLogado().getLogin();
-		String usuario = "test"; // TODO: Remover
 		
-		Iterator respostas = null;
+		disconnect();		
+		return result;
+	}
+	
+	/**
+	 * Provides the pending decisions for a given collection of roles 
+	 */
+	public Collection<CharonDecision> getPendingDecisions(KnowledgeBase knowledgeBase, Collection<String> roles) {
+		Collection<CharonDecision> result = new ArrayList<CharonDecision>();		
+		connect(knowledgeBase);
 
-		// Constroi a lista de processos pendentes
-		List processos = new ArrayList();
-//		respostas = base.getProlog().getRespostas("processoPendente('" + usuario + "', IdP, C)");
-		while (respostas.hasNext()) {
-			Map resposta = (Map)respostas.next();
-
-			try {
-				long id = Long.parseLong((String)resposta.get("IdP"));
-				String contexto = resposta.get("C").toString();
-				Processo processo = new Processo(id, contexto);
-				processos.add(processo);
-			} catch (Exception ex) {
-				ex.printStackTrace();
-			}
+		for (Map<String,Object> solution : knowledgeBase.getAllSolutions("decisaoPendente('" + roles + "', IdD, C).")) {
+			String decisionID = (String)solution.get("IdD");
+			String context = solution.get("C").toString();
+			result.add(new CharonDecision(decisionID, context));
 		}
+		
+		disconnect();
+		return result;
+	}	
 
-		// Constroi a lista de decisões pendentes
-		List decisoes = new ArrayList();
-//		respostas = base.getProlog().getRespostas("decisaoPendente('" + usuario + "', IdD, C, Rs)");
-		while (respostas.hasNext()) {
-			Map resposta = (Map)respostas.next();
-
-			try {
-				long id = Long.parseLong((String)resposta.get("IdD"));
-				String contexto = resposta.get("C").toString();
-				List respostasPossiveis = (List)resposta.get("Rs");
-				Decisao decisao = new Decisao(id, contexto, respostasPossiveis);
-				decisoes.add(decisao);
-			} catch (Exception ex) {
-				ex.printStackTrace();
-			}
+	/**
+	 * Finish some activities in the name of a specific user
+	 */
+	public void finishActivities(String user, KnowledgeBase knowledgeBase, Collection<CharonActivity> activities) {
+		connect(knowledgeBase);
+		long currentTime = System.currentTimeMillis() / 1000;
+		
+		Collection<String> clauses = new ArrayList<String>();
+		for (CharonActivity activity : activities) {
+			clauses.add("finalizado('" + activity.getId() + "', " + activity.getContext() + ", " + currentTime + ", '" + user + "')");
 		}
-
-//		JanelaAcompanhamento janela = new JanelaAcompanhamento(this, processos, decisoes, GerenteProcesso.getInstancia().getProfile(usuario).getOpcaoAparecimento());
-
-		// Pega o tempo atual
-		long tempo = System.currentTimeMillis() / 1000;
-
-		List<String> prolog = new ArrayList<String>();
-
-//		Iterator processos2 = janela.getProcessosFinalizados();
-//		while (processos2.hasNext()) {
-//			Processo processo = (Processo)processos2.next();
-//			prolog.add("finalizado(" + processo.getId() + ", " + processo.getContexto() + ", " + tempo + ", '" + usuario + "')");
-//		}
-
-//		Iterator decisoes2 = janela.getDecisoesTomadas();
-//		while (decisoes2.hasNext()) {
-//			Decisao decisao = (Decisao)decisoes2.next();
-//			prolog.add("respondido(" + decisao.getId() + ", " + decisao.getContexto() + ", " + decisao.getResposta() + ", " + tempo + ", '" + usuario + "')");
-//		}
-
-		getBase().getInferenceMachine().addClauses(prolog);
-
-//		GerenteProcesso.getInstancia().getProfile(usuario).setOpcaoAparecimento(janela.getOpcaoAparecimento());
-
-		setProativo(true);
-		desconecta();
+		knowledgeBase.addClauses(clauses);
+		
+		disconnect();
 	}
 
 	/**
-	 * Verifica se deve exibir a janela de acompanhamento segundo as opções do
-	 * usuário
+	 * Take some decisions in the name of a specific user
 	 */
-	public void executaProativo() {
+	public void makeDecisions(String user, KnowledgeBase knowledgeBase, Collection<CharonDecision> decisions) {
+		connect(knowledgeBase);
 
-		// TODO: Definir comportamento proativo 
-		//		// Pega o login do usuário corrente
-////		String usuario = GerenteUsuario.getInstancia().getUsuarioLogado().getLogin();
-//		String usuario = "test";
-//		
-//		KnowledgeBase base = CharonFacade.getInstance().getBaseUsuario();
-//
-//		if ((base != null) && (CharonFacade.getInstance().getProfile(usuario).mostraAgora())) {
-//			setProativo(false);
-//			new Disparador(this, this, CharonFacade.getInstance().getBaseUsuario());
-//		}
+		long currentTime = System.currentTimeMillis() / 1000;
+		
+		Collection<String> clauses = new ArrayList<String>();
+		for (CharonDecision decision : decisions) {
+			for (String selectionId : decision.getSelectionIds()) {
+				clauses.add("respondido('" + decision.getId() + "', " + decision.getContext() + ", '" + selectionId + "', " + currentTime + ", '" + user + "')");
+			}
+		}		
+		knowledgeBase.addClauses(clauses);
+		
+		disconnect();
 	}
-
+	
 	/**
-	 * Fornece a lista de regras existentes no agente
+	 * @see br.ufrj.cos.lens.odyssey.tools.charon.agents.Agent#getRules()
 	 */
-	public Collection<String> getRegras() {
-		if (regras == null) {
-			regras = new ArrayList<String>();
+	@Override
+	public Collection<String> getRules() {
+		if (rules == null) {
+			rules = new ArrayList<String>();
 
-			regras.add("(processoPendente(U, IdP, C) :- " + "findall(PU, usuario(U,PU), PUs), " + "!, " + "executando(processo(IdP), C, _), " + "classeProcesso(IdP, IdC), " + "processoPrimitivo(IdC), " + "findall(PP, papel(IdC, PP), PPs), " + "intersecao(PUs, PPs))");
+			rules.add("(processoPendente(PU, IdP, C) :- !, executando(processo(IdP), C, _), classeProcesso(IdP, IdC), processoPrimitivo(IdC), findall(PP, papel(IdC, PP), PPs), intersecao(PUs, PPs))");
 
-			regras.add("(decisaoPendente(U, IdD, C, Rs) :- " + "findall(PU, usuario(U,PU), PUs), " + "!, " + "executando(decisao(IdD), C, _), " + "findall(PD, papel(IdD, PD), PDs), " + "intersecao(PUs, PDs), " + "findall(R, resposta(IdD, R, _), Rs))");
+			rules.add("(decisaoPendente(PU, IdD, C) :- !, executando(decisao(IdD), C, _), findall(PD, papel(IdD, PD), PDs), intersecao(PUs, PDs))");
 
-			regras.add("(intersecao([X|_], L2) :- " + "member(X, L2), " + "!)");
-			regras.add("(intersecao([_|L1], L2) :- " + "intersecao(L1, L2), " + "!)");
+			rules.add("(intersecao([X|_], L2) :- " + "member(X, L2), " + "!)");
+			rules.add("(intersecao([_|L1], L2) :- " + "intersecao(L1, L2), " + "!)");
 
 		}
 
-		return regras;
+		return rules;
 	}
 }

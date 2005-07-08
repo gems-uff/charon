@@ -152,6 +152,13 @@ public class InferenceMachine {
 		
 		return solutions;
 	}
+	
+	/**
+	 * Provides the content of the knowledge base in a textual format (read only mode)
+	 */
+	public String getContent() {
+		return inferenceMachine.getTheory().toString();
+	}
 
 	/**
 	 * Provides a Map with the next answer. This Map has the name of each variable
@@ -162,7 +169,7 @@ public class InferenceMachine {
 	 * 		   case of NO possible solution. A empty Map is returned in the case of YES 
 	 * 		   without variables matching.
 	 */
-	public synchronized Map<String,Object> translate(SolveInfo solveInfo) {
+	private synchronized Map<String,Object> translate(SolveInfo solveInfo) {
 		try {
 			Map<String,Object> result = new HashMap<String,Object>();
 			

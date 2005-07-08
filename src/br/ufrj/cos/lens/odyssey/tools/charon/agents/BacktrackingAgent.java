@@ -22,50 +22,42 @@ public class BacktrackingAgent extends Agent {
 	private List<String> regras = null;
 
 	public BacktrackingAgent() {
-		super(0);
-		setProativo(false);
+		super();
 	}
 
 	/**
 	 * Exibe a jenela de retrocesso. Reação à seleção de opção de menu por
 	 * parte do usuário.
-	 *
-	 * @param origem Origem do evento
-	 * @param base Base que está relacionada com o evanto
+	 * @param knowledgeBase Base que está relacionada com o evanto
 	 */
-	public void executaReativo(Object origem, KnowledgeBase base) {
-		switch (base.getState()) {
-			case KnowledgeBase.BASE_SIMULANDO :
+	public void reactiveExecution(KnowledgeBase knowledgeBase) {
+		switch (knowledgeBase.getState()) {
+			case KnowledgeBase.SIMULATING :
 				JOptionPane.showMessageDialog(null, "The process is being simulated. Please, wait a moment and try again.", "Process Backtracking Agent", JOptionPane.INFORMATION_MESSAGE);
 				return;
 
-			case KnowledgeBase.BASE_PENDENTE :
+			case KnowledgeBase.PENDING :
 				JOptionPane.showMessageDialog(null, "The process is waiting for its initialization. Please, wait a moment and try again.", "Process Backtracking Agent", JOptionPane.INFORMATION_MESSAGE);
 				return;
 
-			case KnowledgeBase.BASE_ERRO :
+			case KnowledgeBase.CORRUPTED :
 				JOptionPane.showMessageDialog(null, "The process has some errors. Please, correct them and reinstantiate it.", "Process Backtracking Agent", JOptionPane.INFORMATION_MESSAGE);
 				return;
 		}
-		conecta(base);
+		connect(knowledgeBase);
 
 //		getBase().getProlog().getRespostaBooleana("desloca(" + janela.getTempo() + ")");
 
-		if ((!getBase().getInferenceMachine().isSolvable("executando(processo(raiz), [], _)")) && (!getBase().getInferenceMachine().isSolvable("executado(processo(raiz), [], _, _)")))
-			getBase().setEstado(KnowledgeBase.BASE_PENDENTE);
+		if ((!knowledgeBase.isSolvable("executando(processo(raiz), [], _).")) && (!knowledgeBase.isSolvable("executado(processo(raiz), [], _, _).")))
+			knowledgeBase.setState(KnowledgeBase.PENDING);
 
-		desconecta();
+		disconnect();
 	}
-
-	/**
-	 * Não faz nada
-	 */
-	public synchronized void executaProativo() {}
 
 	/**
 	 * Fornece a lista de regras existentes no agente
 	 */
-	public Collection<String> getRegras() {
+	public Collection<String> getRules() {
 		if (regras == null) {
 			regras = new ArrayList<String>();
 
@@ -73,7 +65,7 @@ public class BacktrackingAgent extends Agent {
 			regras.add("(desloca(T) :- " + "executado(E, C, Ti, Tf), " + "Ti > T, " + "retract(executado(E, C, Ti, Tf)), " + "!, " + "desloca(T))");
 			regras.add("(desloca(T) :- " + "finalizado(IdP, C, Tf, U), " + "Tf > T, " + "retract(finalizado(IdP, C, Tf, U)), " + "!, " + "desloca(T))");
 			regras.add("(desloca(T) :- " + "respondido(IdD, C, R, Tr, U), " + "Tr > T, " + "retract(respondido(IdD, C, R, Tr, U)), " + "!, " + "desloca(T))");
-			regras.add("(desloca(T) :- " + "executado(E, C, Ti, Tf), " + "Ti <= T, " + "Tf > T, " + "retract(executado(E, C, Ti, Tf)), " + "assertz(executando(E, C, Ti)), " + "!, " + "desloca(T))");
+			regras.add("(desloca(T) :- " + "executado(E, C, Ti, Tf), " + "Ti =< T, " + "Tf > T, " + "retract(executado(E, C, Ti, Tf)), " + "assertz(executando(E, C, Ti)), " + "!, " + "desloca(T))");
 		}
 
 		return regras;

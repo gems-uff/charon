@@ -1,6 +1,5 @@
-package br.ufrj.cos.lens.odyssey.tools.charon;
+package br.ufrj.cos.lens.odyssey.tools.charon.agents;
 
-import java.io.Serializable;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -24,41 +23,26 @@ import datatypes.PseudoStateKindEnum;
  * @author Leo Murta
  * @version 1.0, 30/06/2005
  */
-public class Mapper implements Serializable {
-
-	/**
-	 * Singleton instance
-	 */
-	private static Mapper instance = null;
+public class MappingAgent extends Agent {
 
 	/**
 	 * Singleton constructor
 	 */
-	private Mapper() {}
-
-	/**
-	 * Provides the singleton instance
-	 */
-	public static synchronized Mapper getInstance() {
-		if (instance  == null)
-			instance = new Mapper();
-		return instance;
+	public MappingAgent() {
+		super();
 	}
-	
+
 	/**
 	 * Map a SPEM process into prolog facts.
 	 * 
 	 * @param spemPackage Package containing all SPEM processes.
 	 * @param rootProcess Root Process.
 	 */
-	public Collection<String> map(SpemPackage spemPackage, WorkDefinition rootProcess) {
+	public Collection<String> map(SpemPackage spemPackage) {
 		Collection<String> facts = new HashSet<String>();
 		
 		// Run the map recursivelly
 		map(spemPackage, facts);
-
-		// Set the root process 
-		facts.add("processoRaiz('" + rootProcess.refMofId() + "')");
 		
 		return facts;
 	}
@@ -136,7 +120,7 @@ public class Mapper implements Serializable {
 		} else if (stateVertex.refIsInstanceOf(spemPackage.getStateMachines().getSimpleState().refMetaObject(), true)) {
 			result = map((SimpleState)stateVertex, facts);
 		} else if (stateVertex.refIsInstanceOf(spemPackage.getStateMachines().getFinalState().refMetaObject(), true)) {
-			result = map((FinalState)stateVertex);
+			result = map((FinalState)stateVertex, spemPackage);
 		} else {
 			throw new RuntimeException("Undetected type of StateVertex object: " + stateVertex.getName());
 		}
@@ -161,6 +145,14 @@ public class Mapper implements Serializable {
 			result = "sincronismo('" + pseudoState.refMofId() + "')";
 		} else if (PseudoStateKindEnum.PK_JUNCTION.equals(pseudoState.getKind())) {
 			facts.add("papel('" + pseudoState.refMofId() + "','" + workDefinition.getPerformer().refMofId() + "')");
+			
+			Iterator i = pseudoState.getOutgoing().iterator();
+			while (i.hasNext()) {
+				Transition transition = (Transition) i.next();
+				StateVertex stateVertex = transition.getTarget();
+				facts.add("resposta('" + pseudoState.refMofId() + "','" + stateVertex.refMofId() + "'," + map(stateVertex, spemPackage, facts) + ")");
+			}
+			
 			result = "decisao('" + pseudoState.refMofId() + "')";
 		} else {
 			throw new RuntimeException("Undetected type of PseudoState object: " + pseudoState.getName());
@@ -184,7 +176,10 @@ public class Mapper implements Serializable {
 	/**
 	 * Maps a Final State into prolog facts.
 	 */
-	private String map(FinalState finalState) {
-		return "termino";
+	private String map(FinalState finalState, SpemPackage spemPackage) {
+		StateMachine stateMachine = spemPackage.getStateMachines().getATopStateMachine().getStateMachine(finalState.getContainer());
+		WorkDefinition workDefinition = (WorkDefinition) spemPackage.getStateMachines().getABehaviorContext().getContext(stateMachine);
+
+		return "termino('" + workDefinition.refMofId() + "')";
 	}
 }
