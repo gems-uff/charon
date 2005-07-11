@@ -8,7 +8,6 @@ import java.util.Iterator;
 import org.netbeans.api.mdr.MDRepository;
 
 import statemachines.PseudoState;
-import statemachines.StateVertex;
 import statemachines.Transition;
 
 /**
@@ -19,26 +18,18 @@ import statemachines.Transition;
  */
 public class CharonDecision extends CharonElement {
 	/**
-	 * Collection of the ID of the selections (decisions made)
+	 * Collection of the selected options (answers) of this decision
 	 */
-	Collection<String> selectionIds;
-
+	Collection<String> selectedOptions;
+	
 	/**
 	 * Constructs the decision
 	 */
 	public CharonDecision(String id, String context) {
 		super(id, context);
-		selectionIds = new ArrayList<String>();
+		selectedOptions = new ArrayList<String>();
 	}
 
-	/**
-	 * Adds a selection to the decision. A selection is an option chosen by the
-	 * user to "answer" this decision.
-	 */
-	public void addSpemSelection(StateVertex selection) {
-		selectionIds.add(selection.refMofId());
-	}
-	
 	/**
 	 * Provides the SPEM Decision that is mapped to this Charon Decision
 	 */
@@ -49,24 +40,31 @@ public class CharonDecision extends CharonElement {
 	/**
 	 * Provides the SPEM Elements that are options to "answer" this decision
 	 */
-	public Collection<StateVertex> getSpemOptions(MDRepository repository) {
-		Collection<StateVertex> result = new ArrayList<StateVertex>();
+	public Collection<String> getOptions(MDRepository repository) {
+		Collection<String> options = new ArrayList<String>();
 
 		PseudoState decision = getSpemDecision(repository);
 		Iterator i = decision.getOutgoing().iterator();
 		while (i.hasNext()) {
 			Transition transition = (Transition) i.next();
-			result.add(transition.getTarget());
+			options.add(transition.getName());
 		}
-
-		return result;
+		
+		return options;
+	}
+	
+	/**
+	 * Selects an option (answers) for this decision
+	 */
+	public void addSelectedOption(String option) {
+		selectedOptions.add(option);
 	}
 	
 	/**
 	 * Provides all selections made by the user to this decision
 	 */
-	public Collection<String> getSelectionIds() {
-		return Collections.unmodifiableCollection(selectionIds);
+	public Collection<String> getSelectedOptions() {
+		return Collections.unmodifiableCollection(selectedOptions);
 	}
 
 	/**

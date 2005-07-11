@@ -35,7 +35,7 @@ public class FollowingThroughAgent extends Agent {
 		Collection<CharonActivity> result = new ArrayList<CharonActivity>();		
 		connect(knowledgeBase);
 
-		for (Map<String,Object> solution : knowledgeBase.getAllSolutions("processoPendente('" + roles + "', IdP, C).")) {
+		for (Map<String,Object> solution : knowledgeBase.getAllSolutions("pendingActivities('" + roles + "', IdP, C).")) {
 			String activityID = (String)solution.get("IdP");
 			String context = solution.get("C").toString();
 			result.add(new CharonActivity(activityID, context));
@@ -52,7 +52,7 @@ public class FollowingThroughAgent extends Agent {
 		Collection<CharonDecision> result = new ArrayList<CharonDecision>();		
 		connect(knowledgeBase);
 
-		for (Map<String,Object> solution : knowledgeBase.getAllSolutions("decisaoPendente('" + roles + "', IdD, C).")) {
+		for (Map<String,Object> solution : knowledgeBase.getAllSolutions("pendingDecisions('" + roles + "', IdD, C).")) {
 			String decisionID = (String)solution.get("IdD");
 			String context = solution.get("C").toString();
 			result.add(new CharonDecision(decisionID, context));
@@ -71,7 +71,7 @@ public class FollowingThroughAgent extends Agent {
 		
 		Collection<String> clauses = new ArrayList<String>();
 		for (CharonActivity activity : activities) {
-			clauses.add("finalizado('" + activity.getId() + "', " + activity.getContext() + ", " + currentTime + ", '" + user + "')");
+			clauses.add("finished('" + activity.getId() + "', " + activity.getContext() + ", " + currentTime + ", '" + user + "')");
 		}
 		knowledgeBase.addClauses(clauses);
 		
@@ -88,8 +88,8 @@ public class FollowingThroughAgent extends Agent {
 		
 		Collection<String> clauses = new ArrayList<String>();
 		for (CharonDecision decision : decisions) {
-			for (String selectionId : decision.getSelectionIds()) {
-				clauses.add("respondido('" + decision.getId() + "', " + decision.getContext() + ", '" + selectionId + "', " + currentTime + ", '" + user + "')");
+			for (String selectedOption : decision.getSelectedOptions()) {
+				clauses.add("selected('" + decision.getId() + "', " + decision.getContext() + ", '" + selectedOption + "', " + currentTime + ", '" + user + "')");
 			}
 		}		
 		knowledgeBase.addClauses(clauses);
@@ -105,12 +105,12 @@ public class FollowingThroughAgent extends Agent {
 		if (rules == null) {
 			rules = new ArrayList<String>();
 
-			rules.add("(processoPendente(PU, IdP, C) :- !, executando(processo(IdP), C, _), classeProcesso(IdP, IdC), processoPrimitivo(IdC), findall(PP, papel(IdC, PP), PPs), intersecao(PUs, PPs))");
+			rules.add("(pendingActivities(PU, IdP, C) :- !, executing(activity(IdP), C, _), type(IdP, IdC), findall(PP, role(IdC, PP), PPs), intersection(PUs, PPs))");
 
-			rules.add("(decisaoPendente(PU, IdD, C) :- !, executando(decisao(IdD), C, _), findall(PD, papel(IdD, PD), PDs), intersecao(PUs, PDs))");
+			rules.add("(pendingDecisions(PU, IdD, C) :- !, executing(decision(IdD), C, _), findall(PD, role(IdD, PD), PDs), intersection(PUs, PDs))");
 
-			rules.add("(intersecao([X|_], L2) :- " + "member(X, L2), " + "!)");
-			rules.add("(intersecao([_|L1], L2) :- " + "intersecao(L1, L2), " + "!)");
+			rules.add("(intersection([X|_], L2) :- " + "member(X, L2), " + "!)");
+			rules.add("(intersection([_|L1], L2) :- " + "intersection(L1, L2), " + "!)");
 
 		}
 

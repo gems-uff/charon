@@ -48,9 +48,6 @@ public class BacktrackingAgent extends Agent {
 
 //		getBase().getProlog().getRespostaBooleana("desloca(" + janela.getTempo() + ")");
 
-		if ((!knowledgeBase.isSolvable("executando(processo(raiz), [], _).")) && (!knowledgeBase.isSolvable("executado(processo(raiz), [], _, _).")))
-			knowledgeBase.setState(KnowledgeBase.PENDING);
-
 		disconnect();
 	}
 
@@ -61,11 +58,11 @@ public class BacktrackingAgent extends Agent {
 		if (regras == null) {
 			regras = new ArrayList<String>();
 
-			regras.add("(desloca(T) :- " + "executando(E, C, Ti), " + "Ti > T, " + "retract(executando(E, C, Ti)), " + "!, " + "desloca(T))");
-			regras.add("(desloca(T) :- " + "executado(E, C, Ti, Tf), " + "Ti > T, " + "retract(executado(E, C, Ti, Tf)), " + "!, " + "desloca(T))");
-			regras.add("(desloca(T) :- " + "finalizado(IdP, C, Tf, U), " + "Tf > T, " + "retract(finalizado(IdP, C, Tf, U)), " + "!, " + "desloca(T))");
-			regras.add("(desloca(T) :- " + "respondido(IdD, C, R, Tr, U), " + "Tr > T, " + "retract(respondido(IdD, C, R, Tr, U)), " + "!, " + "desloca(T))");
-			regras.add("(desloca(T) :- " + "executado(E, C, Ti, Tf), " + "Ti =< T, " + "Tf > T, " + "retract(executado(E, C, Ti, Tf)), " + "assertz(executando(E, C, Ti)), " + "!, " + "desloca(T))");
+			regras.add("(backtrack(T) :- executing(E, C, Ti), Ti > T, retract(executing(E, C, Ti)), !, backtrack(T))");
+			regras.add("(backtrack(T) :- executed(E, C, Ti, Tf), Ti > T, retract(executed(E, C, Ti, Tf)), !, backtrack(T))");
+			regras.add("(backtrack(T) :- finished(IdP, C, Tf, U), Tf > T, retract(finished(IdP, C, Tf, U)), !, backtrack(T))");
+			regras.add("(backtrack(T) :- selected(IdD, C, R, Tr, U), Tr > T, retract(selected(IdD, C, R, Tr, U)), !, backtrack(T))");
+			regras.add("(backtrack(T) :- executed(E, C, Ti, Tf), Ti =< T, Tf > T, retract(executed(E, C, Ti, Tf)), assertz(executing(E, C, Ti)), !, backtrack(T))");
 		}
 
 		return regras;

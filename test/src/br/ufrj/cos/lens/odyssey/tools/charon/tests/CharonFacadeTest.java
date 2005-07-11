@@ -19,7 +19,6 @@ import org.netbeans.mdr.NBMDRepositoryImpl;
 import processstructure.WorkDefinition;
 import spem.SpemPackage;
 import statemachines.PseudoState;
-import statemachines.StateVertex;
 import br.ufrj.cos.lens.odyssey.tools.charon.CharonException;
 import br.ufrj.cos.lens.odyssey.tools.charon.CharonFacade;
 import br.ufrj.cos.lens.odyssey.tools.charon.entities.CharonActivity;
@@ -119,7 +118,7 @@ public class CharonFacadeTest extends TestCase {
 		}
 
 		// Finishes these activities
-		wait(2000); // It is here because the prolog machine cannot handle the size of currentTimeMilis. For this reason, we work with seconds.
+		wait(1000); // It is here because the prolog machine cannot handle the size of currentTimeMilis. For this reason, we work with seconds.
 		CharonFacade.getInstance().finishActivities(context, "Test User", pendingActivities);
 
 		// List all pending decisions
@@ -129,20 +128,17 @@ public class CharonFacadeTest extends TestCase {
 			System.out.println("Decision: " + charonDecision.getId());
 			
 			// Make a decision (Activity)
-			for (StateVertex stateVertex : charonDecision.getSpemOptions(repository)) {
-				if ("Activity".equals(stateVertex.getName())) {
-					charonDecision.addSpemSelection(stateVertex);
-					System.out.println("Selection: " + stateVertex.refMofId());
+			for (String option : charonDecision.getOptions(repository)) {
+				if ("no".equals(option)) {
+					charonDecision.addSelectedOption(option);
+					System.out.println("Selection: " + option);
 				}
 			}
 		}
 		
-CharonFacade.getInstance().save(context, "before.txt");						
 		// Make the decisions
-		wait(2000);
+		wait(1000);
 		CharonFacade.getInstance().makeDecisions(context, "Test User", pendingDecisions);
-CharonFacade.getInstance().save(context, "after.txt");
-
 		
 		// List all pending activities
 		pendingActivities = CharonFacade.getInstance().getPendingActivities(context, processPerformers);
