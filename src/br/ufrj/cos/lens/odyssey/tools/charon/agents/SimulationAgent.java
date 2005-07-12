@@ -1,43 +1,30 @@
 package br.ufrj.cos.lens.odyssey.tools.charon.agents;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
-import processstructure.Activity;
 import processstructure.WorkDefinition;
-import spem.SpemPackage;
-import statemachines.Transition;
-import sun.security.krb5.internal.ktab.k;
 
-import activitygraphs.ActivityGraph;
-import br.ufrj.cos.lens.odyssey.tools.charon.CharonException;
-import br.ufrj.cos.lens.odyssey.tools.charon.KnowledgeBase;
+import spem.SpemPackage;
 
 /**
- * Agente responsável por executar o processo
+ * This agent is responsible to simulate the process
  *
  * @author Leo Murta
  * @version 1.0, 14/12/2001
  */
 public class SimulationAgent extends Agent {
-	
 	/**
-	 * Available state
+	 * Estado livre
 	 */
-	private static final int AVAILABLE = 1;
+	private static final int LIVRE = 1;
 
 	/**
-	 * Simulating state
+	 * Estado executando reativo
 	 */
-	private static final int RUNNING = 2;
+	private static final int SIMULANDO = 2;
 
 	/**
 	 * Estado executado reativo, mas esperando pelo proativo
@@ -53,127 +40,223 @@ public class SimulationAgent extends Agent {
 	/**
 	 * Estado atual do agente
 	 */
-	private int state = AVAILABLE;
+	private int estado = 1;
 
 	/**
-	 * Agent's rules
+	 * Lista de regras do agente
 	 */
-	private Collection<String> regras = null;
-	
+	private List regras = null;
+
 	/**
 	 * Thread da simulação (null caso não exista simulação em andamento)
 	 */
 	Thread threadSimulacao = null;
 
 	/**
+	 * Lista de erros encontrados na simulação
+	 */
+	Set erros = null;
+
+	/**
 	 * Número de repetições da simulação
 	 */
 	private static final int NUMERO_SIMULACOES = 100;
-	
+
 	/**
-	 * Maximum recursion deep
+	 * Elementos que já foram simulados indexando o seu tempo de simulação
 	 */
-	private static final int MAX_RECURSION = 100;
+	private Map simulados = null;
+
+	/**
+	 * Processos compostos que estão sendo simulados
+	 */
+	private Set simulandos = null;
 
 	/**
 	 * Contador de recursões
 	 */
 	private long contadorRecursoes = 0;
-	
+
 	/**
-	 * Counter of elements under simulation
-	 */
-	private Map<WorkDefinition, Integer> recursionCounters = null;
-	
-	/**
-	 * Constructs the agent without proactive behavior
+	 * Constructs the agent with a 
 	 */
 	public SimulationAgent() {
-		super();
+		super(5000);
+	}
+	
+	/**
+	 * Simulates all Work Definitions of a SPEM package. Goes recursivelly through the
+	 * inner elements.
+	 */
+	public void simulate(SpemPackage spemPackage) {
+		Iterator i = spemPackage.getProcessStructure().getWorkDefinition().refAllOfClass().iterator();
+		while (i.hasNext()) {
+			simulates((WorkDefinition) i.next(), spemPackage);
+		}
 	}
 
+	/**
+	 * Simulates a work definition
+	 */
+	private void simulates(WorkDefinition workDefinition, SpemPackage spemPackage) {
+		getInitialState(workDefinition, spemPackage);
+		
+	}
+
+	/**
+	 * Provides the initial state of a work definition
+	 */
+	private void getInitialState(WorkDefinition workDefinition, SpemPackage spemPackage) {
+		
+	}
+	
+
 //	/**
-//	 * Simulates the root process recursivelly
+//	 * Simula um processo recursivamente
+//	 *
+//	 * @param origem Não utilizado
+//	 * @param base Base que deverá receber as informações do processo simulado
 //	 */
-//	public synchronized void reactiveExecution(KnowledgeBase knowledgeBase) {
-//		while (state != AVAILABLE) {
+//	public synchronized void executaReativo(Object origem, BaseConhecimento base) {
+//		if (base == null)
+//			return;
+//
+//		while (estado != LIVRE) {
 //			try {
 //				wait();
-//			} catch (Exception e) {
-//				Logger.global.log(Level.WARNING, "Could not synchronize simulation agent", e);
+//			} catch (Exception ex) {
+//				ex.printStackTrace();
 //			}
 //		}
 //
-//		state = RUNNING;
+//		estado = SIMULANDO;
 //
-//		connect(knowledgeBase);
-//		knowledgeBase.setState(KnowledgeBase.SIMULATING);
+//		conecta(base);
+//		base.setEstado(BaseConhecimento.BASE_SIMULANDO);
 //
-//		SpemPackage spemPackage = knowledgeBase.getSpemPackage();
-//		Collection<String> errors = new ArrayList<String>();
-//		recursionCounters = new HashMap<WorkDefinition, Integer>();
+//		// Pega o processo raiz
+//		processoRaiz = base.getMapeador().getProcessoRaiz();
+//
+//		simulados = new HashMap();
+//		simulandos = new HashSet();
+//		erros = new HashSet();
+//
 //		try {
-//			// Simulates all composite processes
-//			Iterator i = spemPackage.getProcessStructure().getWorkDefinition().refAllOfClass().iterator();
-//			while (i.hasNext()) {
-//				simulate((WorkDefinition) i.next(), spemPackage);
+//			simula(processoRaiz);
+//
+//			List prolog = new ArrayList();
+//			Iterator processos = simulados.keySet().iterator();
+//			while (processos.hasNext()) {
+//				NoProcesso processo = (NoProcesso)processos.next();
+//				long id = base.getMapeador().getMapeamento(processo);
+//				double simulacao = ((Double)simulados.get(processo)).doubleValue();
+//
+//				prolog.add("simulado(" + id + ",'" + simulacao + "')");
 //			}
 //
-//			if (errors.isEmpty())
-//				knowledgeBase.setState(KnowledgeBase.PENDING);
+//			base.getProlog().addClausulas(prolog.iterator());
+//
+//			if (erros.isEmpty())
+//				base.setEstado(BaseConhecimento.BASE_PENDENTE);
 //			else
-//				knowledgeBase.setState(KnowledgeBase.CORRUPTED);
-//			
-//			disconnect();
+//				base.setEstado(BaseConhecimento.BASE_ERRO);
+//			desconecta();
 //
-//			state = ESPERANDO;
+//			estado = ESPERANDO;
 //		} catch (CancelaSimulacaoException ex) {
-//			knowledgeBase.setState(KnowledgeBase.CORRUPTED);
-//			disconnect();
-//			state = AVAILABLE;
-//		} finally {
-//			notify();
+//			base.setEstado(BaseConhecimento.BASE_ERRO);
+//			desconecta();
+//			estado = LIVRE;
+//			notifyAll();
 //		}
 //	}
-
+//
 //	/**
-//	 * Simulate a composite process
+//	 * Verifica se a simulação não está em loop infinito
 //	 */
-//	private void simulate(WorkDefinition workDefinition, SpemPackage spemPackage) {
-//		if (workDefinition.refIsInstanceOf(spemPackage.getProcessStructure().getWorkDefinition().refMetaObject(), false)) {
-//			Integer recursionCounter = recursionCounters.get(workDefinition);
-//			if (recursionCounter == null) {
-//				recursionCounter = 0;
-//				recursionCounters.put(workDefinition, recursionCounter);
-//			}
-//			
-//			if (underSimulation.contains(workDefinition)) {
-//				if (++contadorRecursoes >= MAX_RECURSION) {
-//					throw new CharonException("Could not finish simulation: More than " + MAX_RECURSION + " recursive calls to " + workDefinition);
-//				}
+//	public synchronized void executaProativo() {
+//		if (estado == LIVRE)
+//			return;
 //
-//				Iterator i = spemPackage.getStateMachines().getABehaviorContext().getBehavior(workDefinition).iterator();
-//				while (i.hasNext()) {
-//					ActivityGraph activityGraph = (ActivityGraph) i.next();
-//					Iterator j = activityGraph.getTransitions().iterator();
-//					while (j.hasNext()) {
-//						map((Transition)j.next(), spemPackage, facts);
-//					}
-//				}
-//				
-//				simulacao = simulaWorkflow(workDefinition);
-//			} else {
-//				simulandos.add(workDefinition);
+//		setProativo(false);
 //
-//				for (int i = 0; i < NUMERO_SIMULACOES; i++)
-//					simulacao = ((simulacao * i) + simulaWorkflow(workDefinition)) / (i + 1);
+//		int tipoJanela;
+//		if (estado == ESPERANDO)
+//			tipoJanela = JanelaSimulacao.OK;
+//		else
+//			tipoJanela = JanelaSimulacao.TRY + JanelaSimulacao.CANCEL;
 //
-//				simulandos.remove(workDefinition);
-//				simulados.put(workDefinition, new Double(simulacao));
-//			}
-//		}
+//		JanelaSimulacao janela = new JanelaSimulacao(this, processoRaiz, tipoJanela, erros);
+//
+//		janela.toBack();
+//		janela.setVisible(true);
 //	}
-
+//
+//	/**
+//	 * Decide o que fazer após a execução próativa
+//	 */
+//	public synchronized void selecaoJanela(int acao, JanelaSimulacao janela) {
+//		janela.setVisible(false);
+//
+//		switch (acao) {
+//			case JanelaSimulacao.CANCEL :
+//				estado = CANCELANDO;
+//				break;
+//
+//			case JanelaSimulacao.OK :
+//				estado = LIVRE;
+//				break;
+//
+//			case JanelaSimulacao.TRY :
+//				estado = SIMULANDO;
+//				break;
+//		}
+//
+//		setProativo(true);
+//		notifyAll();
+//	}
+//
+//	/**
+//	 * Simula um processo
+//	 */
+//	private double simula(NoProcesso processo) throws CancelaSimulacaoException {
+//		double simulacao = 0;
+//		Double simulacaoExistente = (Double)simulados.get(processo);
+//
+//		if (simulacaoExistente == null) {
+//			if (processo.getTipo().equals(NoProcesso.PRIMITIVO))
+//				simulacao = processo.getTempoSimulacao();
+//			else if (processo.getTipo().equals(NoProcesso.COMPOSTO)) {
+//				if (simulandos.contains(processo)) {
+//					if ((++contadorRecursoes % 1000) == 0) {
+//						try {
+//							if (GerenteProcesso.DEBUG)
+//								System.out.println("Parou por excesso de recursões!");
+//							wait();
+//						} catch (Exception ex) {
+//							ex.printStackTrace();
+//						}
+//						if (estado == CANCELANDO)
+//							throw new CancelaSimulacaoException();
+//					}
+//
+//					simulacao = simulaWorkflow(processo);
+//				} else {
+//					simulandos.add(processo);
+//
+//					for (int i = 0; i < NUMERO_SIMULACOES; i++)
+//						simulacao = ((simulacao * i) + simulaWorkflow(processo)) / (i + 1);
+//
+//					simulandos.remove(processo);
+//					simulados.put(processo, new Double(simulacao));
+//				}
+//			}
+//		} else
+//			simulacao = simulacaoExistente.doubleValue();
+//
+//		return simulacao;
+//	}
+//
 //	/**
 //	 * simula um workflow
 //	 */
@@ -240,7 +323,7 @@ public class SimulationAgent extends Agent {
 //		erros.add("Workflow of the process '" + workflow + "' have no path from start node to finish node.");
 //		return Double.POSITIVE_INFINITY;
 //	}
-
+//
 //	/**
 //	 * Coloca um elemento na lista de sincronismo
 //	 *
@@ -259,7 +342,7 @@ public class SimulationAgent extends Agent {
 //
 //		return sincronizados.containsAll(todosElementos);
 //	}
-
+//
 //	/**
 //	 * Pega os próximos elementos de um determinado elemento do workflow
 //	 */
@@ -277,7 +360,7 @@ public class SimulationAgent extends Agent {
 //
 //		return elementos;
 //	}
-
+//
 //	/**
 //	 * Escolha um proximo elemento de um determinado elemento do workflow
 //	 * aleatoriamente
@@ -309,7 +392,7 @@ public class SimulationAgent extends Agent {
 //
 //		return elementoSorteado;
 //	}
-
+//
 //	/**
 //	 * Pega os elementos anteriores de um determinado elemento do workflow
 //	 */

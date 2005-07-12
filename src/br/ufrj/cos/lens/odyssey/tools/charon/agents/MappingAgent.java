@@ -38,12 +38,11 @@ public class MappingAgent extends Agent {
 	 * inner elements.
 	 * 
 	 * @param spemPackage Package containing all SPEM processes.
-	 * @param rootProcess Root Process.
 	 */
 	public Collection<String> map(SpemPackage spemPackage) throws CharonException {
 		Collection<String> facts = new HashSet<String>();
 		
-		// Process all composite processes
+		// Process all work definitions
 		Iterator i = spemPackage.getProcessStructure().getWorkDefinition().refAllOfType().iterator();
 		while (i.hasNext()) {
 			map((WorkDefinition) i.next(), spemPackage, facts);
