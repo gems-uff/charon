@@ -1,12 +1,23 @@
 package br.ufrj.cos.lens.odyssey.tools.charon.agents;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import actions.CallAction;
+import activitygraphs.ActionState;
+import activitygraphs.ObjectFlowState;
+import br.ufrj.cos.lens.odyssey.tools.charon.CharonException;
+
 import processstructure.WorkDefinition;
 import spem.SpemPackage;
+import statemachines.FinalState;
+import statemachines.PseudoState;
+import statemachines.StateVertex;
+import statemachines.Transition;
 
 
 /**
@@ -88,7 +99,7 @@ public class SimulationAgent extends Agent {
 	 * Simulates all Work Definitions of a SPEM package. Goes recursivelly through the
 	 * inner elements.
 	 */
-	public void simulate(SpemPackage spemPackage) {
+	public void simulate(SpemPackage spemPackage) throws CharonException {
 		Iterator i = spemPackage.getProcessStructure().getWorkDefinition().refAllOfClass().iterator();
 		while (i.hasNext()) {
 			simulates((WorkDefinition) i.next(), spemPackage);
@@ -96,18 +107,77 @@ public class SimulationAgent extends Agent {
 	}
 
 	/**
-	 * Simulates a work definition
+	 * Simulates a work definition (composite process)
 	 */
-	private void simulates(WorkDefinition workDefinition, SpemPackage spemPackage) {
-		getInitialState(workDefinition, spemPackage);
+	private void simulates(WorkDefinition workDefinition, SpemPackage spemPackage) throws CharonException {
+		List<Transition> simulationQueue = new ArrayList<Transition>();
 		
+		Collection<PseudoState> initialStates = getInitialStates(workDefinition, spemPackage);
+		if (initialStates.isEmpty()) {
+			throw new CharonException("No initial state defined for work definition " + workDefinition.getName());
+		} else {
+			for (PseudoState initialState : initialStates) {
+				simulationQueue.addAll(initialState.getOutgoing());
+			}
+		}
+
+		if (simulationQueue.isEmpty()) {
+			throw new CharonException("No transition departing from the initial state of work definition " + workDefinition.getName());
+		}
+
+		boolean finished = false;
+		while (!finished && !simulationQueue.isEmpty()) {
+			Transition transition = simulationQueue.remove(0);
+			StateVertex stateVertex = transition.getTarget();
+
+			if (stateVertex.refIsInstanceOf(spemPackage.getStateMachines().getPseudoState().refMetaObject(), false)) {
+				simulationQueue.addAll(simulate((PseudoState)stateVertex, spemPackage));
+			} else if (stateVertex.refIsInstanceOf(spemPackage.getActivityGraphs().getActionState().refMetaObject(), false)) {
+				ActionState actionState = (ActionState) stateVertex;
+				CallAction callAction = (CallAction)actionState.getEntry();
+				WorkDefinition workDefinition = (WorkDefinition)callAction.getOperation();
+
+				if (workDefinition.refIsInstanceOf(spemPackage.getProcessStructure().getActivity().refMetaObject(), false))
+					return "activity('" + actionState.refMofId() + "')";
+				else if (workDefinition.refIsInstanceOf(spemPackage.getProcessStructure().getWorkDefinition().refMetaObject(), false))
+					return "process('" + actionState.refMofId() + "')";
+				else
+					throw new CharonException("Undetected type of ActionState object: " + actionState.getClass().getName());
+
+				
+				simulationQueue.addAll((ActionState)stateVertex, spemPackage);
+			} else if (stateVertex.refIsInstanceOf(spemPackage.getActivityGraphs().getObjectFlowState().refMetaObject(), false)) {
+				simulationQueue.addAll(stateVertex.getOutgoing());
+			} else if (stateVertex.refIsInstanceOf(spemPackage.getStateMachines().getFinalState().refMetaObject(), false)) {
+				finished = true;
+			} else {
+				throw new CharonException("Undetected type of StateVertex object: " + stateVertex.getClass().getName());
+			}			
+		}
+		
+		if (!finished) {
+			throw new CharonException("Not possible to reach the end of work definition " + workDefinition.getName());
+		}
 	}
 
 	/**
 	 * Provides the initial state of a work definition
 	 */
-	private void getInitialState(WorkDefinition workDefinition, SpemPackage spemPackage) {
+	private Collection<PseudoState> getInitialStates(WorkDefinition workDefinition, SpemPackage spemPackage) {
+		Collection<PseudoState> result = new ArrayList<PseudoState>();
 		
+		return result;
+	}
+	
+	/**
+	 * Simulates a given transition, calling the corresponding "simulate" method for the target state
+	 */
+	private Collection simulate(Transition transition, SpemPackage spemPackage) {
+		Collection result = new ArrayList();
+		
+
+		
+		return result;
 	}
 	
 
