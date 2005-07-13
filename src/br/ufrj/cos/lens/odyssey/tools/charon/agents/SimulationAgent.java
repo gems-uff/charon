@@ -6,8 +6,8 @@ import java.util.Map;
 import java.util.Set;
 
 import processstructure.WorkDefinition;
-
 import spem.SpemPackage;
+
 
 /**
  * This agent is responsible to simulate the process
