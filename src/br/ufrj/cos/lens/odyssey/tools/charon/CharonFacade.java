@@ -11,6 +11,7 @@ import spem.SpemPackage;
 import br.ufrj.cos.lens.odyssey.tools.charon.agents.BacktrackingAgent;
 import br.ufrj.cos.lens.odyssey.tools.charon.agents.EnactmentAgent;
 import br.ufrj.cos.lens.odyssey.tools.charon.agents.FollowingThroughAgent;
+import br.ufrj.cos.lens.odyssey.tools.charon.agents.SimulationAgent;
 import br.ufrj.cos.lens.odyssey.tools.charon.entities.CharonActivity;
 import br.ufrj.cos.lens.odyssey.tools.charon.entities.CharonDecision;
 
@@ -53,8 +54,8 @@ public class CharonFacade {
 	 * @param rootProcess The root process.
 	 */
 	public void addProcess(Object context, SpemPackage spemPackage) throws CharonException {
-		// TODO: Simulates the process (throw exception in case of failure)
-		// AgentManager.getInstance().getAgent(SimulationAgent.class).simulate(spemPackage);
+		// Simulates the process (throw exception in case of failure)
+		AgentManager.getInstance().getAgent(SimulationAgent.class).simulate(spemPackage);
 		
 		if (KnowledgeBaseManager.getInstance().hasKnowledgeBase(context)) {
 			KnowledgeBaseManager.getInstance().updateKnowledgeBase(context, spemPackage);
