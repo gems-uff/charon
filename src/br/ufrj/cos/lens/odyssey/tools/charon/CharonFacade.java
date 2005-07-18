@@ -120,12 +120,11 @@ public class CharonFacade {
 	/**
 	 * Backtracks the process of a given context
 	 */
-	public void backtrack(Object context) throws CharonException {
-		// TODO: Review this code and the Agent code.
+	public void backtrack(Object context, int seconds) throws CharonException {
 		try {
 			KnowledgeBase knowledgeBase = KnowledgeBaseManager.getInstance().getKnowledgeBase(context);
 			BacktrackingAgent backtrackingAgent = AgentManager.getInstance().getAgent(BacktrackingAgent.class);
-			backtrackingAgent.reactiveExecution(knowledgeBase);
+			backtrackingAgent.backtrack(knowledgeBase, seconds);
 		} catch (Exception e) {
 			throw new CharonException("Could not backtrack process of context " + context, e);
 		}

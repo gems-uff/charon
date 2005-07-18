@@ -1,7 +1,5 @@
 package br.ufrj.cos.lens.odyssey.tools.charon;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -62,20 +60,6 @@ public class KnowledgeBaseManager {
 			return base;
 		else
 			throw new CharonException("Could not find a process for context " + context);
-	}
-	
-	/**
-	 * Provides the knowledge base of a given state
-	 */
-	public Collection<KnowledgeBase> getKnowledgeBases(int state) {
-		Collection<KnowledgeBase> result = new ArrayList<KnowledgeBase>();
-
-		for (KnowledgeBase knowledgeBase : knowledgeBases.values()) {
-			if (state == knowledgeBase.getState())
-				result.add(knowledgeBase);
-		}
-
-		return result;
 	}
 	
 	/**
