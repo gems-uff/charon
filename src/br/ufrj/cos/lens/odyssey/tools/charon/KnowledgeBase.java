@@ -15,7 +15,7 @@ import br.ufrj.cos.lens.odyssey.tools.charon.agents.MappingAgent;
 import br.ufrj.cos.lens.odyssey.tools.inference.InferenceMachine;
 
 /**
- * Classe respossável por representar a base de conhecimento de um processo.
+ * This class represents a knowledge base of a process.
  *
  * @author Leonardo Murta
  * @version 1.0, 22/11/2001

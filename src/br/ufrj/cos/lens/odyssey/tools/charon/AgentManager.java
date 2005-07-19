@@ -9,6 +9,10 @@ import br.ufrj.cos.lens.odyssey.tools.charon.agents.EnactmentAgent;
 import br.ufrj.cos.lens.odyssey.tools.charon.agents.MappingAgent;
 import br.ufrj.cos.lens.odyssey.tools.charon.agents.SimulationAgent;
 
+/**
+ * This class is responsible for providing the available agents
+ * @author murta
+ */
 public class AgentManager {
 	
 	/**
