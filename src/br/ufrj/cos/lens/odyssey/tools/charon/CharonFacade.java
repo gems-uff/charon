@@ -69,7 +69,7 @@ public class CharonFacade {
 	 *
 	 * @param context Context where the process will be instantiated.
 	 * @param process The process to be instantiated.
-	 * @return The ID of the instantiated instance. This ID is not a MOFID!
+	 * @return The ID of the instantiated process. This ID is not a MOFID!
 	 */
 	public String instantiateProcess(Object context, WorkDefinition workDefinition) throws CharonException {
 		KnowledgeBase knowledgeBase = KnowledgeBaseManager.getInstance().getKnowledgeBase(context);

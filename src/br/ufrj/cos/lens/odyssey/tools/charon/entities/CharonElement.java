@@ -42,4 +42,24 @@ public class CharonElement {
 	public String getContext() {
 		return context;
 	}
+	
+	/**
+	 * Provides the id of the root process instance. This returned ID is the same ID returned when a process is instantiated.
+	 */
+	public String getProcessInstanceId() {
+		String result = id;
+
+		// Extracts the id from the context (rightmost process defined in the context)
+		int fromIndex = context.lastIndexOf("process");
+		if (fromIndex != -1) {
+			int beginIndex = context.indexOf("('", fromIndex) + 2;
+			int endIndex = context.indexOf("')", fromIndex);
+			
+			if ((beginIndex != -1) && (endIndex != -1)) {
+				result = context.substring(beginIndex, endIndex);
+			}
+		}
+		
+		return result;
+	}
 }
