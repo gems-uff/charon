@@ -39,12 +39,12 @@ public class CharonFacadeTest extends TestCase {
 	/**
 	 * SPEM metamodel
 	 */
-    private static final String SPEM_METAMODEL = "/resource/02-05-06.xml";
+    private static final String SPEM_METAMODEL = "/02-05-06.xml";
     
 	/**
 	 * Test instance of SPEM metamodel
 	 */
-	private static final String SPEM_MODEL = "/resource/input.xmi";
+	private static final String SPEM_MODEL = "/input.xmi";
 	
 	/**
 	 * MDR repository

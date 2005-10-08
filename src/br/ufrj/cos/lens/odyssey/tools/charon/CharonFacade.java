@@ -150,7 +150,7 @@ public class CharonFacade {
 		Collection<String> result = new ArrayList<String>();
 		
 		for (RefBaseObject refBaseObject : refBaseObjects) {
-			result.add(refBaseObject.refMofId());
+			result.add("'" + refBaseObject.refMofId() + "'");
 		}
 		
 		return result;

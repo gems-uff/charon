@@ -35,7 +35,7 @@ public class FollowingThroughAgent extends Agent {
 		Collection<CharonActivity> result = new ArrayList<CharonActivity>();		
 		connect(knowledgeBase);
 
-		for (Map<String,Object> solution : knowledgeBase.getAllSolutions("pendingActivities('" + roles + "', IdP, C).")) {
+		for (Map<String,Object> solution : knowledgeBase.getAllSolutions("pendingActivities(" + roles + ", IdP, C).")) {
 			String activityID = (String)solution.get("IdP");
 			String context = solution.get("C").toString();
 			result.add(new CharonActivity(activityID, context));
@@ -52,7 +52,7 @@ public class FollowingThroughAgent extends Agent {
 		Collection<CharonDecision> result = new ArrayList<CharonDecision>();		
 		connect(knowledgeBase);
 
-		for (Map<String,Object> solution : knowledgeBase.getAllSolutions("pendingDecisions('" + roles + "', IdD, C).")) {
+		for (Map<String,Object> solution : knowledgeBase.getAllSolutions("pendingDecisions(" + roles + ", IdD, C).")) {
 			String decisionID = (String)solution.get("IdD");
 			String context = solution.get("C").toString();
 			result.add(new CharonDecision(decisionID, context));
@@ -105,9 +105,9 @@ public class FollowingThroughAgent extends Agent {
 		if (rules == null) {
 			rules = new ArrayList<String>();
 
-			rules.add("(pendingActivities(PU, IdP, C) :- !, executing(activity(IdP), C, _), type(IdP, IdC), findall(PP, role(IdC, PP), PPs), intersection(PUs, PPs))");
+			rules.add("(pendingActivities(PUs, IdP, C) :- !, executing(activity(IdP), C, _), type(IdP, IdC), findall(PP, role(IdC, PP), PPs), intersection(PUs, PPs))");
 
-			rules.add("(pendingDecisions(PU, IdD, C) :- !, executing(decision(IdD), C, _), findall(PD, role(IdD, PD), PDs), intersection(PUs, PDs))");
+			rules.add("(pendingDecisions(PUs, IdD, C) :- !, executing(decision(IdD), C, _), findall(PD, role(IdD, PD), PDs), intersection(PUs, PDs))");
 
 			rules.add("(intersection([X|_], L2) :- " + "member(X, L2), " + "!)");
 			rules.add("(intersection([_|L1], L2) :- " + "intersection(L1, L2), " + "!)");
