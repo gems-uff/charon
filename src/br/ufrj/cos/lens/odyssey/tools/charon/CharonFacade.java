@@ -2,6 +2,7 @@ package br.ufrj.cos.lens.odyssey.tools.charon;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import javax.jmi.reflect.RefBaseObject;
 
@@ -14,6 +15,7 @@ import br.ufrj.cos.lens.odyssey.tools.charon.agents.FollowingThroughAgent;
 import br.ufrj.cos.lens.odyssey.tools.charon.agents.SimulationAgent;
 import br.ufrj.cos.lens.odyssey.tools.charon.entities.CharonActivity;
 import br.ufrj.cos.lens.odyssey.tools.charon.entities.CharonDecision;
+import br.ufrj.cos.lens.odyssey.tools.charon.entities.CharonElement;
 
 /**
  * This class is responsible for providing access to the Charon process machine
@@ -97,6 +99,15 @@ public class CharonFacade {
 		KnowledgeBase knowledgeBase = KnowledgeBaseManager.getInstance().getKnowledgeBase(context);
 		FollowingThroughAgent followingThroughAgent = AgentManager.getInstance().getAgent(FollowingThroughAgent.class);
 		return followingThroughAgent.getPendingDecisions(knowledgeBase, getIds(processPerformers));
+	}
+	
+	/**
+	 * Defines the people that are performing a collection of activities or decisions
+	 */
+	public void setPerformers(Object context, List<String> performers, Collection<? extends CharonElement> elements) throws CharonException {
+		KnowledgeBase knowledgeBase = KnowledgeBaseManager.getInstance().getKnowledgeBase(context);
+		FollowingThroughAgent followingThroughAgent = AgentManager.getInstance().getAgent(FollowingThroughAgent.class);
+		followingThroughAgent.setPerformers(performers, knowledgeBase, elements);		
 	}
 	
 	/**

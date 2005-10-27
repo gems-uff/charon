@@ -2,11 +2,13 @@ package br.ufrj.cos.lens.odyssey.tools.charon.agents;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 
 import br.ufrj.cos.lens.odyssey.tools.charon.KnowledgeBase;
 import br.ufrj.cos.lens.odyssey.tools.charon.entities.CharonActivity;
 import br.ufrj.cos.lens.odyssey.tools.charon.entities.CharonDecision;
+import br.ufrj.cos.lens.odyssey.tools.charon.entities.CharonElement;
 
 /**
  * This agent is responsible for following through the process
@@ -35,10 +37,11 @@ public class FollowingThroughAgent extends Agent {
 		Collection<CharonActivity> result = new ArrayList<CharonActivity>();		
 		connect(knowledgeBase);
 
-		for (Map<String,Object> solution : knowledgeBase.getAllSolutions("pendingActivities(" + roles + ", IdP, C).")) {
-			String activityID = (String)solution.get("IdP");
+		for (Map<String,Object> solution : knowledgeBase.getAllSolutions("pendingActivities(" + roles + ", IdP, C, Performers).")) {
+			String activityID = (String) solution.get("IdP");
 			String context = solution.get("C").toString();
-			result.add(new CharonActivity(activityID, context));
+			List performers = (List) solution.get("Performers");
+			result.add(new CharonActivity(activityID, context, performers));
 		}
 		
 		disconnect();		
@@ -53,15 +56,29 @@ public class FollowingThroughAgent extends Agent {
 		connect(knowledgeBase);
 
 		for (Map<String,Object> solution : knowledgeBase.getAllSolutions("pendingDecisions(" + roles + ", IdD, C).")) {
-			String decisionID = (String)solution.get("IdD");
+			String decisionID = (String) solution.get("IdD");
 			String context = solution.get("C").toString();
-			result.add(new CharonDecision(decisionID, context));
+			List performers = (List) solution.get("Performers");
+			result.add(new CharonDecision(decisionID, context, performers));
 		}
 		
 		disconnect();
 		return result;
 	}	
 
+	/**
+	 * Defines the people that are performing a collection of activities or decisions
+	 */
+	public void setPerformers(List<String> performers, KnowledgeBase knowledgeBase, Collection<? extends CharonElement> elements) {
+		connect(knowledgeBase);
+		
+		for (CharonElement element : elements) {
+			knowledgeBase.isSolvable("setPerformers(" + performers + ", '" + element.getId() + "', " + element.getContext() + ").");
+		}
+		
+		disconnect();
+	}
+	
 	/**
 	 * Finish some activities in the name of a specific user
 	 */
@@ -104,10 +121,13 @@ public class FollowingThroughAgent extends Agent {
 	public Collection<String> getRules() {
 		if (rules == null) {
 			rules = new ArrayList<String>();
+			
+			rules.add("(setPerformers(NewPerformers, IdA, C) :- executing(activity(IdA), C, Ti, OldPerformers), !, retract(executing(activity(IdA), C, Ti, OldPerformers)), assertz(executing(activity(IdA), C, Ti, NewPerformers)))");
+			rules.add("(setPerformers(NewPerformers, IdD, C) :- !, executing(decision(IdD), C, Ti, OldPerformers), !, retract(executing(decision(IdD), C, Ti, OldPerformers)), assertz(executing(decision(IdD), C, Ti, NewPerformers)))");
 
-			rules.add("(pendingActivities(PUs, IdP, C) :- !, executing(activity(IdP), C, _), type(IdP, IdC), findall(PP, role(IdC, PP), PPs), intersection(PUs, PPs))");
+			rules.add("(pendingActivities(PUs, IdP, C, Performers) :- !, executing(activity(IdP), C, _, Performers), type(IdP, IdC), findall(PP, role(IdC, PP), PPs), intersection(PUs, PPs))");
 
-			rules.add("(pendingDecisions(PUs, IdD, C) :- !, executing(decision(IdD), C, _), findall(PD, role(IdD, PD), PDs), intersection(PUs, PDs))");
+			rules.add("(pendingDecisions(PUs, IdD, C, Performers) :- !, executing(decision(IdD), C, _, Performers), findall(PD, role(IdD, PD), PDs), intersection(PUs, PDs))");
 
 			rules.add("(intersection([X|_], L2) :- " + "member(X, L2), " + "!)");
 			rules.add("(intersection([_|L1], L2) :- " + "intersection(L1, L2), " + "!)");

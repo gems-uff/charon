@@ -1,5 +1,8 @@
 package br.ufrj.cos.lens.odyssey.tools.charon.entities;
 
+import java.util.Collections;
+import java.util.List;
+
 
 /**
  * This class represents a generic Charon element.
@@ -19,14 +22,20 @@ public class CharonElement {
 	 * of all processes in the context.
 	 */
 	private String context = null;
+	
+	/**
+	 * Collection of people that are executing the element
+	 */
+	private List<String> performers;
 
 	/**
 	 * Constructs the Charon element
 	 */
-	public CharonElement(String id, String context) {
+	public CharonElement(String id, String context, List<String> performers) {
 		// Removes the ' from the id
 		this.id = id.substring(1, id.length() - 1);
 		this.context = context;
+		this.performers = performers;
 	}
 
 	/**
@@ -41,6 +50,13 @@ public class CharonElement {
 	 */
 	public String getContext() {
 		return context;
+	}
+	
+	/**
+	 * Provides the collection of people that are executing the activity
+	 */
+	public List<String> getPerformers() {
+		return Collections.unmodifiableList(performers);
 	}
 	
 	/**

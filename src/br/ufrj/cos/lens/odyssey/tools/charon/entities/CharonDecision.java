@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
+import java.util.List;
 
 import org.netbeans.api.mdr.MDRepository;
 
@@ -25,8 +26,8 @@ public class CharonDecision extends CharonElement {
 	/**
 	 * Constructs the decision
 	 */
-	public CharonDecision(String id, String context) {
-		super(id, context);
+	public CharonDecision(String id, String context, List<String> performers) {
+		super(id, context, performers);
 		selectedOptions = new ArrayList<String>();
 	}
 

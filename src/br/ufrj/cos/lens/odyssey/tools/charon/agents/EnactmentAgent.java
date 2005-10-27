@@ -78,11 +78,11 @@ public class EnactmentAgent extends Agent {
 
 			rules.add("(start(initial(Id), P, T) :- !, finish(initial(Id), P, T))");
 
-			rules.add("(start(activity(IdP), P, T) :- !, not(executing(activity(IdP), P, _)), assertz(executing(activity(IdP), P, T)))");
+			rules.add("(start(activity(IdP), P, T) :- !, not(executing(activity(IdP), P, _, _)), assertz(executing(activity(IdP), P, T, [])))");
 
 			rules.add("(start(process(IdP), P, T) :- !, not(executing(process(IdP), P, _)), assertz(executing(process(IdP), P, T)), type(IdP, IdC), start(initial(IdC), [process(IdP)|P], T))");
 
-			rules.add("(start(decision(IdD), P, T) :- !, not(executing(decision(IdD), P, _)), assertz(executing(decision(IdD), P, T)))");
+			rules.add("(start(decision(IdD), P, T) :- !, not(executing(decision(IdD), P, _, _)), assertz(executing(decision(IdD), P, T, [])))");
 
 			rules.add("(start(synchronism(IdS), P, T) :- not(executing(synchronism(IdS), P, _)), !, assertz(executing(synchronism(IdS), P, T)), start(synchronism(IdS), P, T))");
 
@@ -94,11 +94,11 @@ public class EnactmentAgent extends Agent {
 
 			rules.add("(finish(initial(IdC), P, T) :- !, findall(E, transition(initial(IdC), E), Es), start(Es, P, T))");
 
-			rules.add("(finish(activity(IdP), P, T) :- !, executing(activity(IdP), P, Ti), finished(IdP, P, Tf, _), Tf > Ti, Tf =< T, retract(executing(activity(IdP), P, Ti)), assertz(executed(activity(IdP), P, Ti, Tf)), findall(E, transition(activity(IdP), E), Es), start(Es, P, Tf))");
+			rules.add("(finish(activity(IdP), P, T) :- !, executing(activity(IdP), P, Ti, Performers), finished(IdP, P, Tf, _), Tf > Ti, Tf =< T, retract(executing(activity(IdP), P, Ti, Performers)), assertz(executed(activity(IdP), P, Ti, Tf, Performers)), findall(E, transition(activity(IdP), E), Es), start(Es, P, Tf))");
 
 			rules.add("(finish(process(IdP), P, T) :- !, executing(process(IdP), P, Ti), retract(executing(process(IdP), P, Ti)), assertz(executed(process(IdP), P, Ti, T)), findall(E, transition(process(IdP), E), Es), start(Es, P, T))");
 
-			rules.add("(finish(decision(IdD), P, T) :- !, executing(decision(IdD), P, Ti), findall(E, (selected(IdD, P, R, Tr, _), Tr > Ti, Tr =< T, option(IdD, R, E)), Es), Es \\= [], retract(executing(decision(IdD), P, Ti)), assertz(executed(decision(IdD), P, Ti, T)), start(Es, P, T))");
+			rules.add("(finish(decision(IdD), P, T) :- !, executing(decision(IdD), P, Ti, Performers), findall(E, (selected(IdD, P, R, Tr, _), Tr > Ti, Tr =< T, option(IdD, R, E)), Es), Es \\= [], retract(executing(decision(IdD), P, Ti, Performers)), assertz(executed(decision(IdD), P, Ti, T, Performers)), start(Es, P, T))");
 
 			rules.add("(finish(synchronism(IdS), P, T) :- !, retract(executing(synchronism(IdS), P, Ti)), assertz(executed(synchronism(IdS), P, Ti, T)), findall(E7, transition(synchronism(IdS), E7), E7s), start(E7s, P, T))");
 

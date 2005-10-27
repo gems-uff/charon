@@ -1,9 +1,11 @@
 package br.ufrj.cos.lens.odyssey.tools.charon.tests;
 
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 import javax.jmi.model.ModelPackage;
@@ -114,7 +116,22 @@ public class CharonFacadeTest extends TestCase {
 		for (CharonActivity charonActivity : pendingActivities) {
 			//CallAction callAction = (CallAction)charonActivity.getSpemActivity(repository).getEntry();
 			//WorkDefinition activity = (WorkDefinition)callAction.getOperation();
-			System.out.println("Activity: " + charonActivity.getId() + " | Context: " + charonActivity.getContext());
+			System.out.println("Activity: " + charonActivity.getId() + " | Context: " + charonActivity.getContext() + " | Performers: " + charonActivity.getPerformers());
+		}
+		
+		// Set the performers of the activities
+		wait(1000); // It is here because the prolog machine cannot handle the size of currentTimeMilis. For this reason, we work with seconds.
+		List<String> performers = new ArrayList<String>();
+		performers.add("murta");
+		performers.add("luizgus");
+		CharonFacade.getInstance().setPerformers(context, performers, pendingActivities);
+		
+		// List all pending activities
+		pendingActivities = CharonFacade.getInstance().getPendingActivities(context, processPerformers);
+		for (CharonActivity charonActivity : pendingActivities) {
+			//CallAction callAction = (CallAction)charonActivity.getSpemActivity(repository).getEntry();
+			//WorkDefinition activity = (WorkDefinition)callAction.getOperation();
+			System.out.println("Activity: " + charonActivity.getId() + " | Context: " + charonActivity.getContext() + " | Performers: " + charonActivity.getPerformers());
 		}
 
 		// Finishes these activities
@@ -145,7 +162,7 @@ public class CharonFacadeTest extends TestCase {
 		for (CharonActivity charonActivity : pendingActivities) {
 			//CallAction callAction = (CallAction)charonActivity.getSpemActivity(repository).getEntry();
 			//WorkDefinition activity = (WorkDefinition)callAction.getOperation();
-			System.out.println("Activity: " + charonActivity.getId() + " | Context: " + charonActivity.getContext());
+			System.out.println("Activity: " + charonActivity.getId() + " | Context: " + charonActivity.getContext() + " | Performers: " + charonActivity.getPerformers());
 		}
 	}
 	

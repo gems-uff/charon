@@ -1,5 +1,7 @@
 package br.ufrj.cos.lens.odyssey.tools.charon.entities;
 
+import java.util.List;
+
 import org.netbeans.api.mdr.MDRepository;
 
 import statemachines.SimpleState;
@@ -15,8 +17,8 @@ public class CharonActivity extends CharonElement {
 	/**
 	 * Constructs the activity
 	 */
-	public CharonActivity(String id, String context) {
-		super(id, context);
+	public CharonActivity(String id, String context, List<String> performers) {
+		super(id, context, performers);
 	}
 
 	/**
