@@ -55,7 +55,7 @@ public class FollowingThroughAgent extends Agent {
 		Collection<CharonDecision> result = new ArrayList<CharonDecision>();		
 		connect(knowledgeBase);
 
-		for (Map<String,Object> solution : knowledgeBase.getAllSolutions("pendingDecisions(" + roles + ", IdD, C).")) {
+		for (Map<String,Object> solution : knowledgeBase.getAllSolutions("pendingDecisions(" + roles + ", IdD, C, Performers).")) {
 			String decisionID = (String) solution.get("IdD");
 			String context = solution.get("C").toString();
 			List performers = (List) solution.get("Performers");
