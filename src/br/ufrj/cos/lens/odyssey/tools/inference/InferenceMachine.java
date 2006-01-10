@@ -1,5 +1,9 @@
 package br.ufrj.cos.lens.odyssey.tools.inference;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -9,6 +13,7 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import alice.tuprolog.InvalidTheoryException;
 import alice.tuprolog.MalformedGoalException;
 import alice.tuprolog.NoMoreSolutionException;
 import alice.tuprolog.NoSolutionException;
@@ -16,6 +21,7 @@ import alice.tuprolog.Prolog;
 import alice.tuprolog.SolveInfo;
 import alice.tuprolog.Struct;
 import alice.tuprolog.Term;
+import alice.tuprolog.Theory;
 import alice.tuprolog.Var;
 
 /**
@@ -32,10 +38,20 @@ public class InferenceMachine {
 	private Prolog inferenceMachine = null;
 	
 	/**
-	 * Constroi a máquina de inferência
+	 * Constructs the inference machine
 	 */
 	public InferenceMachine() {
 		inferenceMachine = new Prolog();
+	}
+	
+	/**
+	 * Constructs the inference machine loading an existing knowledge base from "file"
+	 */
+	public InferenceMachine(File file) throws InvalidTheoryException, FileNotFoundException, IOException {
+		this();
+		
+		Theory theory = new Theory(new FileInputStream(file));
+		inferenceMachine.addTheory(theory);
 	}
 
 	/**
@@ -88,8 +104,9 @@ public class InferenceMachine {
 		if (goal.length() != 0) {
 			goal.deleteCharAt(goal.length() - 1);
 			return isSolvable(goal.append(".").toString());
-		} else
-			return false;
+		}
+		
+		return false;
 	}
 
 	/**

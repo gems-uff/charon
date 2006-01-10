@@ -1,8 +1,8 @@
 package br.ufrj.cos.lens.odyssey.tools.charon;
 
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.Serializable;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -20,47 +20,51 @@ import br.ufrj.cos.lens.odyssey.tools.inference.InferenceMachine;
  * @author Leonardo Murta
  * @version 1.0, 22/11/2001
  */
-public class KnowledgeBase implements Serializable {
-
+public class KnowledgeBase {
+	
 	/**
 	 * Inference machine that phisically holds the knowledge base
 	 */
-	private transient InferenceMachine inferenceMachine = null;
+	private InferenceMachine inferenceMachine = null;
 
 	/**
 	 * Agent connected to the knowledge base
 	 */
-	private transient Agent agent = null;
+	private Agent agent = null;
 	
 	/**
-	 * Clauses used to define the process
+	 * Repository where the knowledge base should be stored
 	 */
-	private Collection<String> processClauses = null;
+	private File repository;
 
 	/**
-	 * Constructs a new knowledge base
+	 * Constructs a new knowledge base loading existing facts from "repository"
+	 * 
+	 * @param repository File that store existing prolog facts.
+	 */
+	public KnowledgeBase(File repository) throws CharonException {
+		this.repository = repository;
+
+		if (repository.exists()) {
+			try {
+				inferenceMachine = new InferenceMachine(repository);
+			} catch (Exception e) {
+				throw new CharonException("Could not load existing knowledge base from " + repository, e);
+			}
+		} else {
+			inferenceMachine = new InferenceMachine();
+		}
+	}
+
+	/**
+	 * Add a process into the knowledge base
 	 *
 	 * @param spemPackage Package containing all elements of the process.
 	 */
-	public KnowledgeBase(SpemPackage spemPackage) throws CharonException {
-		inferenceMachine = new InferenceMachine();
-		processClauses = AgentManager.getInstance().getAgent(MappingAgent.class).map(spemPackage);
+	public void add(SpemPackage spemPackage) throws CharonException {
+		Collection<String> processClauses = AgentManager.getInstance().getAgent(MappingAgent.class).map(spemPackage);
 		inferenceMachine.addClauses(processClauses);
-	}
-	
-	/** 
-	 * Updates the knowledge base to reflect changes made into the process contained in
-	 * the SPEM Package used to create this knowledge base.
-	 * IMPORTANT: The current implementation uses MOFID to identify processes. It will be
-	 * impossible to evolve the process if the new SpemPackage use different MOFIDs.
-	 * 
-	 * @param spemPackage Package containing all elements of the process.
-	 */
-	public synchronized void update(SpemPackage spemPackage) throws CharonException {
-		inferenceMachine.removeClauses(processClauses);
-		processClauses = AgentManager.getInstance().getAgent(MappingAgent.class).map(spemPackage);
-		inferenceMachine.addClauses(processClauses);
-	}
+	}	
 
 	/**
 	 * Connects an agent to this knowledge base
@@ -120,13 +124,13 @@ public class KnowledgeBase implements Serializable {
 	 * Saves the content of the knowledge base
 	 * (useful for debug)
 	 */
-	public void save(String fileName) {
+	public void save() throws CharonException {
 		try {
-			FileWriter fileWriter = new FileWriter(fileName);
+			FileWriter fileWriter = new FileWriter(repository);
 			fileWriter.write(inferenceMachine.getContent());
 			fileWriter.close();
 		} catch (IOException e) {
-			Logger.global.log(Level.WARNING, "Could not save the knowledge base", e);
+			throw new CharonException("Could not save the knowledge base", e);
 		}
 	}
 }

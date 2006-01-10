@@ -157,9 +157,9 @@ public class SimulationAgent extends Agent {
 			if (contains(synchronism, pseudoState.getIncoming())) {
 				synchronisms.remove(pseudoState);
 				return pseudoState.getOutgoing();
-			} else {
-				return Collections.emptyList();
-			}
+			} 
+			
+			return Collections.emptyList();
 		} else if (PseudoStateKindEnum.PK_JUNCTION.equals(pseudoState.getKind())) {
 			List options = new ArrayList(pseudoState.getOutgoing());
 			if (options.isEmpty()) {

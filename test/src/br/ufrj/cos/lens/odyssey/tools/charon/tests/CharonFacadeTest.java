@@ -21,8 +21,8 @@ import org.netbeans.mdr.NBMDRepositoryImpl;
 import processstructure.WorkDefinition;
 import spem.SpemPackage;
 import statemachines.PseudoState;
+import br.ufrj.cos.lens.odyssey.tools.charon.Charon;
 import br.ufrj.cos.lens.odyssey.tools.charon.CharonException;
-import br.ufrj.cos.lens.odyssey.tools.charon.CharonFacade;
 import br.ufrj.cos.lens.odyssey.tools.charon.entities.CharonActivity;
 import br.ufrj.cos.lens.odyssey.tools.charon.entities.CharonDecision;
 
@@ -105,14 +105,16 @@ public class CharonFacadeTest extends TestCase {
 				break;
 		}
 
-		String context = "Test Context";
-		CharonFacade.getInstance().addProcess(context, spemPackage);
-		String processId = CharonFacade.getInstance().instantiateProcess(context, workDefinition);
+		Charon charon = new Charon("c:\\teste");
+		
+		charon.addProcess(spemPackage);
+
+		String processId = charon.instantiateProcess(workDefinition);
 		
 		Collection processPerformers = spemPackage.getProcessStructure().getProcessPerformer().refAllOfType();
 
 		// List all pending activities
-		Collection<CharonActivity> pendingActivities = CharonFacade.getInstance().getPendingActivities(context, processPerformers);
+		Collection<CharonActivity> pendingActivities = charon.getPendingActivities(processPerformers);
 		for (CharonActivity charonActivity : pendingActivities) {
 			//CallAction callAction = (CallAction)charonActivity.getSpemActivity(repository).getEntry();
 			//WorkDefinition activity = (WorkDefinition)callAction.getOperation();
@@ -124,10 +126,10 @@ public class CharonFacadeTest extends TestCase {
 		List<String> performers = new ArrayList<String>();
 		performers.add("murta");
 		performers.add("luizgus");
-		CharonFacade.getInstance().setPerformers(context, performers, pendingActivities);
+		charon.setPerformers(performers, pendingActivities);
 		
 		// List all pending activities
-		pendingActivities = CharonFacade.getInstance().getPendingActivities(context, processPerformers);
+		pendingActivities = charon.getPendingActivities(processPerformers);
 		for (CharonActivity charonActivity : pendingActivities) {
 			//CallAction callAction = (CallAction)charonActivity.getSpemActivity(repository).getEntry();
 			//WorkDefinition activity = (WorkDefinition)callAction.getOperation();
@@ -136,10 +138,12 @@ public class CharonFacadeTest extends TestCase {
 
 		// Finishes these activities
 		wait(1000); // It is here because the prolog machine cannot handle the size of currentTimeMilis. For this reason, we work with seconds.
-		CharonFacade.getInstance().finishActivities(context, "Test User", pendingActivities);
+		charon.finishActivities("Test User", pendingActivities);
+		
+		charon.save();
 
 		// List all pending decisions
-		Collection<CharonDecision> pendingDecisions = CharonFacade.getInstance().getPendingDecisions(context, processPerformers);
+		Collection<CharonDecision> pendingDecisions = charon.getPendingDecisions(processPerformers);
 		for (CharonDecision charonDecision : pendingDecisions) {
 			PseudoState decision = charonDecision.getSpemDecision(repository);
 			System.out.println("Decision: " + charonDecision.getId());
@@ -155,10 +159,10 @@ public class CharonFacadeTest extends TestCase {
 		
 		// Make the decisions
 		wait(1000);
-		CharonFacade.getInstance().makeDecisions(context, "Test User", pendingDecisions);
+		charon.makeDecisions("Test User", pendingDecisions);
 		
 		// List all pending activities
-		pendingActivities = CharonFacade.getInstance().getPendingActivities(context, processPerformers);
+		pendingActivities = charon.getPendingActivities(processPerformers);
 		for (CharonActivity charonActivity : pendingActivities) {
 			//CallAction callAction = (CallAction)charonActivity.getSpemActivity(repository).getEntry();
 			//WorkDefinition activity = (WorkDefinition)callAction.getOperation();
