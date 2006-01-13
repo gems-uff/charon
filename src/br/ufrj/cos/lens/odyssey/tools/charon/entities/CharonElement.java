@@ -1,5 +1,6 @@
 package br.ufrj.cos.lens.odyssey.tools.charon.entities;
 
+import java.io.Serializable;
 import java.util.Collections;
 import java.util.List;
 
@@ -10,7 +11,7 @@ import java.util.List;
  * @author Leo Murta
  * @version 1.0, 22/12/2001
  */
-public class CharonElement {
+public class CharonElement implements Serializable{
 	/**
 	 * Charon element ID
 	 */
