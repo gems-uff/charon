@@ -48,6 +48,7 @@ public class Charon {
 		
 		File file = new File(directory, FILE_NAME);
 		knowledgeBase = new KnowledgeBase(file);
+		AgentManager.getInstance().init();
 	}
 	
 	/**

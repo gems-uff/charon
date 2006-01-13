@@ -4,6 +4,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 import br.ufrj.cos.lens.odyssey.tools.charon.agents.Agent;
+import br.ufrj.cos.lens.odyssey.tools.charon.agents.BacktrackingAgent;
+import br.ufrj.cos.lens.odyssey.tools.charon.agents.EnactmentAgent;
+import br.ufrj.cos.lens.odyssey.tools.charon.agents.MappingAgent;
+import br.ufrj.cos.lens.odyssey.tools.charon.agents.SimulationAgent;
 
 /**
  * This class is responsible for providing the available agents
@@ -35,6 +39,18 @@ public class AgentManager {
 		if (instance == null)
 			instance = new AgentManager();
 		return instance;
+	}
+	
+	/**
+	 * Loads all agents
+	 * This code should be called before Charon starts working. It is responsible for
+	 * allowing agents to register as listeners of other agents.
+	 */
+	public void init() throws CharonException {
+		getAgent(MappingAgent.class);
+		getAgent(SimulationAgent.class);
+		getAgent(BacktrackingAgent.class);
+		getAgent(EnactmentAgent.class);
 	}
 	
 	/**

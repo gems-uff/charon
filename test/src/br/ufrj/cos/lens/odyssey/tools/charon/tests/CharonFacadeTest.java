@@ -48,7 +48,8 @@ public class CharonFacadeTest extends TestCase {
 	/**
 	 * Test instance of SPEM metamodel
 	 */
-	private static final String SPEM_MODEL = "/input.xmi";
+	//private static final String SPEM_MODEL = "/input.xmi";
+    private static final String SPEM_MODEL = "/test.xmi";
 	
 	/**
 	 * MDR repository
@@ -107,7 +108,7 @@ public class CharonFacadeTest extends TestCase {
 	 * @throws InterruptedException 
 	 */
 	@SuppressWarnings("unchecked")
-	public synchronized final void testInstanciaProcesso() throws CharonException, InterruptedException {
+	public synchronized final void testEnactment() throws CharonException, InterruptedException {
 		// Search for a Work Definition
 		WorkDefinition workDefinition = null;
 		Iterator iterator = spemPackage.getProcessStructure().getWorkDefinition().refAllOfClass().iterator();
@@ -127,19 +128,23 @@ public class CharonFacadeTest extends TestCase {
 		Collection<CharonDecision> pendingDecisions = listPendingDecisions();
 		
 		finishActivities(pendingActivities);
-
+		
+		charon.save();
+		charon = new Charon("c:\\teste");
+		
 		pendingActivities = listPendingActivities();
 		pendingDecisions = listPendingDecisions();
 
 		charon.save();
-		charon = new Charon("c:\\teste");
-		pendingActivities = listPendingActivities();
-		pendingDecisions = listPendingDecisions();
-		
-		makeDecision(pendingDecisions, "yes");
-		
-		pendingActivities = listPendingActivities();
-		pendingDecisions = listPendingDecisions();
+
+//		charon = new Charon("c:\\teste");
+//		pendingActivities = listPendingActivities();
+//		pendingDecisions = listPendingDecisions();
+//		
+//		makeDecision(pendingDecisions, "yes");
+//		
+//		pendingActivities = listPendingActivities();
+//		pendingDecisions = listPendingDecisions();
 	}
 
 	private Collection<CharonActivity> listPendingActivities() throws CharonException {
