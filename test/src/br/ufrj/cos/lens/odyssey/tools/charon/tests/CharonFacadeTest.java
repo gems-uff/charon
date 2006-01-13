@@ -1,5 +1,6 @@
 package br.ufrj.cos.lens.odyssey.tools.charon.tests;
 
+import java.io.File;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -7,6 +8,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Logger;
 
 import javax.jmi.model.ModelPackage;
 import javax.jmi.model.MofPackage;
@@ -57,6 +59,16 @@ public class CharonFacadeTest extends TestCase {
 	 * Spem model (instance)
 	 */
 	private SpemPackage spemPackage = null;
+	
+	/**
+	 * Charon instance
+	 */
+	private Charon charon;
+	
+	/**
+	 * Process performers
+	 */
+	private Collection processPerformers;
 
 	/**
 	 * Initializes the repository and loads the test model
@@ -105,68 +117,90 @@ public class CharonFacadeTest extends TestCase {
 				break;
 		}
 
-		Charon charon = new Charon("c:\\teste");
-		
+		recursiveDelete(new File("c:\\teste"));
+		charon = new Charon("c:\\teste");
 		charon.addProcess(spemPackage);
-
 		String processId = charon.instantiateProcess(workDefinition);
-		
-		Collection processPerformers = spemPackage.getProcessStructure().getProcessPerformer().refAllOfType();
+		processPerformers = spemPackage.getProcessStructure().getProcessPerformer().refAllOfType();
 
-		// List all pending activities
+		Collection<CharonActivity> pendingActivities = listPendingActivities();
+		Collection<CharonDecision> pendingDecisions = listPendingDecisions();
+		
+		finishActivities(pendingActivities);
+
+		pendingActivities = listPendingActivities();
+		pendingDecisions = listPendingDecisions();
+
+		charon.save();
+		charon = new Charon("c:\\teste");
+		pendingActivities = listPendingActivities();
+		pendingDecisions = listPendingDecisions();
+		
+		makeDecision(pendingDecisions, "yes");
+		
+		pendingActivities = listPendingActivities();
+		pendingDecisions = listPendingDecisions();
+	}
+
+	private Collection<CharonActivity> listPendingActivities() throws CharonException {
+		System.out.println("--> Listing pending activities:");
 		Collection<CharonActivity> pendingActivities = charon.getPendingActivities(processPerformers);
 		for (CharonActivity charonActivity : pendingActivities) {
 			//CallAction callAction = (CallAction)charonActivity.getSpemActivity(repository).getEntry();
 			//WorkDefinition activity = (WorkDefinition)callAction.getOperation();
-			System.out.println("Activity: " + charonActivity.getId() + " | Context: " + charonActivity.getContext() + " | Performers: " + charonActivity.getPerformers());
+			System.out.println("\tActivity: " + charonActivity.getId() + " | Context: " + charonActivity.getContext());
 		}
-		
-		// Set the performers of the activities
-		wait(1000); // It is here because the prolog machine cannot handle the size of currentTimeMilis. For this reason, we work with seconds.
-		List<String> performers = new ArrayList<String>();
-		performers.add("murta");
-		performers.add("luizgus");
-		charon.setPerformers(performers, pendingActivities);
-		
-		// List all pending activities
-		pendingActivities = charon.getPendingActivities(processPerformers);
-		for (CharonActivity charonActivity : pendingActivities) {
-			//CallAction callAction = (CallAction)charonActivity.getSpemActivity(repository).getEntry();
-			//WorkDefinition activity = (WorkDefinition)callAction.getOperation();
-			System.out.println("Activity: " + charonActivity.getId() + " | Context: " + charonActivity.getContext() + " | Performers: " + charonActivity.getPerformers());
-		}
-
-		// Finishes these activities
-		wait(1000); // It is here because the prolog machine cannot handle the size of currentTimeMilis. For this reason, we work with seconds.
-		charon.finishActivities("Test User", pendingActivities);
-		
-		charon.save();
-
-		// List all pending decisions
+		return pendingActivities;
+	}
+	
+	private Collection<CharonDecision> listPendingDecisions() throws CharonException {
+		System.out.println("--> Listing pending decisions:");// List all pending decisions
 		Collection<CharonDecision> pendingDecisions = charon.getPendingDecisions(processPerformers);
 		for (CharonDecision charonDecision : pendingDecisions) {
-			PseudoState decision = charonDecision.getSpemDecision(repository);
-			System.out.println("Decision: " + charonDecision.getId());
+			System.out.println("\tDecision: " + charonDecision.getId());
 			
-			// Make a decision (Activity)
 			for (String option : charonDecision.getOptions(repository)) {
-				if ("no".equals(option)) {
+				System.out.println("\t\tOption: " + option);
+			}
+		}
+		return pendingDecisions;
+	}
+	
+	private void finishActivities(Collection<CharonActivity> pendingActivities) throws InterruptedException, CharonException {
+		for (CharonActivity charonActivity : pendingActivities) {
+			System.out.println("--> Finishing activity: " + charonActivity.getId());
+		}
+		wait(1000); // It is here because the prolog machine cannot handle the size of currentTimeMilis. For this reason, we work with seconds.
+		charon.finishActivities("Test User", pendingActivities);
+	}
+	
+	private void makeDecision(Collection<CharonDecision> pendingDecisions, String selectedOption) throws InterruptedException, CharonException {
+		for (CharonDecision charonDecision : pendingDecisions) {
+			for (String option : charonDecision.getOptions(repository)) {
+				if (selectedOption.equals(option)) {
 					charonDecision.addSelectedOption(option);
-					System.out.println("Selection: " + option);
+					System.out.println("--> Making decision: " + charonDecision.getId() + " (selection: " + option + ")");
+					break;
 				}
 			}
 		}
-		
-		// Make the decisions
 		wait(1000);
 		charon.makeDecisions("Test User", pendingDecisions);
-		
-		// List all pending activities
-		pendingActivities = charon.getPendingActivities(processPerformers);
-		for (CharonActivity charonActivity : pendingActivities) {
-			//CallAction callAction = (CallAction)charonActivity.getSpemActivity(repository).getEntry();
-			//WorkDefinition activity = (WorkDefinition)callAction.getOperation();
-			System.out.println("Activity: " + charonActivity.getId() + " | Context: " + charonActivity.getContext() + " | Performers: " + charonActivity.getPerformers());
+	}
+	
+	/**
+	 * Recursivelly delete a file or directory 
+	 */
+	public static void recursiveDelete(File file) {
+		if (file != null) {
+			if (file.isDirectory()) {
+				for (File subFile : file.listFiles()) {
+					recursiveDelete(subFile);
+				}
+			}
+			if (!file.delete()) {
+				Logger.global.info("Could not delete file " + file);
+			}
 		}
 	}
 	
