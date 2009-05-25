@@ -1,0 +1,175 @@
+<?xml version = '1.0' encoding = 'ISO-8859-1' ?>
+<XMI xmi.version = '1.2' xmlns:SPEM = 'org.omg.xmi.namespace.SPEM' timestamp = 'Sat Oct 08 10:33:12 BRT 2005'>
+  <XMI.header>
+    <XMI.documentation>
+      <XMI.exporter>Netbeans XMI Writer</XMI.exporter>
+      <XMI.exporterVersion>1.0</XMI.exporterVersion>
+    </XMI.documentation>
+  </XMI.header>
+  <XMI.content>
+    <SPEM:Package xmi.id = 'a1' name = 'SPEM Modeller View'>
+      <SPEM:Namespace.ownedElement>
+        <SPEM:WorkProduct xmi.id = 'a2' name = 'WorkProduct_1' isDeliverable = 'false'/>
+        <SPEM:WorkProduct xmi.id = 'a3' name = 'WorkProduct' isDeliverable = 'false'/>
+        <SPEM:ProcessPerformer xmi.id = 'a4' name = 'ProcessPerformer'>
+          <SPEM:ProcessPerformer.work>
+            <SPEM:WorkDefinition xmi.id = 'a5' name = 'WorkDefinition'/>
+          </SPEM:ProcessPerformer.work>
+        </SPEM:ProcessPerformer>
+        <SPEM:ProcessRole xmi.id = 'a6' name = 'ProcessRole_1'>
+          <SPEM:ProcessPerformer.work>
+            <SPEM:Activity xmi.id = 'a7' name = 'Activity_1'>
+              <SPEM:BehavioralFeature.parameter>
+                <SPEM:ActivityParameter xmi.id = 'a8' kind = 'out' hasWorkPerArtifact = 'false'>
+                  <SPEM:Parameter.type>
+                    <SPEM:WorkProduct xmi.idref = 'a2'/>
+                  </SPEM:Parameter.type>
+                </SPEM:ActivityParameter>
+                <SPEM:ActivityParameter xmi.id = 'a9' kind = 'in' hasWorkPerArtifact = 'false'>
+                  <SPEM:Parameter.type>
+                    <SPEM:WorkProduct xmi.idref = 'a3'/>
+                  </SPEM:Parameter.type>
+                </SPEM:ActivityParameter>
+              </SPEM:BehavioralFeature.parameter>
+              <SPEM:WorkDefinition.parentWork>
+                <SPEM:WorkDefinition xmi.idref = 'a5'/>
+              </SPEM:WorkDefinition.parentWork>
+            </SPEM:Activity>
+          </SPEM:ProcessPerformer.work>
+        </SPEM:ProcessRole>
+        <SPEM:ProcessRole xmi.id = 'a10' name = 'ProcessRole'>
+          <SPEM:ProcessPerformer.work>
+            <SPEM:Activity xmi.id = 'a11' name = 'Activity'>
+              <SPEM:BehavioralFeature.parameter>
+                <SPEM:ActivityParameter xmi.id = 'a12' kind = 'out' hasWorkPerArtifact = 'false'>
+                  <SPEM:Parameter.type>
+                    <SPEM:WorkProduct xmi.idref = 'a3'/>
+                  </SPEM:Parameter.type>
+                </SPEM:ActivityParameter>
+              </SPEM:BehavioralFeature.parameter>
+              <SPEM:WorkDefinition.parentWork>
+                <SPEM:WorkDefinition xmi.idref = 'a5'/>
+              </SPEM:WorkDefinition.parentWork>
+            </SPEM:Activity>
+          </SPEM:ProcessPerformer.work>
+        </SPEM:ProcessRole>
+      </SPEM:Namespace.ownedElement>
+    </SPEM:Package>
+    <SPEM:ActivityGraph xmi.id = 'a13' name = 'WorkDefinition'>
+      <SPEM:StateMachine.top>
+        <SPEM:CompositeState xmi.id = 'a14'>
+          <SPEM:CompositeState.subvertex>
+            <SPEM:PseudoState xmi.id = 'a15' name = 'Start' kind = 'initial'>
+              <SPEM:StateVertex.outgoing>
+                <SPEM:Transition xmi.idref = 'a16'/>
+              </SPEM:StateVertex.outgoing>
+            </SPEM:PseudoState>
+            <SPEM:FinalState xmi.id = 'a17' name = 'Finish'>
+              <SPEM:StateVertex.incoming>
+                <SPEM:Transition xmi.idref = 'a18'/>
+              </SPEM:StateVertex.incoming>
+            </SPEM:FinalState>
+            <SPEM:ActionState xmi.id = 'a19' name = 'Activity'>
+              <SPEM:StateVertex.outgoing>
+                <SPEM:Transition xmi.idref = 'a20'/>
+              </SPEM:StateVertex.outgoing>
+              <SPEM:StateVertex.incoming>
+                <SPEM:Transition xmi.idref = 'a16'/>
+              </SPEM:StateVertex.incoming>
+              <SPEM:State.entry>
+                <Actions.CallAction xmi.id = 'a21'>
+                  <Actions.CallAction.operation>
+                    <SPEM:Activity xmi.idref = 'a11'/>
+                  </Actions.CallAction.operation>
+                </Actions.CallAction>
+              </SPEM:State.entry>
+            </SPEM:ActionState>
+            <SPEM:ObjectFlowState xmi.id = 'a22' name = 'WorkProduct'>
+              <SPEM:StateVertex.outgoing>
+                <SPEM:Transition xmi.idref = 'a23'/>
+              </SPEM:StateVertex.outgoing>
+              <SPEM:StateVertex.incoming>
+                <SPEM:Transition xmi.idref = 'a20'/>
+              </SPEM:StateVertex.incoming>
+              <SPEM:ObjectFlowState.type>
+                <SPEM:WorkProduct xmi.idref = 'a3'/>
+              </SPEM:ObjectFlowState.type>
+            </SPEM:ObjectFlowState>
+            <SPEM:ActionState xmi.id = 'a24' name = 'Activity_1'>
+              <SPEM:StateVertex.outgoing>
+                <SPEM:Transition xmi.idref = 'a25'/>
+              </SPEM:StateVertex.outgoing>
+              <SPEM:StateVertex.incoming>
+                <SPEM:Transition xmi.idref = 'a23'/>
+              </SPEM:StateVertex.incoming>
+              <SPEM:State.entry>
+                <Actions.CallAction xmi.id = 'a26'>
+                  <Actions.CallAction.operation>
+                    <SPEM:Activity xmi.idref = 'a7'/>
+                  </Actions.CallAction.operation>
+                </Actions.CallAction>
+              </SPEM:State.entry>
+            </SPEM:ActionState>
+            <SPEM:ObjectFlowState xmi.id = 'a27' name = 'WorkProduct_1'>
+              <SPEM:StateVertex.outgoing>
+                <SPEM:Transition xmi.idref = 'a18'/>
+              </SPEM:StateVertex.outgoing>
+              <SPEM:StateVertex.incoming>
+                <SPEM:Transition xmi.idref = 'a25'/>
+              </SPEM:StateVertex.incoming>
+              <SPEM:ObjectFlowState.type>
+                <SPEM:WorkProduct xmi.idref = 'a2'/>
+              </SPEM:ObjectFlowState.type>
+            </SPEM:ObjectFlowState>
+          </SPEM:CompositeState.subvertex>
+        </SPEM:CompositeState>
+      </SPEM:StateMachine.top>
+      <SPEM:StateMachine.transitions>
+        <SPEM:Transition xmi.id = 'a16' name = ''>
+          <SPEM:Transition.source>
+            <SPEM:PseudoState xmi.idref = 'a15'/>
+          </SPEM:Transition.source>
+          <SPEM:Transition.target>
+            <SPEM:ActionState xmi.idref = 'a19'/>
+          </SPEM:Transition.target>
+        </SPEM:Transition>
+        <SPEM:Transition xmi.id = 'a20' name = ''>
+          <SPEM:Transition.source>
+            <SPEM:ActionState xmi.idref = 'a19'/>
+          </SPEM:Transition.source>
+          <SPEM:Transition.target>
+            <SPEM:ObjectFlowState xmi.idref = 'a22'/>
+          </SPEM:Transition.target>
+        </SPEM:Transition>
+        <SPEM:Transition xmi.id = 'a23' name = ''>
+          <SPEM:Transition.source>
+            <SPEM:ObjectFlowState xmi.idref = 'a22'/>
+          </SPEM:Transition.source>
+          <SPEM:Transition.target>
+            <SPEM:ActionState xmi.idref = 'a24'/>
+          </SPEM:Transition.target>
+        </SPEM:Transition>
+        <SPEM:Transition xmi.id = 'a25' name = ''>
+          <SPEM:Transition.source>
+            <SPEM:ActionState xmi.idref = 'a24'/>
+          </SPEM:Transition.source>
+          <SPEM:Transition.target>
+            <SPEM:ObjectFlowState xmi.idref = 'a27'/>
+          </SPEM:Transition.target>
+        </SPEM:Transition>
+        <SPEM:Transition xmi.id = 'a18' name = ''>
+          <SPEM:Transition.source>
+            <SPEM:ObjectFlowState xmi.idref = 'a27'/>
+          </SPEM:Transition.source>
+          <SPEM:Transition.target>
+            <SPEM:FinalState xmi.idref = 'a17'/>
+          </SPEM:Transition.target>
+        </SPEM:Transition>
+      </SPEM:StateMachine.transitions>
+    </SPEM:ActivityGraph>
+    <SPEM:A_behavior_context>
+      <SPEM:ActivityGraph xmi.idref = 'a13'/>
+      <SPEM:WorkDefinition xmi.idref = 'a5'/>
+    </SPEM:A_behavior_context>
+  </XMI.content>
+</XMI>
