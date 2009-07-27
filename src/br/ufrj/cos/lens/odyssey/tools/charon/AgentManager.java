@@ -6,6 +6,7 @@ import java.util.Map;
 import br.ufrj.cos.lens.odyssey.tools.charon.agents.Agent;
 import br.ufrj.cos.lens.odyssey.tools.charon.agents.BacktrackingAgent;
 import br.ufrj.cos.lens.odyssey.tools.charon.agents.EnactmentAgent;
+import br.ufrj.cos.lens.odyssey.tools.charon.agents.LoadingAgent;
 import br.ufrj.cos.lens.odyssey.tools.charon.agents.MappingAgent;
 import br.ufrj.cos.lens.odyssey.tools.charon.agents.SimulationAgent;
 
@@ -51,6 +52,7 @@ public class AgentManager {
 		getAgent(SimulationAgent.class);
 		getAgent(BacktrackingAgent.class);
 		getAgent(EnactmentAgent.class);
+		getAgent(LoadingAgent.class);
 	}
 	
 	/**

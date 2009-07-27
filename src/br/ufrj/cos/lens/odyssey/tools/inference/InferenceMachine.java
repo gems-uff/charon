@@ -190,9 +190,13 @@ public class InferenceMachine {
 		try {
 			Map<String,Object> result = new HashMap<String,Object>();
 			
-			for (Var var : solveInfo.toVarArray()) {					
+			for (Iterator iterator = solveInfo.getBindingVars().iterator(); iterator.hasNext();) {
+				Var var = (Var) iterator.next();
 				result.put(var.getName(), translate(var.getTerm()));
 			}
+//			for (Var var : solveInfo.toVarArray()) {					
+//				result.put(var.getName(), translate(var.getTerm()));
+//			}
 			
 			return result;
 		} catch (NoSolutionException e) {
@@ -207,9 +211,7 @@ public class InferenceMachine {
 	 * any other element -> Java String
 	 */
 	private Object translate(Term term) {
-		if (term.isNull()) {
-			return null;
-		} else if (term.isList()) {
+		if (term.isList()) {
 			List<Object> list = new ArrayList<Object>();
 			
 			Iterator i = ((Struct)term).listIterator();
