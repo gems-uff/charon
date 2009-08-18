@@ -64,6 +64,101 @@ public class EnactmentAgent extends Agent {
 		disconnect();
 	}
 	
+	public String intializeExperimentExecution(KnowledgeBase knowledgeBase, String experimentId){
+		connect(knowledgeBase);
+		String processId = String.valueOf(System.currentTimeMillis());
+		long currentTime = System.currentTimeMillis() / 1000;
+		boolean isSolvable = knowledgeBase.isSolvable("start(experiment('"+experimentId+"'), '"+processId+"', '"+currentTime+"').");
+		disconnect();
+		if(isSolvable){
+			return processId;
+		}
+		else
+			return null;
+	}
+	
+	public boolean notifyActivityExecutionStartup(KnowledgeBase knowledgeBase, String activityInstanceId, String[] context){
+		connect(knowledgeBase);
+		long currentTime = System.currentTimeMillis() / 1000;
+		String contextList = createContextList(context);
+		boolean isSolvable = knowledgeBase.isSolvable("start(activity('"+activityInstanceId+"'), "+contextList+", '"+currentTime+"').");
+		disconnect();
+		return isSolvable;
+	}
+	
+	public boolean notifyProcessExecutionStartup(KnowledgeBase knowledgeBase, String processInstanceId, String[] context){
+		connect(knowledgeBase);
+		long currentTime = System.currentTimeMillis() / 1000;
+		boolean isSolvable = knowledgeBase.isSolvable("start(process('"+processInstanceId+"'), "+context+", '"+currentTime+"')).");
+		disconnect();
+		return isSolvable;
+	}
+
+	public boolean notifyActivityExecutionEnding(KnowledgeBase knowledgeBase, String activityInstanceId, String[] context){
+		connect(knowledgeBase);
+		long currentTime = System.currentTimeMillis() / 1000;
+		String contextList = createContextList(context);
+		boolean isSolvable = knowledgeBase.isSolvable("finish(activity('"+activityInstanceId+"'), "+contextList+", '"+currentTime+"').");
+		disconnect();
+		return isSolvable;
+	}
+	
+	public boolean notifyProcessExecutionEnding(KnowledgeBase knowledgeBase, String processInstanceId, String[] context){
+		connect(knowledgeBase);
+		long currentTime = System.currentTimeMillis() / 1000;
+		String contextList = createContextList(context);
+		boolean isSolvable = knowledgeBase.isSolvable("finish(process('"+processInstanceId+"'), "+contextList+", '"+currentTime+"').");
+		disconnect();
+		return isSolvable;
+	}
+
+	public boolean notifyDecisionPointEnding(KnowledgeBase knowledgeBase, String decisionPointId, String[] context){
+		connect(knowledgeBase);
+		long currentTime = System.currentTimeMillis() / 1000;
+		String contextList = createContextList(context);
+		boolean isSolvable = knowledgeBase.isSolvable("finish(decision('"+decisionPointId+"'), "+contextList+", '"+currentTime+"').");
+		disconnect();
+		return isSolvable;
+	}
+
+	/*
+	 * TODO: Fazer esse método...
+	 */
+	public String setArtifactData(KnowledgeBase knowledgeBase, String artifactId, byte[] data, String[] context){
+		
+		/*
+		 * Armazenar dados do artefato em banco de dados
+		 */
+		String databaseId = null;
+		
+		
+		connect(knowledgeBase);
+		String SWFMSId = String.valueOf(System.currentTimeMillis());
+		String contextList = createContextList(context);
+		boolean isSolvable = knowledgeBase.isSolvable("assertz(artifactData('"+artifactId+"', '"+databaseId+"', '"+contextList+"')).");
+		disconnect();
+		if(isSolvable){
+			return SWFMSId;
+		}
+		else
+			return null;
+	}
+	
+	
+	public String createContextList(String[] context){
+		StringBuffer contextList = new StringBuffer("[");
+		
+		for (String element : context) {
+			contextList.append(element+",");
+		}
+		
+		if(contextList.length()>1)
+			return contextList.substring(0, contextList.length())+"]";
+		else
+			return contextList.toString()+"]";
+	}
+	
+	
 	/**
 	 * @see br.ufrj.cos.lens.odyssey.tools.charon.agents.Agent#getRules()
 	 */
@@ -72,6 +167,8 @@ public class EnactmentAgent extends Agent {
 		if (rules == null) {
 			rules = new ArrayList<String>();
 
+			rules.add("start(experiment(experimentId), IdP, T) :- !, experimentRootProcess(experimentId, IdC), assertz(type(IdP, IdC)), start(process(IdP), [], T).");
+			
 			rules.add("start([],_,_)");
 			rules.add("(start([E|Es], P, T) :- start(E, P, T), !, start(Es, P, T))");
 			rules.add("(start([_|Es], P, T) :- !, start(Es, P, T))");
