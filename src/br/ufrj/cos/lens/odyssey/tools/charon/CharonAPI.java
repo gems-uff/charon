@@ -55,19 +55,19 @@ public class CharonAPI {
 		return loadingAgent.associateProcessToSWFMS(knowledgeBase, processInstanceId, SWFMSId);
 	}
 	
-	public String defineProcess(String name) throws CharonException{
+	public String defineProcess(String type, String name) throws CharonException{
 		LoadingAgent loadingAgent = AgentManager.getInstance().getAgent(LoadingAgent.class);
-		return loadingAgent.defineProcess(knowledgeBase, name);
+		return loadingAgent.defineProcess(knowledgeBase, type, name);
 	}
 	
-	public String defineActivity(String name) throws CharonException{
+	public String defineActivity(String type, String name) throws CharonException{
 		LoadingAgent loadingAgent = AgentManager.getInstance().getAgent(LoadingAgent.class);
-		return loadingAgent.defineActivity(knowledgeBase, name);
+		return loadingAgent.defineActivity(knowledgeBase, type, name);
 	}
 	
-	public String defineArtifact(String name, String type) throws CharonException{
+	public String defineArtifact(String type, String name) throws CharonException{
 		LoadingAgent loadingAgent = AgentManager.getInstance().getAgent(LoadingAgent.class);
-		return loadingAgent.defineArtifact(knowledgeBase, name, type);
+		return loadingAgent.defineArtifact(knowledgeBase, type, name);
 	}
 	
 	public boolean associateArtifactUsedByActivity(String activityInstanceId, String productId) throws CharonException{
@@ -174,9 +174,14 @@ public class CharonAPI {
 		return enactmentAgent.notifyDecisionPointEnding(knowledgeBase, decisionPointId, context);
 	}
 
-	public boolean setArtifactData(String artifactId, byte[] data, String[] context) throws CharonException{
+	public boolean setArtifactData(String artifactId, String[] context, byte[] data) throws CharonException{
 		EnactmentAgent enactmentAgent = AgentManager.getInstance().getAgent(EnactmentAgent.class);
-		return enactmentAgent.setArtifactData(knowledgeBase, artifactId, data, context);
+		return enactmentAgent.setArtifactData(knowledgeBase, artifactId, context, data);
+	}
+	
+	public boolean publishArtifactDataLocation(String artifactId, String[] context, String hostURL, String hostLocalPath) throws CharonException{
+		EnactmentAgent enactmentAgent = AgentManager.getInstance().getAgent(EnactmentAgent.class);
+		return enactmentAgent.publishArtifactDataLocation(knowledgeBase, artifactId, context, hostURL, hostLocalPath);
 	}
 	
 }

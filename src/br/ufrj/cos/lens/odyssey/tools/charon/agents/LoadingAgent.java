@@ -61,10 +61,10 @@ public class LoadingAgent extends Agent {
 		return isSolvable;
 	}
 	
-	public String defineProcess(KnowledgeBase knowledgeBase, String name){
+	public String defineProcess(KnowledgeBase knowledgeBase, String type, String name){
 		connect(knowledgeBase);
 		String processClassId = String.valueOf(System.currentTimeMillis());
-		boolean isSolvable = knowledgeBase.isSolvable("assertz(process('"+processClassId+"'), processName('"+processClassId+"', '"+name+"')," +
+		boolean isSolvable = knowledgeBase.isSolvable("assertz(process('"+processClassId+"'), processType('"+processClassId+"', '"+type+"'), processName('"+processClassId+"', '"+name+"')," +
 				"initial('"+processClassId+"'), final('"+processClassId+"'), synchronism('"+processClassId+"')," +
 				"transition(synchronism('"+processClassId+"'), final('"+processClassId+"'))).");
 		disconnect();
@@ -75,10 +75,10 @@ public class LoadingAgent extends Agent {
 			return null;
 	}
 	
-	public String defineActivity(KnowledgeBase knowledgeBase, String name){
+	public String defineActivity(KnowledgeBase knowledgeBase, String type, String name){
 		connect(knowledgeBase);
 		String activityClassId = String.valueOf(System.currentTimeMillis());
-		boolean isSolvable = knowledgeBase.isSolvable("assertz(activity('"+activityClassId+"'), activityName('"+activityClassId+"', '"+name+"')).");
+		boolean isSolvable = knowledgeBase.isSolvable("assertz(activity('"+activityClassId+"'), activityType('"+activityClassId+"', '"+type+"'), activityName('"+activityClassId+"', '"+name+"')).");
 		disconnect();
 		if(isSolvable){
 			return activityClassId;
@@ -87,7 +87,7 @@ public class LoadingAgent extends Agent {
 			return null;
 	}
 	
-	public String defineArtifact(KnowledgeBase knowledgeBase, String name, String type){
+	public String defineArtifact(KnowledgeBase knowledgeBase, String type, String name){
 		connect(knowledgeBase);
 		String productId = String.valueOf(System.currentTimeMillis());
 		boolean isSolvable = knowledgeBase.isSolvable("assertz(product('"+productId+"'), productName('"+productId+"', '"+name+"'), productType('"+productId+"', '"+type+"')).");

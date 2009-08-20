@@ -124,7 +124,7 @@ public class EnactmentAgent extends Agent {
 	/*
 	 * TODO: Fazer esse método...
 	 */
-	public boolean setArtifactData(KnowledgeBase knowledgeBase, String artifactId, byte[] data, String[] context){
+	public boolean setArtifactData(KnowledgeBase knowledgeBase, String artifactId, String[] context, byte[] data){
 		
 		/*
 		 * Armazenar dados do artefato em banco de dados
@@ -135,12 +135,22 @@ public class EnactmentAgent extends Agent {
 		connect(knowledgeBase);
 		String SWFMSId = String.valueOf(System.currentTimeMillis());
 		String contextList = createContextList(context);
-		boolean isSolvable = knowledgeBase.isSolvable("assertz(artifactData('"+artifactId+"', '"+databaseId+"', '"+contextList+"')).");
+//		boolean isSolvable = knowledgeBase.isSolvable("assertz(artifactData('"+artifactId+"', '"+databaseId+"', '"+contextList+"')).");
+		boolean isSolvable = knowledgeBase.isSolvable("assertz(artifactData('"+artifactId+"', '"+contextList+"', '"+new String(data)+"')).");
 		disconnect();
 		return isSolvable;
 	}
 	
-	
+	public boolean publishArtifactDataLocation(KnowledgeBase knowledgeBase, String artifactId, String[] context, String hostURL, String hostLocalPath){
+		
+		connect(knowledgeBase);
+		String contextList = createContextList(context);
+		boolean isSolvable = knowledgeBase.isSolvable("assertz(artifactDataLocation('"+artifactId+"', '"+contextList+"', '"+hostURL+"', '"+hostLocalPath+"')).");
+		disconnect();
+		return isSolvable;
+
+	}
+		
 	public String createContextList(String[] context){
 		StringBuffer contextList = new StringBuffer("[");
 		
@@ -152,8 +162,7 @@ public class EnactmentAgent extends Agent {
 			return contextList.substring(0, contextList.length())+"]";
 		else
 			return contextList.toString()+"]";
-	}
-	
+	}	
 	
 	/**
 	 * @see br.ufrj.cos.lens.odyssey.tools.charon.agents.Agent#getRules()
