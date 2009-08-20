@@ -62,39 +62,45 @@ public class CharonAPI {
 	
 	public String defineActivity(String name) throws CharonException{
 		LoadingAgent loadingAgent = AgentManager.getInstance().getAgent(LoadingAgent.class);
-		return loadingAgent.defineProcess(knowledgeBase, name);	}
-	
-	public String defineProduct(String name, String type) throws CharonException{
-		LoadingAgent loadingAgent = AgentManager.getInstance().getAgent(LoadingAgent.class);
-		return loadingAgent.defineProcess(knowledgeBase, name);
+		return loadingAgent.defineActivity(knowledgeBase, name);
 	}
 	
-	public boolean associateProductUsedByActivity(String activityInstanceId, String productId) throws CharonException{
+	public String defineArtifact(String name, String type) throws CharonException{
 		LoadingAgent loadingAgent = AgentManager.getInstance().getAgent(LoadingAgent.class);
-		return loadingAgent.associateProductUsedByActivity(knowledgeBase, activityInstanceId, productId);
+		return loadingAgent.defineArtifact(knowledgeBase, name, type);
 	}
 	
-	public boolean associateProductUsedByProcess(String processInstanceId, String productId) throws CharonException{
+	public boolean associateArtifactUsedByActivity(String activityInstanceId, String productId) throws CharonException{
 		LoadingAgent loadingAgent = AgentManager.getInstance().getAgent(LoadingAgent.class);
-		return loadingAgent.associateProductUsedByProcess(knowledgeBase, processInstanceId, productId);
+		return loadingAgent.associateArtifactUsedByActivity(knowledgeBase, activityInstanceId, productId);
 	}
 	
-	public boolean associateProductGeneratedByActivity(String activityInstanceId, String productId) throws CharonException{
+	public boolean associateArtifactUsedByProcess(String processInstanceId, String productId) throws CharonException{
 		LoadingAgent loadingAgent = AgentManager.getInstance().getAgent(LoadingAgent.class);
-		return loadingAgent.associateProductGeneratedByActivity(knowledgeBase, activityInstanceId, productId);
+		return loadingAgent.associateArtifactUsedByProcess(knowledgeBase, processInstanceId, productId);
 	}
 	
-	public boolean associateProductGeneratedByProcess(String processInstanceId, String productId) throws CharonException{
+	public boolean associateArtifactGeneratedByActivity(String activityInstanceId, String productId) throws CharonException{
 		LoadingAgent loadingAgent = AgentManager.getInstance().getAgent(LoadingAgent.class);
-		return loadingAgent.associateProductGeneratedByProcess(knowledgeBase, processInstanceId, productId);
+		return loadingAgent.associateArtifactGeneratedByActivity(knowledgeBase, activityInstanceId, productId);
 	}
 	
-	public String instantiate(String experimentId, String classId) throws CharonException{
+	public boolean associateArtifactGeneratedByProcess(String processInstanceId, String productId) throws CharonException{
+		LoadingAgent loadingAgent = AgentManager.getInstance().getAgent(LoadingAgent.class);
+		return loadingAgent.associateArtifactGeneratedByProcess(knowledgeBase, processInstanceId, productId);
+	}
+	
+	public String instantiateActivity(String classId) throws CharonException{
 		LoadingAgent loadingAgent = AgentManager.getInstance().getAgent(LoadingAgent.class);
 		return loadingAgent.instantiate(knowledgeBase, classId);
 	}
 	
-	public String createSynchronism(KnowledgeBase knowledgeBase) throws CharonException{
+	public String instantiateProcess(String classId) throws CharonException{
+		LoadingAgent loadingAgent = AgentManager.getInstance().getAgent(LoadingAgent.class);
+		return loadingAgent.instantiate(knowledgeBase, classId);
+	}
+	
+	public String createSynchronism() throws CharonException{
 		LoadingAgent loadingAgent = AgentManager.getInstance().getAgent(LoadingAgent.class);
 		return loadingAgent.createSynchronism(knowledgeBase);
 	}
@@ -168,7 +174,7 @@ public class CharonAPI {
 		return enactmentAgent.notifyDecisionPointEnding(knowledgeBase, decisionPointId, context);
 	}
 
-	public String setArtifactData(String artifactId, byte[] data, String[] context) throws CharonException{
+	public boolean setArtifactData(String artifactId, byte[] data, String[] context) throws CharonException{
 		EnactmentAgent enactmentAgent = AgentManager.getInstance().getAgent(EnactmentAgent.class);
 		return enactmentAgent.setArtifactData(knowledgeBase, artifactId, data, context);
 	}

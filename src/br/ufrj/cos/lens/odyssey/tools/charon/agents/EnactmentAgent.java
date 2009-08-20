@@ -124,7 +124,7 @@ public class EnactmentAgent extends Agent {
 	/*
 	 * TODO: Fazer esse método...
 	 */
-	public String setArtifactData(KnowledgeBase knowledgeBase, String artifactId, byte[] data, String[] context){
+	public boolean setArtifactData(KnowledgeBase knowledgeBase, String artifactId, byte[] data, String[] context){
 		
 		/*
 		 * Armazenar dados do artefato em banco de dados
@@ -137,11 +137,7 @@ public class EnactmentAgent extends Agent {
 		String contextList = createContextList(context);
 		boolean isSolvable = knowledgeBase.isSolvable("assertz(artifactData('"+artifactId+"', '"+databaseId+"', '"+contextList+"')).");
 		disconnect();
-		if(isSolvable){
-			return SWFMSId;
-		}
-		else
-			return null;
+		return isSolvable;
 	}
 	
 	

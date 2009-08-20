@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 import javax.jmi.reflect.RefBaseObject;
 
@@ -36,6 +37,11 @@ public class Charon {
 	private KnowledgeBase knowledgeBase;
 	
 	/**
+	 * Charon's API
+	 */
+	private CharonAPI charonAPI;
+	
+	/**
 	 * Creates a Charon instance
 	 * 
 	 * @param repository Place where Charon will recover/store its knowledge base
@@ -49,6 +55,8 @@ public class Charon {
 		File file = new File(directory, FILE_NAME);
 		knowledgeBase = new KnowledgeBase(file);
 		AgentManager.getInstance().init();
+		
+		charonAPI = new CharonAPI(knowledgeBase);
 	}
 	
 	/**
@@ -143,4 +151,13 @@ public class Charon {
 		
 		return result;
 	}
+	
+	public CharonAPI getCharonAPI(){
+		return charonAPI;
+	}
+	
+	public List<Map<String,Object>> query(String goal){
+		return knowledgeBase.getAllSolutions(goal);
+	}
+	
 }

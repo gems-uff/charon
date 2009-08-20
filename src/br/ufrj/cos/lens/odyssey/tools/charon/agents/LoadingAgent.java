@@ -87,7 +87,7 @@ public class LoadingAgent extends Agent {
 			return null;
 	}
 	
-	public String defineProduct(KnowledgeBase knowledgeBase, String name, String type){
+	public String defineArtifact(KnowledgeBase knowledgeBase, String name, String type){
 		connect(knowledgeBase);
 		String productId = String.valueOf(System.currentTimeMillis());
 		boolean isSolvable = knowledgeBase.isSolvable("assertz(product('"+productId+"'), productName('"+productId+"', '"+name+"'), productType('"+productId+"', '"+type+"')).");
@@ -99,25 +99,25 @@ public class LoadingAgent extends Agent {
 			return null;
 	}
 	
-	public boolean associateProductUsedByActivity(KnowledgeBase knowledgeBase, String activityInstanceId, String productId){
+	public boolean associateArtifactUsedByActivity(KnowledgeBase knowledgeBase, String activityInstanceId, String productId){
 		connect(knowledgeBase);
 		boolean isSolvable = knowledgeBase.isSolvable("assertz(transition(activity('"+activityInstanceId+"'), product('"+productId+"'))).");
 		return isSolvable;
 	}
 	
-	public boolean associateProductUsedByProcess(KnowledgeBase knowledgeBase, String processInstanceId, String productId){
+	public boolean associateArtifactUsedByProcess(KnowledgeBase knowledgeBase, String processInstanceId, String productId){
 		connect(knowledgeBase);
 		boolean isSolvable = knowledgeBase.isSolvable("assertz(transition(process('"+processInstanceId+"'), product('"+productId+"'))).");
 		return isSolvable;
 	}
 	
-	public boolean associateProductGeneratedByActivity(KnowledgeBase knowledgeBase, String activityInstanceId, String productId){
+	public boolean associateArtifactGeneratedByActivity(KnowledgeBase knowledgeBase, String activityInstanceId, String productId){
 		connect(knowledgeBase);
 		boolean isSolvable = knowledgeBase.isSolvable("assertz(transition(product('"+productId+"'), activity('"+activityInstanceId+"'))).");
 		return isSolvable;
 	}
 	
-	public boolean associateProductGeneratedByProcess(KnowledgeBase knowledgeBase, String processInstanceId, String productId){
+	public boolean associateArtifactGeneratedByProcess(KnowledgeBase knowledgeBase, String processInstanceId, String productId){
 		connect(knowledgeBase);
 		boolean isSolvable = knowledgeBase.isSolvable("assertz(transition(product('"+productId+"'), process('"+processInstanceId+"'))).");
 		return isSolvable;
