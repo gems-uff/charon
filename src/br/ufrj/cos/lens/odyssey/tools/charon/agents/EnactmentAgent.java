@@ -66,12 +66,12 @@ public class EnactmentAgent extends Agent {
 	
 	public String intializeExperimentExecution(KnowledgeBase knowledgeBase, String experimentId){
 		connect(knowledgeBase);
-		String processId = String.valueOf(System.currentTimeMillis());
+		String processInstanceId = String.valueOf(System.currentTimeMillis());
 		long currentTime = System.currentTimeMillis() / 1000;
-		boolean isSolvable = knowledgeBase.isSolvable("start(experiment('"+experimentId+"'), '"+processId+"', '"+currentTime+"').");
+		boolean isSolvable = knowledgeBase.isSolvable("start(experiment('"+experimentId+"'), '"+processInstanceId+"', '"+currentTime+"').");
 		disconnect();
 		if(isSolvable){
-			return processId;
+			return processInstanceId;
 		}
 		else
 			return null;
