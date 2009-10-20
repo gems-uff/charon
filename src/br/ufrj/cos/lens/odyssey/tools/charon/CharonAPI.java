@@ -120,9 +120,9 @@ public class CharonAPI {
 		return loadingAgent.associateElementToProcessWorkflow(knowledgeBase, processId, elementType, elementId);
 	}
 	
-	public boolean defineFlow(int originElementType, String originElementId, int destinationElementType, String destinationElementId) throws CharonException{
+	public boolean defineFlow(String processId, int originElementType, String originElementId, int destinationElementType, String destinationElementId) throws CharonException{
 		LoadingAgent loadingAgent = AgentManager.getInstance().getAgent(LoadingAgent.class);
-		return loadingAgent.defineFlow(knowledgeBase, originElementType, originElementId, destinationElementType, destinationElementId);
+		return loadingAgent.defineFlow(knowledgeBase, processId, originElementType, originElementId, destinationElementType, destinationElementId);
 	}
 	
 	public String createParameter(String name, String type, String value) throws CharonException{

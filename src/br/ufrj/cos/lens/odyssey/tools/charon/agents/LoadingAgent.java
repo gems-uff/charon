@@ -3,6 +3,7 @@ package br.ufrj.cos.lens.odyssey.tools.charon.agents;
 import java.util.HashMap;
 
 import br.ufrj.cos.lens.odyssey.tools.charon.KnowledgeBase;
+import br.ufrj.cos.lens.odyssey.tools.charon.util.IDGenerator;
 
 /**
  * This class is responsible for loading single workflow information into knowledge base.
@@ -25,8 +26,8 @@ public class LoadingAgent extends Agent {
 	
 	public String createExperiment(KnowledgeBase knowledgeBase, String name){
 		connect(knowledgeBase);
-		String experimentId = String.valueOf(System.currentTimeMillis());
-		boolean isSolvable = knowledgeBase.isSolvable("assertz(experiment('"+experimentId+"'), experimentName('"+experimentId+"', '"+name+"')).");
+		String experimentId = IDGenerator.generateID();
+		boolean isSolvable = knowledgeBase.isSolvable("assertz(experiment('"+experimentId+"')), assertz(experimentName('"+experimentId+"', '"+name+"')).");
 		disconnect();
 		if(isSolvable){
 			return experimentId;
@@ -44,8 +45,8 @@ public class LoadingAgent extends Agent {
 
 	public String registerSGWf(KnowledgeBase knowledgeBase, String name, String host){
 		connect(knowledgeBase);
-		String SWFMSId = String.valueOf(System.currentTimeMillis());
-		boolean isSolvable = knowledgeBase.isSolvable("assertz(SWfMS('"+SWFMSId+"'), SWfMSName('"+SWFMSId+"', '"+name+"'), SWfMSHost('"+SWFMSId+"', '"+host+"')).");
+		String SWFMSId = IDGenerator.generateID();;
+		boolean isSolvable = knowledgeBase.isSolvable("assertz(SWfMS('"+SWFMSId+"')), assertz(SWfMSName('"+SWFMSId+"', '"+name+"')), assertz(SWfMSHost('"+SWFMSId+"', '"+host+"')).");
 		disconnect();
 		if(isSolvable){
 			return SWFMSId;
@@ -63,10 +64,10 @@ public class LoadingAgent extends Agent {
 	
 	public String defineProcess(KnowledgeBase knowledgeBase, String type, String name){
 		connect(knowledgeBase);
-		String processClassId = String.valueOf(System.currentTimeMillis());
-		boolean isSolvable = knowledgeBase.isSolvable("assertz(process('"+processClassId+"'), processType('"+processClassId+"', '"+type+"'), processName('"+processClassId+"', '"+name+"')," +
-				"initial('"+processClassId+"'), final('"+processClassId+"'), synchronism('"+processClassId+"')," +
-				"transition(synchronism('"+processClassId+"'), final('"+processClassId+"'))).");
+		String processClassId = IDGenerator.generateID();;
+		boolean isSolvable = knowledgeBase.isSolvable("assertz(process('"+processClassId+"')), assertz(processType('"+processClassId+"', '"+type+"')), assertz(processName('"+processClassId+"', '"+name+"'))," +
+				"assertz(initial('"+processClassId+"')), assertz(final('"+processClassId+"')), assertz(synchronism('"+processClassId+"'))," +
+				"assertz(transition(synchronism('"+processClassId+"'), final('"+processClassId+"'))).");
 		disconnect();
 		if(isSolvable){
 			return processClassId;
@@ -77,8 +78,8 @@ public class LoadingAgent extends Agent {
 	
 	public String defineActivity(KnowledgeBase knowledgeBase, String type, String name){
 		connect(knowledgeBase);
-		String activityClassId = String.valueOf(System.currentTimeMillis());
-		boolean isSolvable = knowledgeBase.isSolvable("assertz(activity('"+activityClassId+"'), activityType('"+activityClassId+"', '"+type+"'), activityName('"+activityClassId+"', '"+name+"')).");
+		String activityClassId = IDGenerator.generateID();;
+		boolean isSolvable = knowledgeBase.isSolvable("assertz(activity('"+activityClassId+"')), assertz(activityType('"+activityClassId+"', '"+type+"')), assertz(activityName('"+activityClassId+"', '"+name+"')).");
 		disconnect();
 		if(isSolvable){
 			return activityClassId;
@@ -89,8 +90,8 @@ public class LoadingAgent extends Agent {
 	
 	public String defineArtifact(KnowledgeBase knowledgeBase, String type, String name){
 		connect(knowledgeBase);
-		String productId = String.valueOf(System.currentTimeMillis());
-		boolean isSolvable = knowledgeBase.isSolvable("assertz(product('"+productId+"'), productName('"+productId+"', '"+name+"'), productType('"+productId+"', '"+type+"')).");
+		String productId = IDGenerator.generateID();;
+		boolean isSolvable = knowledgeBase.isSolvable("assertz(product('"+productId+"')), assertz(productName('"+productId+"', '"+name+"')), assertz(productType('"+productId+"', '"+type+"')).");
 		disconnect();
 		if(isSolvable){
 			return productId;
@@ -125,7 +126,7 @@ public class LoadingAgent extends Agent {
 	
 	public String instantiate(KnowledgeBase knowledgeBase, String classId){
 		connect(knowledgeBase);
-		String instanceId = String.valueOf(System.currentTimeMillis());
+		String instanceId = IDGenerator.generateID();;
 		boolean isSolvable = knowledgeBase.isSolvable("assertz(type('"+instanceId+"', '"+classId+"')).");
 		disconnect();
 		if(isSolvable){
@@ -138,7 +139,7 @@ public class LoadingAgent extends Agent {
 	
 	public String createSynchronism(KnowledgeBase knowledgeBase){
 		connect(knowledgeBase);
-		String synchronismId = String.valueOf(System.currentTimeMillis());
+		String synchronismId = IDGenerator.generateID();;
 		boolean isSolvable = knowledgeBase.isSolvable("assertz(synchronism('"+synchronismId+"')).");
 		disconnect();
 		if(isSolvable)
@@ -149,7 +150,7 @@ public class LoadingAgent extends Agent {
 	
 	public String createDecision(KnowledgeBase knowledgeBase, String name){
 		connect(knowledgeBase);
-		String decisionId = String.valueOf(System.currentTimeMillis());
+		String decisionId = IDGenerator.generateID();;
 		boolean isSolvable = knowledgeBase.isSolvable("assertz(decision('"+decisionId+"', '"+name+"')).");
 		disconnect();
 		if(isSolvable)
@@ -176,23 +177,23 @@ public class LoadingAgent extends Agent {
 		boolean isSolvable = false;
 		
 		if(elementType == 1 || elementType == 2 || elementType == 3){
-			isSolvable = knowledgeBase.isSolvable("assertz(transition(initial('"+processId+"'), "+createElement(elementType, elementId)+"), transition("+createElement(elementType, elementId)+"), synchronism('"+processId+"')).");
+			isSolvable = knowledgeBase.isSolvable("assertz(transition(initial('"+processId+"'), "+createElement(elementType, elementId)+")), assertz(transition("+createElement(elementType, elementId)+", synchronism('"+processId+"'))).");
 		}
 		else if(elementType == 4){
-			isSolvable = knowledgeBase.isSolvable("assertz(transition(initial('"+processId+"'), "+createElement(elementType, elementId)+").");
+			isSolvable = knowledgeBase.isSolvable("assertz(transition(initial('"+processId+"'), "+createElement(elementType, elementId)+")).");
 		}
 		
 		disconnect();
 		return isSolvable;
 	}
 	
-	public boolean defineFlow(KnowledgeBase knowledgeBase, int originElementType, String originElementId, int destinationElementType, String destinationElementId){
+	public boolean defineFlow(KnowledgeBase knowledgeBase, String processId, int originElementType, String originElementId, int destinationElementType, String destinationElementId){
 		connect(knowledgeBase);
 		boolean isSolvable = knowledgeBase.isSolvable("assertz(transition("+createElement(originElementType, originElementId)+", "+createElement(destinationElementType, destinationElementId)+")).");
 		
 		if(isSolvable){
-			knowledgeBase.isSolvable("retract(transition("+createElement(originElementType, originElementId)+", synchronism("+")).");
-			knowledgeBase.isSolvable("retract(transition(initial(), "+createElement(destinationElementType, destinationElementId)+")).");
+			knowledgeBase.isSolvable("retract(transition("+createElement(originElementType, originElementId)+", synchronism('"+processId+"'))).");
+			knowledgeBase.isSolvable("retract(transition(initial('"+processId+"'), "+createElement(destinationElementType, destinationElementId)+")).");
 		}
 		disconnect();
 		return isSolvable;
@@ -200,9 +201,9 @@ public class LoadingAgent extends Agent {
 	
 	public String createParameter(KnowledgeBase knowledgeBase, String name, String type, String value){
 		connect(knowledgeBase);
-		String parameterId = String.valueOf(System.currentTimeMillis());
-		boolean isSolvable = knowledgeBase.isSolvable("assertz(parameter('"+parameterId+"'), parameterName('"+parameterId+"', '"+name+"')," +
-				"parameterType('"+parameterId+"', '"+type+"'), parameterValue('"+parameterId+"', '"+value+"')).");
+		String parameterId = IDGenerator.generateID();;
+		boolean isSolvable = knowledgeBase.isSolvable("assertz(parameter('"+parameterId+"')), assertz(parameterName('"+parameterId+"', '"+name+"'))," +
+				"assertz(parameterType('"+parameterId+"', '"+type+"')), assertz(parameterValue('"+parameterId+"', '"+value+"')).");
 		disconnect();
 		if(isSolvable){
 			return parameterId;
