@@ -133,4 +133,11 @@ public class KnowledgeBase {
 			throw new CharonException("Could not save the knowledge base", e);
 		}
 	}
+	
+	/**
+	 * Cleans the content of the knowledge base
+	 */
+	public void clean() throws CharonException {
+		inferenceMachine = new InferenceMachine();
+	}
 }

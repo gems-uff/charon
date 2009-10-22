@@ -1,5 +1,6 @@
 package br.ufrj.cos.lens.odyssey.tools.charon;
 
+import br.ufrj.cos.lens.odyssey.tools.charon.agents.AdminAgent;
 import br.ufrj.cos.lens.odyssey.tools.charon.agents.EnactmentAgent;
 import br.ufrj.cos.lens.odyssey.tools.charon.agents.LoadingAgent;
 
@@ -182,6 +183,16 @@ public class CharonAPI {
 	public boolean publishArtifactDataLocation(String artifactId, String[] context, String hostURL, String hostLocalPath) throws CharonException{
 		EnactmentAgent enactmentAgent = AgentManager.getInstance().getAgent(EnactmentAgent.class);
 		return enactmentAgent.publishArtifactDataLocation(knowledgeBase, artifactId, context, hostURL, hostLocalPath);
+	}
+	
+	
+	/*
+	 * Administrative operations
+	 */
+	
+	public void cleanKnowledgeBase() throws CharonException{
+		AdminAgent adminAgent = AgentManager.getInstance().getAgent(AdminAgent.class);
+		adminAgent.cleanKnowledgeBase(knowledgeBase);
 	}
 	
 }

@@ -3,6 +3,7 @@ package br.ufrj.cos.lens.odyssey.tools.charon;
 import java.util.HashMap;
 import java.util.Map;
 
+import br.ufrj.cos.lens.odyssey.tools.charon.agents.AdminAgent;
 import br.ufrj.cos.lens.odyssey.tools.charon.agents.Agent;
 import br.ufrj.cos.lens.odyssey.tools.charon.agents.BacktrackingAgent;
 import br.ufrj.cos.lens.odyssey.tools.charon.agents.EnactmentAgent;
@@ -53,6 +54,7 @@ public class AgentManager {
 		getAgent(BacktrackingAgent.class);
 		getAgent(EnactmentAgent.class);
 		getAgent(LoadingAgent.class);
+		getAgent(AdminAgent.class);
 	}
 	
 	/**
