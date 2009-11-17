@@ -66,29 +66,29 @@ public class CharonAPI {
 		return loadingAgent.defineActivity(knowledgeBase, type, name);
 	}
 	
-	public String defineArtifact(String type, String name) throws CharonException{
+	public String defineArtifact(String type) throws CharonException{
 		LoadingAgent loadingAgent = AgentManager.getInstance().getAgent(LoadingAgent.class);
-		return loadingAgent.defineArtifact(knowledgeBase, type, name);
+		return loadingAgent.defineArtifact(knowledgeBase, type);
 	}
 	
-	public boolean associateArtifactUsedByActivity(String activityInstanceId, String productId) throws CharonException{
+	public boolean associateArtifactUsedByActivity(String activityInstanceId, String artifactId, String artifactName) throws CharonException{
 		LoadingAgent loadingAgent = AgentManager.getInstance().getAgent(LoadingAgent.class);
-		return loadingAgent.associateArtifactUsedByActivity(knowledgeBase, activityInstanceId, productId);
+		return loadingAgent.associateArtifactUsedByActivity(knowledgeBase, activityInstanceId, artifactId, artifactName);
 	}
 	
-	public boolean associateArtifactUsedByProcess(String processInstanceId, String productId) throws CharonException{
+	public boolean associateArtifactUsedByProcess(String processInstanceId, String artifactId, String artifactName) throws CharonException{
 		LoadingAgent loadingAgent = AgentManager.getInstance().getAgent(LoadingAgent.class);
-		return loadingAgent.associateArtifactUsedByProcess(knowledgeBase, processInstanceId, productId);
+		return loadingAgent.associateArtifactUsedByProcess(knowledgeBase, processInstanceId, artifactId, artifactName);
 	}
 	
-	public boolean associateArtifactGeneratedByActivity(String activityInstanceId, String productId) throws CharonException{
+	public boolean associateArtifactGeneratedByActivity(String activityInstanceId, String artifactId, String artifactName) throws CharonException{
 		LoadingAgent loadingAgent = AgentManager.getInstance().getAgent(LoadingAgent.class);
-		return loadingAgent.associateArtifactGeneratedByActivity(knowledgeBase, activityInstanceId, productId);
+		return loadingAgent.associateArtifactGeneratedByActivity(knowledgeBase, activityInstanceId, artifactId, artifactName);
 	}
 	
-	public boolean associateArtifactGeneratedByProcess(String processInstanceId, String productId) throws CharonException{
+	public boolean associateArtifactGeneratedByProcess(String processInstanceId, String artifactId, String artifactName) throws CharonException{
 		LoadingAgent loadingAgent = AgentManager.getInstance().getAgent(LoadingAgent.class);
-		return loadingAgent.associateArtifactGeneratedByProcess(knowledgeBase, processInstanceId, productId);
+		return loadingAgent.associateArtifactGeneratedByProcess(knowledgeBase, processInstanceId, artifactId, artifactName);
 	}
 	
 	public String instantiateActivity(String classId) throws CharonException{
@@ -127,18 +127,18 @@ public class CharonAPI {
 	}
 	
 	public String createParameter(String name, String type, String value) throws CharonException{
-		LoadingAgent enactmentAgent = AgentManager.getInstance().getAgent(LoadingAgent.class);
-		return enactmentAgent.createParameter(knowledgeBase, name, type, value);	
+		LoadingAgent loadingAgent = AgentManager.getInstance().getAgent(LoadingAgent.class);
+		return loadingAgent.createParameter(knowledgeBase, name, type, value);	
 	}
 	
 	public boolean associateParameterToActivity(String parameterId, String activityInstanceId) throws CharonException{
-		LoadingAgent enactmentAgent = AgentManager.getInstance().getAgent(LoadingAgent.class);
-		return enactmentAgent.associateParameterToActivity(knowledgeBase, parameterId, activityInstanceId);	
+		LoadingAgent loadingAgent = AgentManager.getInstance().getAgent(LoadingAgent.class);
+		return loadingAgent.associateParameterToActivity(knowledgeBase, parameterId, activityInstanceId);	
 	}
 	
 	public boolean associateParameterToProcess(String parameterId, String processInstanceId) throws CharonException{
-		LoadingAgent enactmentAgent = AgentManager.getInstance().getAgent(LoadingAgent.class);
-		return enactmentAgent.associateParameterToProcess(knowledgeBase, parameterId, processInstanceId);
+		LoadingAgent loadingAgent = AgentManager.getInstance().getAgent(LoadingAgent.class);
+		return loadingAgent.associateParameterToProcess(knowledgeBase, parameterId, processInstanceId);
 	}
 	
 	/*

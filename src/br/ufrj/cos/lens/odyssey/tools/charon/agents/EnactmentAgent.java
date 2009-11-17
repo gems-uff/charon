@@ -69,8 +69,7 @@ public class EnactmentAgent extends Agent {
 		connect(knowledgeBase);
 		String processInstanceId = IDGenerator.generateID();
 		long currentTime = System.currentTimeMillis() / 1000;
-//		boolean isSolvable = knowledgeBase.isSolvable("start(experiment('"+experimentId+"'), '"+processInstanceId+"', "+currentTime+").");
-		boolean isSolvable = knowledgeBase.isSolvable("assertz(type('9', '2')), start(process('9'), [], "+currentTime+").");
+		boolean isSolvable = knowledgeBase.isSolvable("start(experiment('"+experimentId+"'), '"+processInstanceId+"', "+currentTime+").");
 		disconnect();
 		if(isSolvable){
 			return processInstanceId;
@@ -135,10 +134,9 @@ public class EnactmentAgent extends Agent {
 		
 		
 		connect(knowledgeBase);
-		String SWFMSId = IDGenerator.generateID();
 		String contextList = createContextList(context);
 //		boolean isSolvable = knowledgeBase.isSolvable("assertz(artifactData('"+artifactId+"', '"+databaseId+"', '"+contextList+"')).");
-		boolean isSolvable = knowledgeBase.isSolvable("assertz(artifactData('"+artifactId+"', '"+contextList+"', '"+new String(data)+"')).");
+		boolean isSolvable = knowledgeBase.isSolvable("assertz(productData('"+artifactId+"', "+contextList+", '"+new String(data)+"')).");
 		disconnect();
 		return isSolvable;
 	}
@@ -147,7 +145,7 @@ public class EnactmentAgent extends Agent {
 		
 		connect(knowledgeBase);
 		String contextList = createContextList(context);
-		boolean isSolvable = knowledgeBase.isSolvable("assertz(artifactDataLocation('"+artifactId+"', '"+contextList+"', '"+hostURL+"', '"+hostLocalPath+"')).");
+		boolean isSolvable = knowledgeBase.isSolvable("assertz(productDataLocation('"+artifactId+"', "+contextList+", '"+hostURL+"', '"+hostLocalPath+"')).");
 		disconnect();
 		return isSolvable;
 
@@ -174,7 +172,7 @@ public class EnactmentAgent extends Agent {
 		if (rules == null) {
 			rules = new ArrayList<String>();
 
-			rules.add("(start(experiment(experimentId), IdP, T) :- !, experimentRootProcess(experimentId, IdC), assertz(type(IdP, IdC)), start(process(IdP), [], T))");
+			rules.add("(start(experiment(IdE), IdP, T) :- !, experimentRootProcess(IdE, IdC), assertz(type(IdP, IdC)), start(process(IdP), [], T))");
 			
 			rules.add("start([],_,_)");
 			rules.add("(start([E|Es], P, T) :- start(E, P, T), !, start(Es, P, T))");
