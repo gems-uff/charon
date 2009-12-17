@@ -18,6 +18,7 @@ import br.ufrj.cos.lens.odyssey.tools.charon.agents.SimulationAgent;
 import br.ufrj.cos.lens.odyssey.tools.charon.entities.CharonActivity;
 import br.ufrj.cos.lens.odyssey.tools.charon.entities.CharonDecision;
 import br.ufrj.cos.lens.odyssey.tools.charon.entities.CharonElement;
+import br.ufrj.cos.lens.odyssey.tools.inference.InferenceMachine;
 
 /**
  * This class is responsible for providing access to the Charon process machine
@@ -54,6 +55,14 @@ public class Charon {
 		
 		File file = new File(directory, FILE_NAME);
 		knowledgeBase = new KnowledgeBase(file);
+		AgentManager.getInstance().init();
+		
+		charonAPI = new CharonAPI(knowledgeBase);
+	}
+	
+	public Charon(String database, String user, String password) throws CharonException {
+		
+		knowledgeBase = new KnowledgeBase(database, user, password);
 		AgentManager.getInstance().init();
 		
 		charonAPI = new CharonAPI(knowledgeBase);

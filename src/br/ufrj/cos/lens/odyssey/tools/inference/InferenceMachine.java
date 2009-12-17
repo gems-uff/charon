@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.sql.DatabaseMetaData;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -52,6 +53,7 @@ public class InferenceMachine {
 		
 		Theory theory = new Theory(new FileInputStream(file));
 		inferenceMachine.addTheory(theory);
+
 	}
 
 	/**

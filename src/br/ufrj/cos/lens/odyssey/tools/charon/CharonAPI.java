@@ -93,12 +93,12 @@ public class CharonAPI {
 	
 	public String instantiateActivity(String classId) throws CharonException{
 		LoadingAgent loadingAgent = AgentManager.getInstance().getAgent(LoadingAgent.class);
-		return loadingAgent.instantiate(knowledgeBase, classId);
+		return loadingAgent.instantiateActivity(knowledgeBase, classId);
 	}
 	
 	public String instantiateProcess(String classId) throws CharonException{
 		LoadingAgent loadingAgent = AgentManager.getInstance().getAgent(LoadingAgent.class);
-		return loadingAgent.instantiate(knowledgeBase, classId);
+		return loadingAgent.instantiateProcess(knowledgeBase, classId);
 	}
 	
 	public String createSynchronism() throws CharonException{
@@ -175,9 +175,9 @@ public class CharonAPI {
 		return enactmentAgent.notifyDecisionPointEnding(knowledgeBase, decisionPointId, context);
 	}
 
-	public boolean setArtifactData(String artifactId, String[] context, byte[] data) throws CharonException{
+	public boolean setArtifactValue(String artifactId, String[] context, String value) throws CharonException{
 		EnactmentAgent enactmentAgent = AgentManager.getInstance().getAgent(EnactmentAgent.class);
-		return enactmentAgent.setArtifactData(knowledgeBase, artifactId, context, data);
+		return enactmentAgent.setArtifactValue(knowledgeBase, artifactId, context, value);
 	}
 	
 	public boolean publishArtifactDataLocation(String artifactId, String[] context, String hostURL, String hostLocalPath) throws CharonException{
