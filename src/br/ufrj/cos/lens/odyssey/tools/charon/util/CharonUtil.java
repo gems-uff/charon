@@ -35,7 +35,7 @@ public class CharonUtil {
 	/**
 	 * <i>Constante.</i>
 	 */
-	public static final String PRODUCT = "7";
+	public static final String ARTIFACT = "7";
 	
 	/**
 	 * <i>Constante.</i>
@@ -73,7 +73,7 @@ public class CharonUtil {
 		if(elementType.equals(FINAL))
 			return "final('"+elementType+"')";
 		else
-		if(elementType.equals(PRODUCT))
+		if(elementType.equals(ARTIFACT))
 			return "product('"+elementType+"')";
 		else return null;
 	}
