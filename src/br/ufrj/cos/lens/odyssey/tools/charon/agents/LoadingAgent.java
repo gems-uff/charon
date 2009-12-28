@@ -3,6 +3,7 @@ package br.ufrj.cos.lens.odyssey.tools.charon.agents;
 import java.util.HashMap;
 
 import br.ufrj.cos.lens.odyssey.tools.charon.KnowledgeBase;
+import br.ufrj.cos.lens.odyssey.tools.charon.util.CharonUtil;
 import br.ufrj.cos.lens.odyssey.tools.charon.util.IDGenerator;
 
 /**
@@ -67,7 +68,7 @@ public class LoadingAgent extends Agent {
 		String processClassId = IDGenerator.generateID();;
 		boolean isSolvable = knowledgeBase.isSolvable("assertz_process('"+processClassId+"', '"+name+"', '"+type+"')," +
 				"assertz_initial('"+processClassId+"'), assertz_final('"+processClassId+"'), assertz_synchronism('"+processClassId+"')," +
-				"assertz_transition('3', '"+processClassId+"', '6', '"+processClassId+"').");
+				"assertz_transition('"+CharonUtil.SYNCHRONISM+"', '"+processClassId+"', '"+CharonUtil.FINAL+"', '"+processClassId+"').");
 		disconnect();
 		if(isSolvable){
 			return processClassId;
@@ -102,28 +103,28 @@ public class LoadingAgent extends Agent {
 	
 	public boolean associateArtifactGeneratedByActivity(KnowledgeBase knowledgeBase, String activityInstanceId, String artifactId, String artifactName){
 		connect(knowledgeBase);
-		boolean isSolvable = knowledgeBase.isSolvable("assertz_transition('2', '"+activityInstanceId+"', '6', '"+artifactId+"'), assertz_activity_productName('"+activityInstanceId+"', '"+artifactId+"', '"+artifactName+"').");
+		boolean isSolvable = knowledgeBase.isSolvable("assertz_transition('"+CharonUtil.ACTIVITY+"', '"+activityInstanceId+"', '"+CharonUtil.PRODUCT+"', '"+artifactId+"'), assertz_activity_productName('"+activityInstanceId+"', '"+artifactId+"', '"+artifactName+"').");
 		disconnect();
 		return isSolvable;
 	}
 	
 	public boolean associateArtifactGeneratedByProcess(KnowledgeBase knowledgeBase, String processInstanceId, String artifactId, String artifactName){
 		connect(knowledgeBase);
-		boolean isSolvable = knowledgeBase.isSolvable("assertz_transition('2', '"+processInstanceId+"', '6', '"+artifactId+"'), assertz_process_productName('"+processInstanceId+"', '"+artifactId+"', '"+artifactName+"').");
+		boolean isSolvable = knowledgeBase.isSolvable("assertz_transition('"+CharonUtil.PROCESS+"', '"+processInstanceId+"', '"+CharonUtil.PRODUCT+"', '"+artifactId+"'), assertz_process_productName('"+processInstanceId+"', '"+artifactId+"', '"+artifactName+"').");
 		disconnect();
 		return isSolvable;
 	}
 	
 	public boolean associateArtifactUsedByActivity(KnowledgeBase knowledgeBase, String activityInstanceId, String artifactId, String artifactName){
 		connect(knowledgeBase);
-		boolean isSolvable = knowledgeBase.isSolvable("assertz_transition('6', '"+artifactId+"', '1', '"+activityInstanceId+"'), assertz_activity_productName('"+activityInstanceId+"', '"+artifactId+"', '"+artifactName+"').");
+		boolean isSolvable = knowledgeBase.isSolvable("assertz_transition('"+CharonUtil.PRODUCT+"', '"+artifactId+"', '"+CharonUtil.ACTIVITY+"', '"+activityInstanceId+"'), assertz_activity_productName('"+activityInstanceId+"', '"+artifactId+"', '"+artifactName+"').");
 		disconnect();
 		return isSolvable;
 	}
 	
 	public boolean associateArtifactUsedByProcess(KnowledgeBase knowledgeBase, String processInstanceId, String artifactId, String artifactName){
 		connect(knowledgeBase);
-		boolean isSolvable = knowledgeBase.isSolvable("assertz_transition('6', '"+artifactId+"', '2', '"+processInstanceId+"'), assertz_process_productName('"+processInstanceId+"', '"+artifactId+"', '"+artifactName+"').");
+		boolean isSolvable = knowledgeBase.isSolvable("assertz_transition('"+CharonUtil.PRODUCT+"', '"+artifactId+"', '"+CharonUtil.PROCESS+"', '"+processInstanceId+"'), assertz_process_productName('"+processInstanceId+"', '"+artifactId+"', '"+artifactName+"').");
 		disconnect();
 		return isSolvable;
 	}
@@ -195,10 +196,10 @@ public class LoadingAgent extends Agent {
 		
 		if(elementType == 1 || elementType == 2 || elementType == 3){
 			//isSolvable = knowledgeBase.isSolvable("assertz(transition(initial('"+processId+"'), "+createElement(elementType, elementId)+")), assertz(transition("+createElement(elementType, elementId)+", synchronism('"+processId+"'))).");
-			isSolvable = knowledgeBase.isSolvable("assertz_transition('5', '"+processId+"', '"+elementType+"', '" + elementId+"'), assertz(transition('"+elementType+"', '" + elementId+ "', '3', '" +processId+"').");
+			isSolvable = knowledgeBase.isSolvable("assertz_transition('"+CharonUtil.INITIAL+"', '"+processId+"', '"+elementType+"', '" + elementId+"'), assertz_transition('"+elementType+"', '" + elementId+ "', '"+CharonUtil.SYNCHRONISM+"', '" +processId+"').");
 		}
 		else if(elementType == 4){
-			isSolvable = knowledgeBase.isSolvable("assertz_transition('5', '"+processId+"', '"+elementType+"', '" + elementId+"').");
+			isSolvable = knowledgeBase.isSolvable("assertz_transition('"+CharonUtil.INITIAL+"', '"+processId+"', '"+elementType+"', '" + elementId+"').");
 		}
 		
 		disconnect();
@@ -210,8 +211,8 @@ public class LoadingAgent extends Agent {
 		boolean isSolvable = knowledgeBase.isSolvable("assertz_transition('"+originElementType+"', '" + originElementId+"', '"+destinationElementType+"', '"+destinationElementId+"').");
 		
 		if(isSolvable){
-			knowledgeBase.isSolvable("retract_transition('"+originElementType+"', '" + originElementId+"', '3', '" +processId+"').");
-			knowledgeBase.isSolvable("retract_transition('5', '"+processId+"', '"+destinationElementType+"', '"+destinationElementId+"').");
+			knowledgeBase.isSolvable("retract_transition('"+originElementType+"', '" + originElementId+"', '"+CharonUtil.SYNCHRONISM+"', '" +processId+"').");
+			knowledgeBase.isSolvable("retract_transition('"+CharonUtil.INITIAL+"', '"+processId+"', '"+destinationElementType+"', '"+destinationElementId+"').");
 		}
 		disconnect();
 		return isSolvable;

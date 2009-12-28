@@ -3,6 +3,7 @@ package br.ufrj.cos.lens.odyssey.tools.charon;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -13,6 +14,9 @@ import java.util.logging.Logger;
 import spem.SpemPackage;
 import br.ufrj.cos.lens.odyssey.tools.charon.agents.Agent;
 import br.ufrj.cos.lens.odyssey.tools.charon.agents.MappingAgent;
+import br.ufrj.cos.lens.odyssey.tools.charon.util.CharonUtil;
+import br.ufrj.cos.lens.odyssey.tools.charon.util.IDGenerator;
+import br.ufrj.cos.lens.odyssey.tools.charon.util.MysqlConnector;
 import br.ufrj.cos.lens.odyssey.tools.inference.InferenceMachine;
 
 /**
@@ -81,7 +85,12 @@ public class KnowledgeBase {
 		
 		inferenceMachine = new InferenceMachine();
 		
-		loadFromDataBase();
+		try {
+			loadFromDataBase();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 		setCharonRules(true);
 		
@@ -91,13 +100,13 @@ public class KnowledgeBase {
 
 		ArrayList<String> charonRules = new ArrayList<String>();
 		
-		charonRules.add("(createElement(ElementId, '1', activity(ElementId)))");
-		charonRules.add("(createElement(ElementId, '2', process(ElementId)))");
-		charonRules.add("(createElement(ElementId, '3', synchronism(ElementId)))");
-		charonRules.add("(createElement(ElementId, '4', decision(ElementId)))");
-		charonRules.add("(createElement(ElementId, '5', initial(ElementId)))");
-		charonRules.add("(createElement(ElementId, '6', final(ElementId)))");
-		charonRules.add("(createElement(ElementId, '7', product(ElementId)))");
+		charonRules.add("(createElement(ElementId, '"+CharonUtil.ACTIVITY+"', activity(ElementId)))");
+		charonRules.add("(createElement(ElementId, '"+CharonUtil.PROCESS+"', process(ElementId)))");
+		charonRules.add("(createElement(ElementId, '"+CharonUtil.SYNCHRONISM+"', synchronism(ElementId)))");
+		charonRules.add("(createElement(ElementId, '"+CharonUtil.DECISION+"', decision(ElementId)))");
+		charonRules.add("(createElement(ElementId, '"+CharonUtil.INITIAL+"', initial(ElementId)))");
+		charonRules.add("(createElement(ElementId, '"+CharonUtil.FINAL+"', final(ElementId)))");
+		charonRules.add("(createElement(ElementId, '"+CharonUtil.PRODUCT+"', product(ElementId)))");
 		
 		if(IsUsingDatabase){
 			charonRules.add("(concat(Str1, Str2, Str3) :- java_object('java.lang.StringBuffer', [Str1], Temp), Temp <- append(Str2), java_object('java.lang.String', [Temp], Str3))");
@@ -130,7 +139,7 @@ public class KnowledgeBase {
 			charonRules.add("(assertz_SWFMS(SWFMS_Id, SWFMS_Name, SWFMS_Host) :- assertz(swfms(SWFMS_Id)), assertz(swfmsName(SWFMS_Id, SWFMS_Name)), assertz(swfmsHost(SWFMS_Id, SWFMS_Host)), init_dbase('"+databaseLocation+"','"+user+"','"+password+"',Conn), createInsertCommand('SWFMS', ['id', 'name', 'host'], [SWFMS_Id, SWFMS_Name, SWFMS_Host], Query), exec(Conn, Query))");
 			charonRules.add("(assertz_parameter(ParameterId, ParameterName, ParameterType, ParameterValue) :- assertz(parameter(ParameterId)), assertz(parameterName(ParameterId, ParameterName)), assertz(parameterType(ParameterId, ParameterType)), assertz(parameterValue(ParameterId, ParameterValue)), init_dbase('"+databaseLocation+"','"+user+"','"+password+"',Conn), createInsertCommand('PARAMETER', ['id', 'name', 'type_', 'value_'], [ParameterId, ParameterName, ParameterType, ParameterValue], Query), exec(Conn, Query))");
 			charonRules.add("(assertz_synchronism(SynchronismId) :- assertz(synchronism(SynchronismId)), init_dbase('"+databaseLocation+"','"+user+"','"+password+"',Conn), createInsertCommand('SYNCHRONISM', ['id'], [SynchronismId], Query), exec(Conn, Query))");
-			charonRules.add("(assertz_option(OptionId, OptionName, ToElementType, ToElementId) :- createElement(ToElementId, ToElementType, ToElement), assertz(option(OptionId, OptionName, ToElement)), init_dbase('"+databaseLocation+"','"+user+"','"+password+"',Conn), createInsertCommand('OPTION', ['id', 'name'], [OptionId, OptionName], Query), exec(Conn, Query), createInsertCommand('TRANSITION', ['id_origin_element', 'type_origin_element', 'id_destination_element', 'type_destination_element'], [OptionId, '8', ToElementId, ToElementType], Query2), exec(Conn, Query2))");
+			charonRules.add("(assertz_option(OptionId, OptionName, ToElementType, ToElementId) :- createElement(ToElementId, ToElementType, ToElement), assertz(option(OptionId, OptionName, ToElement)), init_dbase('"+databaseLocation+"','"+user+"','"+password+"',Conn), createInsertCommand('OPTION', ['id', 'name'], [OptionId, OptionName], Query), exec(Conn, Query), createInsertCommand('TRANSITION', ['id_origin_element', 'type_origin_element', 'id_destination_element', 'type_destination_element'], [OptionId, '"+CharonUtil.OPTION+"', ToElementId, ToElementType], Query2), exec(Conn, Query2))");
 			charonRules.add("(assertz_decision(DecisionId, DecisionName) :- assertz(decision(DecisionId)), assertz(decisionName(DecisionId, DecisionName)), init_dbase('"+databaseLocation+"','"+user+"','"+password+"',Conn), createInsertCommand('DECISION', ['id', 'name'], [DecisionId, DecisionName], Query), exec(Conn, Query))");
 			charonRules.add("(assertz_initial(InitialId) :- assertz(initial(InitialId)), init_dbase('"+databaseLocation+"','"+user+"','"+password+"',Conn), createInsertCommand('INITIAL', ['id'], [InitialId], Query), exec(Conn, Query))");
 			charonRules.add("(assertz_final(FinalId) :- assertz(final(FinalId)), init_dbase('"+databaseLocation+"','"+user+"','"+password+"',Conn), createInsertCommand('FINAL', ['id'], [FinalId], Query), exec(Conn, Query))");
@@ -138,15 +147,19 @@ public class KnowledgeBase {
 			charonRules.add("(assertz_activityInstance(ActivityInstanceId, ActivityClassId) :- assertz(type(ActivityInstanceId, ActivityClassId)), init_dbase('"+databaseLocation+"','"+user+"','"+password+"',Conn), createInsertCommand('ACTIVITY_INSTANCE', ['instance_id', 'activity_id'], [ActivityInstanceId, ActivityClassId], Query), exec(Conn, Query))");
 			charonRules.add("(assertz_activityParameter(ActivityInstanceId, ParameterId) :- assertz(activityParameter(ActivityInstanceId, ParameterId)), init_dbase('"+databaseLocation+"','"+user+"','"+password+"',Conn), createInsertCommand('ACTIVITY_PARAMETER', ['id_instance_activity', 'id_parameter'], [ActivityInstanceId, ParameterId], Query), exec(Conn, Query))");
 			charonRules.add("(assertz_processParameter(ProcessInstanceId, ParameterId) :- assertz(processParameter(ProcessInstanceId, ParameterId)), init_dbase('"+databaseLocation+"','"+user+"','"+password+"',Conn), createInsertCommand('PROCESS_PARAMETER', ['id_instance_process', 'id_parameter'], [ProcessInstanceId, ParameterId], Query), exec(Conn, Query))");
-			charonRules.add("(assertz_transition(OriginElementType, OriginElementId, DestinationElementType, DestinationElementId) :- createElement(OriginElementId, OriginElementType, OriginElement), createElement(DestinationElementId, DestinationElementType, DestinationElement), init_dbase('"+databaseLocation+"','"+user+"','"+password+"',Conn), createInsertCommand('TRANSITION', ['id_origin_element', 'type_origin_element', 'id_destination_element', 'type_destination_element'], [OriginElementId, OriginElementType, DestinationElementId, DestinationElementType], Query), exec(Conn, Query))");
-			charonRules.add("(retract_transition(OriginElementType, OriginElementId, DestinationElementType, DestinationElementId) :- createElement(OriginElementId, OriginElementType, OriginElement), createElement(DestinationElementId, DestinationElementType, DestinationElement), init_dbase('"+databaseLocation+"','"+user+"','"+password+"',Conn), createInsertCommand('TRANSITION', ['id_origin_element', 'type_origin_element', 'id_destination_element', 'type_destination_element'], [OriginElementId, OriginElementType, DestinationElementId, DestinationElementType], Query), exec(Conn, Query))");
+			charonRules.add("(assertz_transition(OriginElementType, OriginElementId, DestinationElementType, DestinationElementId) :- createElement(OriginElementId, OriginElementType, OriginElement), createElement(DestinationElementId, DestinationElementType, DestinationElement), assertz(transition(OriginElement, DestinationElement)), init_dbase('"+databaseLocation+"','"+user+"','"+password+"',Conn), createInsertCommand('TRANSITION', ['id_origin_element', 'type_origin_element', 'id_destination_element', 'type_destination_element'], [OriginElementId, OriginElementType, DestinationElementId, DestinationElementType], Query), exec(Conn, Query))");
+			charonRules.add("(retract_transition(OriginElementType, OriginElementId, DestinationElementType, DestinationElementId) :- createElement(OriginElementId, OriginElementType, OriginElement), createElement(DestinationElementId, DestinationElementType, DestinationElement), retract(transition(OriginElement, DestinationElement)), init_dbase('"+databaseLocation+"','"+user+"','"+password+"',Conn), createDeleteCommand('TRANSITION', ['id_origin_element', 'type_origin_element', 'id_destination_element', 'type_destination_element'], [OriginElementId, OriginElementType, DestinationElementId, DestinationElementType], Query), exec(Conn, Query))");
 			charonRules.add("(assertz_product(ProductId, ProductType) :- assertz(product(ProductId)), assertz(productType(ProductId, ProductType)), init_dbase('"+databaseLocation+"','"+user+"','"+password+"',Conn), createInsertCommand('ARTIFACT', ['id', 'type_'], [ProductId, ProductType], Query), exec(Conn, Query))");
 			charonRules.add("(assertz_SWFMSProcess(SWFMSId, ProcessInstanceId) :- assertz(swfmsProcess(SWFMSId, ProcessInstanceId)), init_dbase('"+databaseLocation+"','"+user+"','"+password+"',Conn), createUpdateCommand('PROCESS_INSTANCE', ['swfms_id'], [SWFMSId], ['instance_id'], [ProcessInstanceId], Query), exec(Conn, Query))");
 			charonRules.add("(assertz_activity_productName(ActivityInstanceId, ArtifactId, ArtifactName) :- assertz(productName(ActivityInstanceId, ArtifactId, ArtifactName)), init_dbase('"+databaseLocation+"','"+user+"','"+password+"',Conn), createInsertCommand('ACTIVITY_ARTIFACT_NAME', ['id_instance_activity', 'id_artifact', 'name'], [ActivityInstanceId, ArtifactId, ArtifactName], Query), exec(Conn, Query))");
 			charonRules.add("(assertz_process_productName(ProcessInstanceId, ArtifactId, ArtifactName) :- assertz(productName(ProcessInstanceId, ArtifactId, ArtifactName)), init_dbase('"+databaseLocation+"','"+user+"','"+password+"',Conn), createInsertCommand('PROCESS_ARTIFACT_NAME', ['id_instance_process', 'id_artifact', 'name'], [ProcessInstanceId, ArtifactId, ArtifactName], Query), exec(Conn, Query))");
 			
-			charonRules.add("(assertz_executing(ElementType, ElementId, P, T, Performers) :- createElement(ElementId, ElementType, Element), listToString(P, PathList), listToString(Performers, PerformersList), assertz(executing(Element, P, T, Performers)), init_dbase('"+databaseLocation+"','"+user+"','"+password+"',Conn), createInsertCommand('EXECUTION_STATUS', ['id_element', 'type_element', 'status', 'start_time', 'path', 'performers'], [ElementId, ElementType, '1', T, PathList, PerformersList], Query), exec(Conn, Query))");
-			charonRules.add("(assertz_executed(ElementType, ElementId, P, Ti, Tf, Performers) :- createElement(ElementId, ElementType, Element), assertz(executed(Element, P, Ti, Tf, Performers)), init_dbase('"+databaseLocation+"','"+user+"','"+password+"',Conn), createUpdateCommand('EXECUTION_STATUS', ['status', 'end_time'], ['2', Tf], ['id_element', 'type_element'], [ElementId, ElementType], Query), exec(Conn, Query))");
+//			charonRules.add("(assertz_executing(ElementType, ElementId, P, T, Performers) :- createElement(ElementId, ElementType, Element), listToString(P, PathList), listToString(Performers, PerformersList), assertz(executing(Element, P, T, Performers)), init_dbase('"+databaseLocation+"','"+user+"','"+password+"',Conn), createInsertCommand('EXECUTION_STATUS', ['id_element', 'type_element', 'status', 'start_time', 'path', 'performers'], [ElementId, ElementType, '"+CharonUtil.EXECUTING_STATUS+"', T, PathList, PerformersList], Query), exec(Conn, Query))");
+//			charonRules.add("(assertz_executed(ElementType, ElementId, P, Ti, Tf, Performers) :- createElement(ElementId, ElementType, Element), assertz(executed(Element, P, Ti, Tf, Performers)), init_dbase('"+databaseLocation+"','"+user+"','"+password+"',Conn), createUpdateCommand('EXECUTION_STATUS', ['status', 'end_time'], ['"+CharonUtil.EXECUTED_STATUS+"', Tf], ['id_element', 'type_element'], [ElementId, ElementType], Query), exec(Conn, Query))");
+			
+			charonRules.add("(assertz_executing(ElementType, ElementId, P, T, Performers) :- createElement(ElementId, ElementType, Element), assertz(executing(Element, P, T, Performers)), init_dbase('"+databaseLocation+"','"+user+"','"+password+"',Conn), createInsertCommand('EXECUTION_STATUS', ['id_element', 'type_element', 'status', 'start_time', 'path', 'performers'], [ElementId, ElementType, '"+CharonUtil.EXECUTING_STATUS+"', T, '', ''], Query), exec(Conn, Query))");
+			charonRules.add("(assertz_executed(ElementType, ElementId, P, Ti, Tf, Performers) :- createElement(ElementId, ElementType, Element), assertz(executed(Element, P, Ti, Tf, Performers)), init_dbase('"+databaseLocation+"','"+user+"','"+password+"',Conn), createUpdateCommand('EXECUTION_STATUS', ['status', 'end_time'], ['"+CharonUtil.EXECUTED_STATUS+"', Tf], ['id_element', 'type_element'], [ElementId, ElementType], Query), exec(Conn, Query))");
+
 		}
 		else{
 			charonRules.add("(assertz_experiment(ExperimentId, ExperimentName) :- assertz(experiment(ExperimentId)), assertz(experimentName(ExperimentId, ExperimentName)))");
@@ -183,8 +196,252 @@ public class KnowledgeBase {
 		
 	}
 
-	private void loadFromDataBase() {
+	private void loadFromDataBase() throws Exception {
 		// TODO Auto-generated method stub
+		
+		MysqlConnector session = new MysqlConnector(databaseLocation, user, password);
+		session.connect();
+		
+		
+		//Load id
+		
+		ResultSet result = session.query("SELECT * FROM ID_CONTROL");
+		
+		while(result.next()){
+			String lastId = result.getString(1);
+			IDGenerator.setLastGeneratedID(lastId);
+		}
+
+		
+		//Load activities
+		
+		result = session.query("SELECT * FROM ACTIVITY");
+		
+		while(result.next()){
+			String activityId = result.getString(1);
+			String activityName = result.getString(2);
+			String activityType = result.getString(3);
+			
+			inferenceMachine.isSolvable("assertz(activity('"+activityId+"')), assertz(activityName('"+activityId+"', '"+activityName+"')), assertz(activityType('"+activityId+"', '"+activityType+"')).");
+		}
+		
+		//Load processes
+		
+		result = session.query("SELECT * FROM PROCESS");
+		
+		while(result.next()){
+			String processId = result.getString(1);
+			String processName = result.getString(2);
+			String processType = result.getString(3);
+			
+			inferenceMachine.isSolvable("assertz(process('"+processId+"')), assertz(processName('"+processId+"', '"+processName+"')), assertz(processType('"+processId+"', '"+processType+"')).");
+		}
+		
+		//Load synchronism points
+		
+		result = session.query("SELECT * FROM SYNCHRONISM");
+		
+		while(result.next()){
+			String synchronismId = result.getString(1);
+			
+			inferenceMachine.isSolvable("assertz(synchronism('"+synchronismId+"')).");
+		}
+		
+		//Load initial points
+		
+		result = session.query("SELECT * FROM INITIAL");
+		
+		while(result.next()){
+			String initialId = result.getString(1);
+			
+			inferenceMachine.isSolvable("assertz(initial('"+initialId+"')).");
+		}
+		
+		//Load final points
+		
+		result = session.query("SELECT * FROM FINAL");
+		
+		while(result.next()){
+			String finalId = result.getString(1);
+			
+			inferenceMachine.isSolvable("assertz(final('"+finalId+"')).");
+		}
+		
+		//Load decision points
+		
+		result = session.query("SELECT * FROM DECISION");
+		
+		while(result.next()){
+			String decisionId = result.getString(1);
+			String decisionName = result.getString(2);
+			
+			inferenceMachine.isSolvable("assertz(decision('"+decisionId+"')), assertz(decisionName('"+decisionId+"', '"+decisionName+"')).");
+		}
+		
+		//Load options
+		
+		result = session.query("SELECT * FROM OPTION_");
+		
+		while(result.next()){
+			String optionId = result.getString(1);
+			String optionName = result.getString(2);
+			
+			inferenceMachine.isSolvable("assertz(option('"+optionId+"')), assertz(optionName('"+optionId+"', '"+optionName+"')).");
+		}
+		
+		//Load artifacts
+		
+		result = session.query("SELECT * FROM ARTIFACT");
+		
+		while(result.next()){
+			String artifactId = result.getString(1);
+			String artifactType = result.getString(2);
+			
+			inferenceMachine.isSolvable("assertz(product('"+artifactId+"')), assertz(productType('"+artifactId+"', '"+artifactType+"')).");
+		}
+		
+		//Load parameters
+		
+		result = session.query("SELECT * FROM PARAMETER");
+		
+		while(result.next()){
+			String parameterId = result.getString(1);
+			String parameterType = result.getString(2);
+			String parameterName = result.getString(3);
+			String parameterValue = result.getString(4);
+			
+			inferenceMachine.isSolvable("assertz(parameter('"+parameterId+"')), assertz(parameterType('"+parameterId+"', '"+parameterType+"')), assertz(parameterName('"+parameterId+"', '"+parameterName+"')), assertz(parameterValue('"+parameterId+"', '"+parameterValue+"')).");
+		}
+		
+		//Load experiments
+		
+		result = session.query("SELECT * FROM EXPERIMENT");
+		
+		while(result.next()){
+			String experimentId = result.getString(1);
+			String experimentRootProcess = result.getString(2);
+			String experimentName = result.getString(3);
+			
+			inferenceMachine.isSolvable("assertz(experiment('"+experimentId+"')), assertz(experimentRootProcess('"+experimentId+"', '"+experimentRootProcess+"')), assertz(experimentName('"+experimentId+"', '"+experimentName+"')).");
+		}
+		
+		//Load SWFMS
+		
+		result = session.query("SELECT * FROM SWFMS");
+		
+		while(result.next()){
+			String swfmsId = result.getString(1);
+			String swfmsName = result.getString(2);
+			String swfmsHost = result.getString(3);
+			
+			inferenceMachine.isSolvable("assertz(swfms('"+swfmsId+"')), assertz(swfmsName('"+swfmsId+"', '"+swfmsName+"')), assertz(swfmsHost('"+swfmsId+"', '"+swfmsHost+"')).");
+		}
+		
+		//Load process instance
+		
+		result = session.query("SELECT * FROM PROCESS_INSTANCE");
+		
+		while(result.next()){
+			String instanceId = result.getString(1);
+			String processId = result.getString(2);
+			String swfmsId = result.getString(3);
+			
+			inferenceMachine.isSolvable("assertz(type('"+instanceId+"', '"+processId+"')), assertz(swfmsProcess('"+swfmsId+"', '"+instanceId+"')).");
+		}
+		
+		//Load activity instance
+		
+		result = session.query("SELECT * FROM ACTIVITY_INSTANCE");
+		
+		while(result.next()){
+			String instanceId = result.getString(1);
+			String activityId = result.getString(2);
+			
+			inferenceMachine.isSolvable("assertz(type('"+instanceId+"', '"+activityId+"')).");
+		}
+		
+		//Load activity parameters
+		
+		result = session.query("SELECT * FROM ACTIVITY_PARAMETER");
+		
+		while(result.next()){
+			String activityInstanceId = result.getString(1);
+			String parameterId = result.getString(2);
+			
+			inferenceMachine.isSolvable("assertz(activityParameter('"+activityInstanceId+"', '"+parameterId+"')).");
+		}
+		
+		//Load process parameters
+		
+		result = session.query("SELECT * FROM PROCESS_PARAMETER");
+		
+		while(result.next()){
+			String processInstanceId = result.getString(1);
+			String parameterId = result.getString(2);
+			
+			inferenceMachine.isSolvable("assertz(processParameter('"+processInstanceId+"', '"+parameterId+"')).");
+		}
+		
+		//Load transitions
+		
+		result = session.query("SELECT * FROM TRANSITION");
+		
+		while(result.next()){
+			String originElementId = result.getString(1);
+			String originElementType = result.getString(2);
+			String destinationElementId = result.getString(3);
+			String destinationElementType = result.getString(4);
+			
+			if(originElementType == CharonUtil.OPTION)
+				inferenceMachine.isSolvable("assertz(optionTransition('"+originElementId+"', "+CharonUtil.createElement(originElementType, originElementId)+")).");
+			else
+				inferenceMachine.isSolvable("assertz(transition("+CharonUtil.createElement(originElementType, originElementId)+", "+CharonUtil.createElement(destinationElementType, destinationElementId)+")).");
+		}	
+
+		//Load activity artifact names
+		
+		result = session.query("SELECT * FROM ACTIVITY_ARTIFACT_NAME");
+		
+		while(result.next()){
+			String activityInstanceId = result.getString(1);
+			String artifactId = result.getString(2);
+			String artifactName = result.getString(3);
+			
+			inferenceMachine.isSolvable("assertz(productName('"+activityInstanceId+"', '"+artifactId+"', '"+artifactName+"')).");
+		}
+		
+		//Load process artifact names
+		
+		result = session.query("SELECT * FROM PROCESS_ARTIFACT_NAME");
+		
+		while(result.next()){
+			String processInstanceId = result.getString(1);
+			String artifactId = result.getString(2);
+			String artifactName = result.getString(3);
+			
+			inferenceMachine.isSolvable("assertz(productName('"+processInstanceId+"', '"+artifactId+"', '"+artifactName+"')).");
+		}
+		
+		//Load process parameters
+		
+		result = session.query("SELECT * FROM EXECUTION_STATUS");
+		
+		while(result.next()){
+			String elementId = result.getString(1);
+			String elementType = result.getString(2);
+			String status = result.getString(3);
+			String startTime = result.getString(4);
+			String endTime = result.getString(5);
+			String path = result.getString(6);
+			String performers = result.getString(7);
+			
+			
+			if(status == CharonUtil.EXECUTING_STATUS)
+				inferenceMachine.isSolvable("assertz(executing("+CharonUtil.createElement(elementType, elementId)+", "+CharonUtil.createContextList(path)+", '"+startTime+"', [])).");
+			else
+			if(status == CharonUtil.EXECUTED_STATUS)
+				inferenceMachine.isSolvable("assertz(executed("+CharonUtil.createElement(elementType, elementId)+", "+CharonUtil.createContextList(path)+", '"+startTime+"', '"+endTime+"', [])).");
+		}
 		
 	}
 

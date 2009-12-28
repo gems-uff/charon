@@ -8,4 +8,12 @@ public class IDGenerator {
 		id++;
 		return id+"";
 	}
+	
+	public static synchronized String getLastGeneratedID(){
+		return id+"";
+	}
+	
+	public static synchronized void setLastGeneratedID(String id){
+		IDGenerator.id = Integer.parseInt(id);
+	}
 }
