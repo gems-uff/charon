@@ -114,11 +114,11 @@ public class EnactmentAgent extends Agent {
 		return isSolvable;
 	}
 
-	public boolean notifyDecisionPointEnding(KnowledgeBase knowledgeBase, String decisionPointId, String[] context){
+	public boolean notifyDecisionPointEnding(KnowledgeBase knowledgeBase, String decisionPointId, String answer, String[] context){
 		connect(knowledgeBase);
 		long currentTime = System.currentTimeMillis() / 1000;
 		String contextList = createContextList(context);
-		boolean isSolvable = knowledgeBase.isSolvable("finish(decision('"+decisionPointId+"'), "+contextList+", "+currentTime+").");
+		boolean isSolvable = knowledgeBase.isSolvable("finish(decision('"+decisionPointId+"'), "+answer+", "+contextList+", "+currentTime+").");
 		disconnect();
 		return isSolvable;
 	}
@@ -197,8 +197,8 @@ public class EnactmentAgent extends Agent {
 //			rules.add("(finish(activity(IdP), P, T) :- !, executing(activity(IdP), P, Ti), T >= Ti, retract(executing(activity(IdP), P, Ti)), assertz(executed(activity(IdP), P, Ti, T)), findall(E, transition(activity(IdP), E), Es), start(Es, P, T))");
 
 			rules.add("(finish(process(IdP), P, T) :- !, executing(process(IdP), P, Ti, Performers), retract(executing(process(IdP), P, Ti, Performers)), assertz_executed('"+CharonUtil.PROCESS+"', IdP, P, Ti, T, Performers), findall(E, transition(process(IdP), E), Es), start(Es, P, T))");
-
-			rules.add("(finish(decision(IdD), P, T) :- !, executing(decision(IdD), P, Ti, Performers), findall(E, (selected(IdD, P, R, Tr, _), Tr > Ti, Tr =< T, option(IdD, R, E)), Es), Es \\= [], retract(executing(decision(IdD), P, Ti, Performers)), assertz_executed('"+CharonUtil.DECISION+"', IdD, P, Ti, T, Performers), start(Es, P, T))");
+			
+			rules.add("(finish(decision(IdD), A, P, T) :- !, executing(decision(IdD), P, Ti, Performers), findall(E, option(IdD, A, E), Es), Es \\= [], assertz_option_selected(IdD, A, P, T), retract(executing(decision(IdD), P, Ti, Performers)), assertz_executed('"+CharonUtil.DECISION+"', IdD, P, Ti, T, Performers), start(Es, P, T))");
 
 			rules.add("(finish(synchronism(IdS), P, T) :- !, executing(synchronism(IdS), P, Ti, Performers), retract(executing(synchronism(IdS), P, Ti, Performers)), assertz_executed('"+CharonUtil.SYNCHRONISM+"', IdS, P, Ti, T, Performers), findall(E7, transition(synchronism(IdS), E7), E7s), start(E7s, P, T))");
 

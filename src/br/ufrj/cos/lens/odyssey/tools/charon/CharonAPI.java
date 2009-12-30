@@ -170,9 +170,9 @@ public class CharonAPI {
 		return enactmentAgent.notifyProcessExecutionEnding(knowledgeBase, processInstanceId, context);
 	}
 
-	public boolean notifyDecisionPointEnding(String decisionPointId, String[] context) throws CharonException{
+	public boolean notifyDecisionPointEnding(String decisionPointId, String answer, String[] context) throws CharonException{
 		EnactmentAgent enactmentAgent = AgentManager.getInstance().getAgent(EnactmentAgent.class);
-		return enactmentAgent.notifyDecisionPointEnding(knowledgeBase, decisionPointId, context);
+		return enactmentAgent.notifyDecisionPointEnding(knowledgeBase, decisionPointId, answer, context);
 	}
 
 	public boolean setArtifactValue(String artifactId, String[] context, String value) throws CharonException{
