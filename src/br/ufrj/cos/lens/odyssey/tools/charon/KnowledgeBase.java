@@ -177,7 +177,7 @@ public class KnowledgeBase {
 			charonRules.add("(assertz_processParameter(ProcessInstanceId, ParameterId) :- assertz(processParameter(ProcessInstanceId, ParameterId)))");
 			charonRules.add("(assertz_flow(OriginElementType, OriginElementId, DestinationElementType, DestinationElementId) :- createElement(OriginElementId, OriginElementType, OriginElement), createElement(DestinationElementId, DestinationElementType, DestinationElement), assertz(flow(OriginElement, DestinationElement)))");
 			charonRules.add("(retract_flow(OriginElementType, OriginElementId, DestinationElementType, DestinationElementId) :- createElement(OriginElementId, OriginElementType, OriginElement), createElement(DestinationElementId, DestinationElementType, DestinationElement), retract(flow(OriginElement, DestinationElement)))");
-			charonRules.add("(assertz_artifact(ArtifactId, ArtifactType) :- assertz(artifact(ProductId)), assertz(productType(ArtifactId, ArtifactType)))");
+			charonRules.add("(assertz_artifact(ArtifactId) :- assertz(artifact(ArtifactId)))");
 			charonRules.add("(assertz_SWFMSProcess(SWFMSId, ProcessInstanceId) :- assertz(swfmsProcess(SWFMSId, ProcessInstanceId)))");
 			charonRules.add("(assertz_activity_artifactName(ActivityInstanceId, ArtifactId, ArtifactName) :- assertz(artifactName(ActivityInstanceId, ArtifactId, ArtifactName)))");
 			charonRules.add("(assertz_process_artifactName(ProcessInstanceId, ArtifactId, ArtifactName) :- assertz(artifactName(ProcessInstanceId, ArtifactId, ArtifactName)))");

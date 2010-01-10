@@ -89,10 +89,10 @@ public class LoadingAgent extends Agent {
 			return null;
 	}
 	
-	public String defineArtifact(KnowledgeBase knowledgeBase, String type){
+	public String addActivityPort(KnowledgeBase knowledgeBase, String activityId, String portId){
 		connect(knowledgeBase);
-		String artifactId = IDGenerator.generateID();;
-		boolean isSolvable = knowledgeBase.isSolvable("assertz_artifact('"+artifactId+"', '"+type+"').");
+		String artifactId = IDGenerator.generateID();
+		boolean isSolvable = knowledgeBase.isSolvable("assertz_artifact('"+artifactId+"').");
 		disconnect();
 		if(isSolvable){
 			return artifactId;
@@ -101,7 +101,44 @@ public class LoadingAgent extends Agent {
 			return null;
 	}
 	
-	public boolean associateArtifactGeneratedByActivity(KnowledgeBase knowledgeBase, String activityInstanceId, String artifactId, String artifactName){
+	public String definePort(KnowledgeBase knowledgeBase, String activityId, String portType, String portName, String portDataType){
+		connect(knowledgeBase);
+		String artifactId = IDGenerator.generateID();
+		boolean isSolvable = knowledgeBase.isSolvable("assertz_artifact('"+artifactId+"').");
+		disconnect();
+		if(isSolvable){
+			return artifactId;
+		}
+		else
+			return null;
+	}
+	
+	public String deletePort(KnowledgeBase knowledgeBase, String portTId){
+		connect(knowledgeBase);
+		String artifactId = IDGenerator.generateID();
+		boolean isSolvable = knowledgeBase.isSolvable("assertz_artifact('"+artifactId+"').");
+		disconnect();
+		if(isSolvable){
+			return artifactId;
+		}
+		else
+			return null;
+	}
+
+	
+	public String defineArtifact(KnowledgeBase knowledgeBase){
+		connect(knowledgeBase);
+		String artifactId = IDGenerator.generateID();
+		boolean isSolvable = knowledgeBase.isSolvable("assertz_artifact('"+artifactId+"').");
+		disconnect();
+		if(isSolvable){
+			return artifactId;
+		}
+		else
+			return null;
+	}
+	
+	public boolean associateArtifactToActivityOutPortGeneratedByActivity(KnowledgeBase knowledgeBase, String activityInstanceId, String artifactId){
 		connect(knowledgeBase);
 		boolean isSolvable = knowledgeBase.isSolvable("assertz_flow('"+CharonUtil.ACTIVITY+"', '"+activityInstanceId+"', '"+CharonUtil.ARTIFACT+"', '"+artifactId+"'), assertz_activity_artifactName('"+activityInstanceId+"', '"+artifactId+"', '"+artifactName+"').");
 		disconnect();
