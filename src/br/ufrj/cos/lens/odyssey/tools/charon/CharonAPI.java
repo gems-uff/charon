@@ -66,29 +66,34 @@ public class CharonAPI {
 		return loadingAgent.defineActivity(knowledgeBase, type, name);
 	}
 	
-	public String defineArtifact(String type) throws CharonException{
+	public String defineArtifact() throws CharonException{
 		LoadingAgent loadingAgent = AgentManager.getInstance().getAgent(LoadingAgent.class);
-		return loadingAgent.defineArtifact(knowledgeBase, type);
+		return loadingAgent.defineArtifact(knowledgeBase);
 	}
 	
-	public boolean associateArtifactUsedByActivity(String activityInstanceId, String artifactId, String artifactName) throws CharonException{
+	public String definePort(String portType, String portName, String portDataType) throws CharonException{
 		LoadingAgent loadingAgent = AgentManager.getInstance().getAgent(LoadingAgent.class);
-		return loadingAgent.associateArtifactUsedByActivity(knowledgeBase, activityInstanceId, artifactId, artifactName);
+		return loadingAgent.definePort(knowledgeBase, portType, portName, portDataType);
 	}
 	
-	public boolean associateArtifactUsedByProcess(String processInstanceId, String artifactId, String artifactName) throws CharonException{
+	public boolean addActivityPort(String activityId, String portId) throws CharonException{
 		LoadingAgent loadingAgent = AgentManager.getInstance().getAgent(LoadingAgent.class);
-		return loadingAgent.associateArtifactUsedByProcess(knowledgeBase, processInstanceId, artifactId, artifactName);
+		return loadingAgent.addActivityPort(knowledgeBase, activityId, portId);
 	}
 	
-	public boolean associateArtifactGeneratedByActivity(String activityInstanceId, String artifactId, String artifactName) throws CharonException{
+	public boolean addProcessPort(String processId, String portId) throws CharonException{
 		LoadingAgent loadingAgent = AgentManager.getInstance().getAgent(LoadingAgent.class);
-		return loadingAgent.associateArtifactGeneratedByActivity(knowledgeBase, activityInstanceId, artifactId, artifactName);
+		return loadingAgent.addActivityPort(knowledgeBase, processId, portId);
 	}
 	
-	public boolean associateArtifactGeneratedByProcess(String processInstanceId, String artifactId, String artifactName) throws CharonException{
+	public boolean associateArtifactToActivityPort(String activityInstanceId, String portId, String artifactId) throws CharonException{
 		LoadingAgent loadingAgent = AgentManager.getInstance().getAgent(LoadingAgent.class);
-		return loadingAgent.associateArtifactGeneratedByProcess(knowledgeBase, processInstanceId, artifactId, artifactName);
+		return loadingAgent.associateArtifactToActivityPort(knowledgeBase, activityInstanceId, portId, artifactId);
+	}
+	
+	public boolean associateArtifactToProcessPort(String processInstanceId, String portId, String artifactId) throws CharonException{
+		LoadingAgent loadingAgent = AgentManager.getInstance().getAgent(LoadingAgent.class);
+		return loadingAgent.associateArtifactToProcessPort(knowledgeBase, processInstanceId, portId, artifactId);
 	}
 	
 	public String instantiateActivity(String classId) throws CharonException{
@@ -126,20 +131,20 @@ public class CharonAPI {
 		return loadingAgent.defineFlow(knowledgeBase, processId, originElementType, originElementId, destinationElementType, destinationElementId);
 	}
 	
-	public String createParameter(String name, String type, String value) throws CharonException{
-		LoadingAgent loadingAgent = AgentManager.getInstance().getAgent(LoadingAgent.class);
-		return loadingAgent.createParameter(knowledgeBase, name, type, value);	
-	}
-	
-	public boolean associateParameterToActivity(String parameterId, String activityInstanceId) throws CharonException{
-		LoadingAgent loadingAgent = AgentManager.getInstance().getAgent(LoadingAgent.class);
-		return loadingAgent.associateParameterToActivity(knowledgeBase, parameterId, activityInstanceId);	
-	}
-	
-	public boolean associateParameterToProcess(String parameterId, String processInstanceId) throws CharonException{
-		LoadingAgent loadingAgent = AgentManager.getInstance().getAgent(LoadingAgent.class);
-		return loadingAgent.associateParameterToProcess(knowledgeBase, parameterId, processInstanceId);
-	}
+//	public String createParameter(String name, String type, String value) throws CharonException{
+//		LoadingAgent loadingAgent = AgentManager.getInstance().getAgent(LoadingAgent.class);
+//		return loadingAgent.createParameter(knowledgeBase, name, type, value);	
+//	}
+//	
+//	public boolean associateParameterToActivity(String parameterId, String activityInstanceId) throws CharonException{
+//		LoadingAgent loadingAgent = AgentManager.getInstance().getAgent(LoadingAgent.class);
+//		return loadingAgent.associateParameterToActivity(knowledgeBase, parameterId, activityInstanceId);	
+//	}
+//	
+//	public boolean associateParameterToProcess(String parameterId, String processInstanceId) throws CharonException{
+//		LoadingAgent loadingAgent = AgentManager.getInstance().getAgent(LoadingAgent.class);
+//		return loadingAgent.associateParameterToProcess(knowledgeBase, parameterId, processInstanceId);
+//	}
 	
 	/*
 	 * Retrospective Provenance

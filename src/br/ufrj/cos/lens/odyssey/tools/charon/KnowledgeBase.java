@@ -112,8 +112,8 @@ public class KnowledgeBase {
 			charonRules.add("(concat(Str1, Str2, Str3) :- java_object('java.lang.StringBuffer', [Str1], Temp), Temp <- append(Str2), java_object('java.lang.String', [Temp], Str3))");
 			charonRules.add("(listToString2([], ''))");
 			charonRules.add("(listToString([], ''))");
-			charonRules.add("(listToString2([Element|Elements], StringList) :- listToString2(Elements, StringList2), concat(StringList2, Element, StringList3), concat(StringList3, ', ', StringList))");
-			charonRules.add("(listToString([Element|Elements], StringList) :- listToString2(Elements, StringList2), concat(StringList2, Element, StringList))");
+			charonRules.add("(listToString2([Elements|Element], StringList) :- listToString2(Elements, StringList2), concat(StringList2, Element, StringList3), concat(StringList3, ', ', StringList))");
+			charonRules.add("(listToString([Elements|Element], StringList) :- listToString2(Elements, StringList2), concat(StringList2, Element, StringList))");
 			charonRules.add("(createParamList2([], ' ('))");
 			charonRules.add("(createParamList2([Param|Params], ParamList) :- createParamList2(Params, ParamList2), concat(ParamList2, Param, ParamList3), concat(ParamList3, ', ', ParamList))");
 			charonRules.add("(createParamList([Param|Params], ParamList) :- createParamList2(Params, ParamList2), concat(ParamList2, Param, ParamList3), concat(ParamList3, ')', ParamList))");
@@ -303,29 +303,18 @@ public class KnowledgeBase {
 			inferenceMachine.isSolvable("assertz(option_selected('"+id_option+"', '"+name+"', '"+path+"', '"+time+"')).");
 		}
 		
-		//Load artifacts
-		
-		result = session.query("SELECT * FROM ARTIFACT");
-		
-		while(result.next()){
-			String artifactId = result.getString(1);
-			String artifactType = result.getString(2);
-			
-			inferenceMachine.isSolvable("assertz(product('"+artifactId+"')), assertz(productType('"+artifactId+"', '"+artifactType+"')).");
-		}
-		
-		//Load parameters
-		
-		result = session.query("SELECT * FROM PARAMETER");
-		
-		while(result.next()){
-			String parameterId = result.getString(1);
-			String parameterType = result.getString(2);
-			String parameterName = result.getString(3);
-			String parameterValue = result.getString(4);
-			
-			inferenceMachine.isSolvable("assertz(parameter('"+parameterId+"')), assertz(parameterType('"+parameterId+"', '"+parameterType+"')), assertz(parameterName('"+parameterId+"', '"+parameterName+"')), assertz(parameterValue('"+parameterId+"', '"+parameterValue+"')).");
-		}
+//		//Load parameters
+//		
+//		result = session.query("SELECT * FROM PARAMETER");
+//		
+//		while(result.next()){
+//			String parameterId = result.getString(1);
+//			String parameterType = result.getString(2);
+//			String parameterName = result.getString(3);
+//			String parameterValue = result.getString(4);
+//			
+//			inferenceMachine.isSolvable("assertz(parameter('"+parameterId+"')), assertz(parameterType('"+parameterId+"', '"+parameterType+"')), assertz(parameterName('"+parameterId+"', '"+parameterName+"')), assertz(parameterValue('"+parameterId+"', '"+parameterValue+"')).");
+//		}
 		
 		//Load experiments
 		
@@ -374,27 +363,27 @@ public class KnowledgeBase {
 			inferenceMachine.isSolvable("assertz(type('"+instanceId+"', '"+activityId+"')).");
 		}
 		
-		//Load activity parameters
-		
-		result = session.query("SELECT * FROM ACTIVITY_PARAMETER");
-		
-		while(result.next()){
-			String activityInstanceId = result.getString(1);
-			String parameterId = result.getString(2);
-			
-			inferenceMachine.isSolvable("assertz(activityParameter('"+activityInstanceId+"', '"+parameterId+"')).");
-		}
-		
-		//Load process parameters
-		
-		result = session.query("SELECT * FROM PROCESS_PARAMETER");
-		
-		while(result.next()){
-			String processInstanceId = result.getString(1);
-			String parameterId = result.getString(2);
-			
-			inferenceMachine.isSolvable("assertz(processParameter('"+processInstanceId+"', '"+parameterId+"')).");
-		}
+//		//Load activity parameters
+//		
+//		result = session.query("SELECT * FROM ACTIVITY_PARAMETER");
+//		
+//		while(result.next()){
+//			String activityInstanceId = result.getString(1);
+//			String parameterId = result.getString(2);
+//			
+//			inferenceMachine.isSolvable("assertz(activityParameter('"+activityInstanceId+"', '"+parameterId+"')).");
+//		}
+//		
+//		//Load process parameters
+//		
+//		result = session.query("SELECT * FROM PROCESS_PARAMETER");
+//		
+//		while(result.next()){
+//			String processInstanceId = result.getString(1);
+//			String parameterId = result.getString(2);
+//			
+//			inferenceMachine.isSolvable("assertz(processParameter('"+processInstanceId+"', '"+parameterId+"')).");
+//		}
 		
 		//Load flows
 		
@@ -412,28 +401,74 @@ public class KnowledgeBase {
 				inferenceMachine.isSolvable("assertz(flow("+CharonUtil.createElement(originElementType, originElementId)+", "+CharonUtil.createElement(destinationElementType, destinationElementId)+")).");
 		}	
 
-		//Load activity artifact names
+		//Load artifacts
 		
-		result = session.query("SELECT * FROM ACTIVITY_ARTIFACT_NAME");
+		result = session.query("SELECT * FROM ARTIFACT");
+		
+		while(result.next()){
+			String artifactId = result.getString(1);
+			
+			inferenceMachine.isSolvable("assertz(artifact('"+artifactId+"')).");
+		}
+		
+		//Load ports
+		
+		result = session.query("SELECT * FROM PORT");
+		
+		while(result.next()){
+			String portId = result.getString(1);
+			String portType = result.getString(2);
+			String portName = result.getString(3);
+			String portDataType = result.getString(4);
+						
+			inferenceMachine.isSolvable("assertz(port('"+portId+"')), assertz(portType('"+portId+"', '"+portType+"')), assertz(portName('"+portId+"', '"+portName+"')), assertz(portDataType('"+portId+"', '"+portDataType+"')).");
+		}
+		
+		//Load activity_port
+		
+		result = session.query("SELECT * FROM ACTIVITY_PORT");
+				
+		while(result.next()){
+			String activityId = result.getString(1);
+			String portId = result.getString(2);
+				
+			inferenceMachine.isSolvable("assertz(activityPort('"+activityId+"', '"+portId+"')).");
+		}
+		
+		//Load process_port
+		
+		result = session.query("SELECT * FROM PROCESS_PORT");
+				
+		while(result.next()){
+			String processId = result.getString(1);
+			String portId = result.getString(2);
+				
+			inferenceMachine.isSolvable("assertz(processPort('"+processId+"', '"+portId+"')).");
+		}
+
+		
+		//Load  ARTIFACT_PORT_ACTIVITY_INSTANCE
+		
+		result = session.query("SELECT * FROM ARTIFACT_PORT_ACTIVITY_INSTANCE");
 		
 		while(result.next()){
 			String activityInstanceId = result.getString(1);
 			String artifactId = result.getString(2);
-			String artifactName = result.getString(3);
+			String portId = result.getString(3);
 			
-			inferenceMachine.isSolvable("assertz(productName('"+activityInstanceId+"', '"+artifactId+"', '"+artifactName+"')).");
+			inferenceMachine.isSolvable("assertz(artifactActivityPort('"+artifactId+"', '"+activityInstanceId+"', '"+portId+"')).");
 		}
 		
-		//Load process artifact names
+		//Load ARTIFACT_PORT_PROCESS_INSTANCE
 		
-		result = session.query("SELECT * FROM PROCESS_ARTIFACT_NAME");
+		result = session.query("SELECT * FROM ARTIFACT_PORT_PROCESS_INSTANCE");
 		
 		while(result.next()){
 			String processInstanceId = result.getString(1);
 			String artifactId = result.getString(2);
-			String artifactName = result.getString(3);
+			String portId = result.getString(3);
 			
-			inferenceMachine.isSolvable("assertz(productName('"+processInstanceId+"', '"+artifactId+"', '"+artifactName+"')).");
+			inferenceMachine.isSolvable("assertz(artifactProcessPort('"+artifactId+"', '"+processInstanceId+"', '"+portId+"')).");
 		}
 		
 		//Load process parameters
@@ -451,10 +486,10 @@ public class KnowledgeBase {
 			
 			
 			if(status == CharonUtil.EXECUTING_STATUS)
-				inferenceMachine.isSolvable("assertz(executing("+CharonUtil.createElement(elementType, elementId)+", "+CharonUtil.createContextList(path)+", '"+startTime+"', [])).");
+				inferenceMachine.isSolvable("assertz(executing("+CharonUtil.createElement(elementType, elementId)+", ["+path+"], '"+startTime+"', [])).");
 			else
 			if(status == CharonUtil.EXECUTED_STATUS)
-				inferenceMachine.isSolvable("assertz(executed("+CharonUtil.createElement(elementType, elementId)+", "+CharonUtil.createContextList(path)+", '"+startTime+"', '"+endTime+"', [])).");
+				inferenceMachine.isSolvable("assertz(executed("+CharonUtil.createElement(elementType, elementId)+", ["+path+"], '"+startTime+"', '"+endTime+"', [])).");
 		}
 		
 	}

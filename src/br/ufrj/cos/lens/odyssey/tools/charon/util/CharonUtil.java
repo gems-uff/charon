@@ -56,25 +56,25 @@ public class CharonUtil {
 		
 		final String a = elementType; 
 		if(elementType.equals(ACTIVITY))
-			return "activity('"+elementType+"')";
+			return "activity('"+elementId+"')";
 		else
 		if(elementType.equals(PROCESS))
-			return "process('"+elementType+"')";
+			return "process('"+elementId+"')";
 		else
 		if(elementType.equals(DECISION))
-			return "decision('"+elementType+"')";
+			return "decision('"+elementId+"')";
 		else
 		if(elementType.equals(SYNCHRONISM))
-			return "synchronism('"+elementType+"')";
+			return "synchronism('"+elementId+"')";
 		else
 		if(elementType.equals(INITIAL))
-			return "initial('"+elementType+"')";
+			return "initial('"+elementId+"')";
 		else
 		if(elementType.equals(FINAL))
-			return "final('"+elementType+"')";
+			return "final('"+elementId+"')";
 		else
 		if(elementType.equals(ARTIFACT))
-			return "product('"+elementType+"')";
+			return "product('"+elementId+"')";
 		else return null;
 	}
 	
