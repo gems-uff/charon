@@ -176,7 +176,7 @@ public class EnactmentAgent extends Agent {
 
 			rules.add("(start(activity(IdP), P, T) :- !, not(executing(activity(IdP), P, _, _)), assertz_executing('"+CharonUtil.ACTIVITY+"', IdP, P, T, []))");
 
-			rules.add("(start(process(IdP), P, T) :- !, not(executing(process(IdP), P, _, _)), assertz_executing('"+CharonUtil.PROCESS+"', IdP, P, T, []), type(IdP, IdC), start(initial(IdC), [process(IdP)|P], T))");
+			rules.add("(start(process(IdP), P, T) :- !, not(executing(process(IdP), P, _, _)), assertz_executing('"+CharonUtil.PROCESS+"', IdP, P, T, []), processInstanceType(IdP, IdC), start(initial(IdC), [process(IdP)|P], T))");
 
 			rules.add("(start(decision(IdD), P, T) :- !, not(executing(decision(IdD), P, _, _)), assertz_executing('"+CharonUtil.DECISION+"', IdD, P, T, []))");
 

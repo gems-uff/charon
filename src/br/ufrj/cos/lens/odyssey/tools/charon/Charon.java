@@ -169,4 +169,28 @@ public class Charon {
 		return knowledgeBase.getAllSolutions(goal);
 	}
 	
+	public static void main(String[] args) throws Exception{
+		Charon charon = new Charon("c:\\teste");
+		CharonAPI charonAPI = new CharonAPI(charon.knowledgeBase);
+		
+		int ACTIVITY = 1;
+		
+		String experimentId = charonAPI.createExperiment("NACAD");
+		String swfmsId = charonAPI.registerSGWf("Vistrails", "192.168.0.1");
+		String processId = charonAPI.createProcess("local", "P1");
+//		String activityId1 = charonAPI.createActivity("local", "A1");
+//		String activityId2 = charonAPI.createActivity("local", "A2");
+//		String activityId3 = charonAPI.createActivity("local", "A3");
+//		charonAPI.setExperimentRootProcess(experimentId, processId);
+//		String activityInstanceId1 = charonAPI.instantiateActivity(activityId1);
+//		String activityInstanceId2 = charonAPI.instantiateActivity(activityId2);
+//		String activityInstanceId3 = charonAPI.instantiateActivity(activityId3);
+//		charonAPI.associateElementToProcessWorkflow(processId, ACTIVITY, activityInstanceId1);
+//		charonAPI.associateElementToProcessWorkflow(processId, ACTIVITY, activityInstanceId2);
+//		charonAPI.associateElementToProcessWorkflow(processId, ACTIVITY, activityInstanceId3);
+//		charonAPI.defineFlow(processId, ACTIVITY, activityInstanceId1, ACTIVITY, activityInstanceId2);
+//		charonAPI.defineFlow(processId, ACTIVITY, activityInstanceId1, ACTIVITY, activityInstanceId3);
+		
+		charon.save();
+	}
 }
