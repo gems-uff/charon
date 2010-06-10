@@ -9,6 +9,7 @@
 	<classpathentry kind="lib" path="lib/tuprolog-extensions.jar"/>
 	<classpathentry kind="lib" path="lib/tuprolog-ide.jar"/>
 	<classpathentry kind="lib" path="lib/tuprolog.jar"/>
+	<classpathentry kind="lib" path="lib/mysql-connector-java-5.0.8-bin.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="test/lib/jmiutils-200507110943.jar"/>
 	<classpathentry kind="lib" path="test/lib/mof-1.4.jar"/>

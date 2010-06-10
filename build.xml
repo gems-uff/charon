@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Copyright 2004 (c) Odyssey Project (http://www.cos.ufrj.br/odyssey). -->
 
-<project basedir="." default="test" name="Charon">    
+<project basedir="." default="test" name="charon">    
 
     <!-- PROPERTIES -->
     <property file="${basedir}/build.properties"/>

@@ -3,6 +3,7 @@ package br.ufrj.cos.lens.odyssey.tools.charon;
 import br.ufrj.cos.lens.odyssey.tools.charon.agents.AdminAgent;
 import br.ufrj.cos.lens.odyssey.tools.charon.agents.EnactmentAgent;
 import br.ufrj.cos.lens.odyssey.tools.charon.agents.LoadingAgent;
+import br.ufrj.cos.lens.odyssey.tools.charon.util.CharonUtil;
 
 
 /**
@@ -35,45 +36,55 @@ public class CharonAPI {
 	/*
 	 * Prospective Provenance
 	 */
-	
+
 	public String createExperiment(String name) throws CharonException{
 		LoadingAgent loadingAgent = AgentManager.getInstance().getAgent(LoadingAgent.class);
 		return loadingAgent.createExperiment(knowledgeBase, name);
 	}
 	
-	public boolean setExperimentRootProcess(String experimentId, String processClassId) throws CharonException{
+	public String createExperimentNewVersion(String experimentId) throws CharonException{
 		LoadingAgent loadingAgent = AgentManager.getInstance().getAgent(LoadingAgent.class);
-		return loadingAgent.setExperimentRootProcess(knowledgeBase, experimentId, processClassId);
+		return loadingAgent.createExperimentNewVersion(knowledgeBase, experimentId);
+	}
+	
+	public boolean setExperimentName(String experimentId, String name) throws CharonException{
+		LoadingAgent loadingAgent = AgentManager.getInstance().getAgent(LoadingAgent.class);
+		return loadingAgent.setExperimentName(knowledgeBase, experimentId, name);
+	}
+		
+	public boolean setExperimentRootProcess(String experimentId, String processInstanceId) throws CharonException{
+		LoadingAgent loadingAgent = AgentManager.getInstance().getAgent(LoadingAgent.class);
+		return loadingAgent.setExperimentRootProcess(knowledgeBase, experimentId, processInstanceId);
 	}
 
 	public String registerSGWf(String name, String host) throws CharonException{
 		LoadingAgent loadingAgent = AgentManager.getInstance().getAgent(LoadingAgent.class);
 		return loadingAgent.registerSGWf(knowledgeBase, name, host);
 	}
-	
+		
 	public boolean associateProcessToSWFMS(String processInstanceId, String SWFMSId) throws CharonException{
 		LoadingAgent loadingAgent = AgentManager.getInstance().getAgent(LoadingAgent.class);
 		return loadingAgent.associateProcessToSWFMS(knowledgeBase, processInstanceId, SWFMSId);
 	}
 	
-	public String defineProcess(String type, String name) throws CharonException{
+	public String createProcess(String type, String name) throws CharonException{
 		LoadingAgent loadingAgent = AgentManager.getInstance().getAgent(LoadingAgent.class);
-		return loadingAgent.defineProcess(knowledgeBase, type, name);
+		return loadingAgent.createProcess(knowledgeBase, type, name);
+	}
+		
+	public String createActivity(String type, String name) throws CharonException{
+		LoadingAgent loadingAgent = AgentManager.getInstance().getAgent(LoadingAgent.class);
+		return loadingAgent.createActivity(knowledgeBase, type, name);
 	}
 	
-	public String defineActivity(String type, String name) throws CharonException{
+	public String createInPort(String portName, String portDataType) throws CharonException{
 		LoadingAgent loadingAgent = AgentManager.getInstance().getAgent(LoadingAgent.class);
-		return loadingAgent.defineActivity(knowledgeBase, type, name);
+		return loadingAgent.createPort(knowledgeBase, CharonUtil.INPORT, portName, portDataType);
 	}
 	
-	public String defineArtifact() throws CharonException{
+	public String createOutPort(String portName, String portDataType) throws CharonException{
 		LoadingAgent loadingAgent = AgentManager.getInstance().getAgent(LoadingAgent.class);
-		return loadingAgent.defineArtifact(knowledgeBase);
-	}
-	
-	public String definePort(String portType, String portName, String portDataType) throws CharonException{
-		LoadingAgent loadingAgent = AgentManager.getInstance().getAgent(LoadingAgent.class);
-		return loadingAgent.definePort(knowledgeBase, portType, portName, portDataType);
+		return loadingAgent.createPort(knowledgeBase, CharonUtil.OUTPORT, portName, portDataType);
 	}
 	
 	public boolean addActivityPort(String activityId, String portId) throws CharonException{
@@ -83,7 +94,12 @@ public class CharonAPI {
 	
 	public boolean addProcessPort(String processId, String portId) throws CharonException{
 		LoadingAgent loadingAgent = AgentManager.getInstance().getAgent(LoadingAgent.class);
-		return loadingAgent.addActivityPort(knowledgeBase, processId, portId);
+		return loadingAgent.addProcessPort(knowledgeBase, processId, portId);
+	}
+	
+	public String createArtifact() throws CharonException{
+		LoadingAgent loadingAgent = AgentManager.getInstance().getAgent(LoadingAgent.class);
+		return loadingAgent.createArtifact(knowledgeBase);
 	}
 	
 	public boolean associateArtifactToActivityPort(String activityInstanceId, String portId, String artifactId) throws CharonException{
@@ -96,14 +112,14 @@ public class CharonAPI {
 		return loadingAgent.associateArtifactToProcessPort(knowledgeBase, processInstanceId, portId, artifactId);
 	}
 	
-	public String instantiateActivity(String classId) throws CharonException{
+	public String instantiateActivity(String activityClassId) throws CharonException{
 		LoadingAgent loadingAgent = AgentManager.getInstance().getAgent(LoadingAgent.class);
-		return loadingAgent.instantiateActivity(knowledgeBase, classId);
+		return loadingAgent.instantiateActivity(knowledgeBase, activityClassId);
 	}
 	
-	public String instantiateProcess(String classId) throws CharonException{
+	public String instantiateProcess(String processClassId) throws CharonException{
 		LoadingAgent loadingAgent = AgentManager.getInstance().getAgent(LoadingAgent.class);
-		return loadingAgent.instantiateProcess(knowledgeBase, classId);
+		return loadingAgent.instantiateProcess(knowledgeBase, processClassId);
 	}
 	
 	public String createSynchronism() throws CharonException{
@@ -111,19 +127,34 @@ public class CharonAPI {
 		return loadingAgent.createSynchronism(knowledgeBase);
 	}
 	
+	public boolean createInvisibleSynchronism(String synchronismId) throws CharonException{
+		LoadingAgent loadingAgent = AgentManager.getInstance().getAgent(LoadingAgent.class);
+		return loadingAgent.createInvisibleSynchronism(knowledgeBase, synchronismId);
+	}
+	
 	public String createDecision(String name) throws CharonException{
 		LoadingAgent loadingAgent = AgentManager.getInstance().getAgent(LoadingAgent.class);
 		return loadingAgent.createDecision(knowledgeBase, name);
 	}
 	
-	public String createOption(String decisionId, String name, int toElementType, String toElementId) throws CharonException{
+	public String createDecisionOption(String decisionId, String name, int toElementType, String toElementId) throws CharonException{
 		LoadingAgent loadingAgent = AgentManager.getInstance().getAgent(LoadingAgent.class);
-		return loadingAgent.createOption(knowledgeBase, decisionId, name, toElementType, toElementId);
-	}	
+		return loadingAgent.createDecisionOption(knowledgeBase, decisionId, name, toElementType, toElementId);
+	}
 	
 	public boolean associateElementToProcessWorkflow(String processId, int elementType, String elementId) throws CharonException{
 		LoadingAgent loadingAgent = AgentManager.getInstance().getAgent(LoadingAgent.class);
 		return loadingAgent.associateElementToProcessWorkflow(knowledgeBase, processId, elementType, elementId);
+	}
+	
+	public boolean associateElementToExperimentRootProcessWorkflow(String experimentId, int elementType, String elementId) throws CharonException{
+		LoadingAgent loadingAgent = AgentManager.getInstance().getAgent(LoadingAgent.class);
+		return loadingAgent.associateElementToExperimentRootProcessWorkflow(knowledgeBase, experimentId, elementType, elementId);
+	}
+	
+	public boolean removeElementToExperimentRootProcessWorkflow(String experimentId, int elementType, String elementId) throws CharonException{
+		LoadingAgent loadingAgent = AgentManager.getInstance().getAgent(LoadingAgent.class);
+		return loadingAgent.removeElementToExperimentRootProcessWorkflow(knowledgeBase, experimentId, elementType, elementId);
 	}
 	
 	public boolean defineFlow(String processId, int originElementType, String originElementId, int destinationElementType, String destinationElementId) throws CharonException{
@@ -131,26 +162,22 @@ public class CharonAPI {
 		return loadingAgent.defineFlow(knowledgeBase, processId, originElementType, originElementId, destinationElementType, destinationElementId);
 	}
 	
-//	public String createParameter(String name, String type, String value) throws CharonException{
-//		LoadingAgent loadingAgent = AgentManager.getInstance().getAgent(LoadingAgent.class);
-//		return loadingAgent.createParameter(knowledgeBase, name, type, value);	
-//	}
-//	
-//	public boolean associateParameterToActivity(String parameterId, String activityInstanceId) throws CharonException{
-//		LoadingAgent loadingAgent = AgentManager.getInstance().getAgent(LoadingAgent.class);
-//		return loadingAgent.associateParameterToActivity(knowledgeBase, parameterId, activityInstanceId);	
-//	}
-//	
-//	public boolean associateParameterToProcess(String parameterId, String processInstanceId) throws CharonException{
-//		LoadingAgent loadingAgent = AgentManager.getInstance().getAgent(LoadingAgent.class);
-//		return loadingAgent.associateParameterToProcess(knowledgeBase, parameterId, processInstanceId);
-//	}
+	public boolean defineExperimentRootProcessFlow(String experimentId, int originElementType, String originElementId, int destinationElementType, String destinationElementId) throws CharonException{
+		LoadingAgent loadingAgent = AgentManager.getInstance().getAgent(LoadingAgent.class);
+		return loadingAgent.defineExperimentRootProcessFlow(knowledgeBase, experimentId, originElementType, originElementId, destinationElementType, destinationElementId);
+	}
+	
+	public boolean removeExperimentRootProcessFlow(String experimentId, int originElementType, String originElementId, int destinationElementType, String destinationElementId) throws CharonException{
+		LoadingAgent loadingAgent = AgentManager.getInstance().getAgent(LoadingAgent.class);
+		return loadingAgent.removeExperimentRootProcessFlow(knowledgeBase, experimentId, originElementType, originElementId, destinationElementType, destinationElementId);
+	}
+
 	
 	/*
 	 * Retrospective Provenance
 	 */
 	
-	public String intializeExperimentExecution(String experimentId) throws CharonException{
+	public String initializeExperimentExecution(String experimentId) throws CharonException{
 		EnactmentAgent enactmentAgent = AgentManager.getInstance().getAgent(EnactmentAgent.class);
 		return enactmentAgent.intializeExperimentExecution(knowledgeBase, experimentId);
 	}

@@ -2,55 +2,31 @@ package br.ufrj.cos.lens.odyssey.tools.charon.util;
 
 public class CharonUtil {
 
-	/**
-	 * <i>Constante.</i>
-	 */
-	public static final String ACTIVITY = "1";
-
-	/**
-	 * <i>Constante.</i>
-	 */
+	public static final String EXPERIMENT = "1";
+	
 	public static final String PROCESS = "2";
 	
-	/**
-	 * <i>Constante.</i>
-	 */
-	public static final String SYNCHRONISM = "3";
+	public static final String ACTIVITY = "3";
+	
+	public static final String SYNCHRONISM = "4";
 
-	/**
-	 * <i>Constante.</i>
-	 */
-	public static final String DECISION = "4";
+	public static final String DECISION = "5";
 	
-	/**
-	 * <i>Constante.</i>
-	 */
-	public static final String INITIAL = "5";
+	public static final String INITIAL = "6";
 	
-	/**
-	 * <i>Constante.</i>
-	 */
-	public static final String FINAL = "6";
+	public static final String FINAL = "7";
 	
-	/**
-	 * <i>Constante.</i>
-	 */
-	public static final String ARTIFACT = "7";
+	public static final String ARTIFACT = "8";
 	
-	/**
-	 * <i>Constante.</i>
-	 */
-	public static final String OPTION = "8";
+	public static final String OPTION = "9";
 	
-	/**
-	 * <i>Constante.</i>
-	 */
 	public static final String EXECUTING_STATUS = "1";
 	
-	/**
-	 * <i>Constante.</i>
-	 */
 	public static final String EXECUTED_STATUS = "2";
+	
+	public static final String INPORT = "0";
+	
+	public static final String OUTPORT = "1";
 	
 	public static String createElement(String elementType, String elementId){
 		

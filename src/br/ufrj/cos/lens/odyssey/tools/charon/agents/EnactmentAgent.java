@@ -68,12 +68,12 @@ public class EnactmentAgent extends Agent {
 	
 	public String intializeExperimentExecution(KnowledgeBase knowledgeBase, String experimentId){
 		connect(knowledgeBase);
-		String processInstanceId = IDGenerator.generateID();
+		String experimentInstanceId = IDGenerator.generateID();
 		long currentTime = System.currentTimeMillis() / 1000;
-		boolean isSolvable = knowledgeBase.isSolvable("start(experiment('"+experimentId+"'), '"+processInstanceId+"', "+currentTime+").");
+		boolean isSolvable = knowledgeBase.isSolvable("start(experiment('"+experimentId+"'), '"+experimentInstanceId+"', "+currentTime+").");
 		disconnect();
 		if(isSolvable){
-			return processInstanceId;
+			return experimentInstanceId;
 		}
 		else
 			return null;
@@ -147,10 +147,10 @@ public class EnactmentAgent extends Agent {
 		
 	public String createContextList(String[] context){
 		StringBuffer contextList = new StringBuffer("[");
-		
-		for (String element : context) {
-			contextList.append("process('"+element+"'),");
-		}
+
+		for(int i=0; i<context.length; i++)
+			contextList.append("'"+context[i]+"',");
+
 		
 		if(contextList.length()>1)
 			return contextList.substring(0, contextList.length()-1)+"]";
@@ -166,7 +166,8 @@ public class EnactmentAgent extends Agent {
 		if (rules == null) {
 			rules = new ArrayList<String>();
 
-			rules.add("(start(experiment(IdE), IdP, T) :- !, experimentRootProcess(IdE, IdC), assertz_processInstance(IdP, IdC), start(process(IdP), [], T))");
+			rules.add("(start(experiment(IdE), IdEInstance, T) :- !, currentVersion(experiment(IdE), VersionId), create_experimentInstance(IdEInstance, VersionId, IdE), experimentRootProcess(IdE, VersionId, IdP), assertz_executing('"+CharonUtil.EXPERIMENT+"', IdEInstance, [], T, []), assertz(processFlow(process(IdP), experimentEndFlag(IdEInstance))), start(process(IdP), [IdEInstance], T))");
+			rules.add("(start(experimentEndFlag(IdEInstance), _ , T) :- !, retract(executing(experiment(IdEInstance), P, Ti, Performers)), assertz_executed('"+CharonUtil.EXPERIMENT+"', IdEInstance, P, Ti, T, Performers))");
 			
 			rules.add("start([],_,_)");
 			rules.add("(start([E|Es], P, T) :- start(E, P, T), !, start(Es, P, T))");
@@ -176,35 +177,36 @@ public class EnactmentAgent extends Agent {
 
 			rules.add("(start(activity(IdP), P, T) :- !, not(executing(activity(IdP), P, _, _)), assertz_executing('"+CharonUtil.ACTIVITY+"', IdP, P, T, []))");
 
-			rules.add("(start(process(IdP), P, T) :- !, not(executing(process(IdP), P, _, _)), assertz_executing('"+CharonUtil.PROCESS+"', IdP, P, T, []), type(IdP, IdC), start(initial(IdC), [process(IdP)|P], T))");
+			rules.add("(start(process(IdP), P, T) :- !, not(executing(process(IdP), P, _, _)), assertz_executing('"+CharonUtil.PROCESS+"', IdP, P, T, []), processInstanceType(IdP, IdC), start(initial(IdC), [IdP|P], T))");
 
 			rules.add("(start(decision(IdD), P, T) :- !, not(executing(decision(IdD), P, _, _)), assertz_executing('"+CharonUtil.DECISION+"', IdD, P, T, []))");
 
 			rules.add("(start(synchronism(IdS), P, T) :- not(executing(synchronism(IdS), P, _, _)), !, assertz_executing('"+CharonUtil.SYNCHRONISM+"', IdS, P, T, []), start(synchronism(IdS), P, T))");
 
-//			rules.add("(start(synchronism(IdS), P, T) :- !, executing(synchronism(IdS), P, Ti), findall(E1,(flow(E1, synchronism(IdS)), E1 \\= initial(_), E1 \\= decision(_), E1 \\= artifact(_), E1 \\= activity(_), executed(E1, P, _, Tf), Tf >= Ti, Tf =< T), E1s), findall(E2,(flow(E2, synchronism(IdS)), E2 = decision(IdD), selected(IdD, P, R, Tr, _), option(IdD, R, synchronism(IdS)), Tr >= Ti, Tr =< T), E2s), append(E1s, E2s, E3s), findall(E4,(flow(E4, synchronism(IdS)), E4 = artifact(IdP), available(IdP, P, Tp), Tp >= Ti, Tp =< T), E4s), append(E3s, E4s, E5s), findall(E6,(flow(E6, synchronism(IdS)), E6 = activity(_), executed(E6, P, _, Ta, _), Ta >= Ti, Ta =< T), E6s), append(E5s, E6s, E7s), findall(E8,(flow(E8, synchronism(IdS)), E8 \\= initial(_), E8 \\= decision(_), E8 \\= artifact(_), E8 \\= activity(_)), E8s), findall(E9,(flow(E9, synchronism(IdS)), E9 = decision(_)), E9s), append(E8s, E9s, E10s), findall(E11,(flow(E11, synchronism(IdS)), E11 = artifact(_)), E11s), append(E10s, E11s, E12s), findall(E13,(flow(E13, synchronism(IdS)), E13 = activity(_)), E13s), append(E12s, E13s, E14s), E7s = E14s, finish(synchronism(IdS), P, T))");
+//			rules.add("(start(synchronism(IdS), P, T) :- !, executing(synchronism(IdS), P, Ti), findall(E1,(processFlow(E1, synchronism(IdS)), E1 \\= initial(_), E1 \\= decision(_), E1 \\= artifact(_), E1 \\= activity(_), executed(E1, P, _, Tf), Tf >= Ti, Tf =< T), E1s), findall(E2,(processFlow(E2, synchronism(IdS)), E2 = decision(IdD), selected(IdD, P, R, Tr, _), option(IdD, R, synchronism(IdS)), Tr >= Ti, Tr =< T), E2s), append(E1s, E2s, E3s), findall(E4,(processFlow(E4, synchronism(IdS)), E4 = artifact(IdP), available(IdP, P, Tp), Tp >= Ti, Tp =< T), E4s), append(E3s, E4s, E5s), findall(E6,(processFlow(E6, synchronism(IdS)), E6 = activity(_), executed(E6, P, _, Ta, _), Ta >= Ti, Ta =< T), E6s), append(E5s, E6s, E7s), findall(E8,(processFlow(E8, synchronism(IdS)), E8 \\= initial(_), E8 \\= decision(_), E8 \\= artifact(_), E8 \\= activity(_)), E8s), findall(E9,(processFlow(E9, synchronism(IdS)), E9 = decision(_)), E9s), append(E8s, E9s, E10s), findall(E11,(processFlow(E11, synchronism(IdS)), E11 = artifact(_)), E11s), append(E10s, E11s, E12s), findall(E13,(processFlow(E13, synchronism(IdS)), E13 = activity(_)), E13s), append(E12s, E13s, E14s), E7s = E14s, finish(synchronism(IdS), P, T))");
 			
-			rules.add("(start(synchronism(IdS), P, T) :- !, executing(synchronism(IdS), P, Ti, _), findall(E1,(flow(E1, synchronism(IdS)), E1 \\= initial(_), E1 \\= decision(_), executed(E1, P, _, Tf, _), Tf >= Ti, Tf =< T), E1s), findall(E2,(flow(E2, synchronism(IdS)), E2 = decision(IdD), selected(IdD, P, R, Tr, _), option(IdD, R, synchronism(IdS)), Tr >= Ti, Tr =< T), E2s), append(E1s, E2s, E3s), findall(E4,(flow(E4, synchronism(IdS)), E4 \\= initial(_), E4 \\= decision(_)), E4s), findall(E5,(flow(E5, synchronism(IdS)), E5 = decision(_)), E5s), append(E4s, E5s, E6s), findall(E7,(flow(E7, synchronism(IdS)), E7 = artifact(_)), E7s), append(E6s, E7s, E8s), E3s = E8s, finish(synchronism(IdS), P, T))");
+			rules.add("(start(synchronism(IdS), P, T) :- !, executing(synchronism(IdS), P, Ti, _), findall(E1,(processFlow(E1, synchronism(IdS)), E1 \\= initial(_), E1 \\= decision(_), executed(E1, P, _, Tf, _), Tf >= Ti, Tf =< T), E1s), findall(E2,(processFlow(E2, synchronism(IdS)), E2 = decision(IdD), selected(IdD, P, R, Tr, _), option(IdD, R, synchronism(IdS)), Tr >= Ti, Tr =< T), E2s), append(E1s, E2s, E3s), findall(E4,(processFlow(E4, synchronism(IdS)), E4 \\= initial(_), E4 \\= decision(_)), E4s), findall(E5,(processFlow(E5, synchronism(IdS)), E5 = decision(_)), E5s), append(E4s, E5s, E6s), findall(E7,(processFlow(E7, synchronism(IdS)), E7 = artifact(_)), E7s), append(E6s, E7s, E8s), E3s = E8s, finish(synchronism(IdS), P, T))");
 
 			rules.add("(start(artifact(IdP), P, T) :- !, finish(artifact(IdP), P, T))");
 			
 			rules.add("(start(final(IdC), P, T) :- !, finish(final(IdC), P, T))");
 
-			rules.add("(finish(initial(IdC), P, T) :- !, findall(E, flow(initial(IdC), E), Es), start(Es, P, T))");
+			rules.add("(finish(initial(IdC), P, T) :- !, findall(E, processFlow(initial(IdC), E), Es), start(Es, P, T))");
 
-			rules.add("(finish(activity(IdP), P, T) :- !, executing(activity(IdP), P, Ti, Performers), T >= Ti, retract(executing(activity(IdP), P, Ti, Performers)), assertz_executed('"+CharonUtil.ACTIVITY+"', IdP, P, Ti, T, Performers), findall(E, flow(activity(IdP), E), Es), start(Es, P, T))");
+			rules.add("(finish(activity(IdP), P, T) :- !, executing(activity(IdP), P, Ti, Performers), T >= Ti, retract(executing(activity(IdP), P, Ti, Performers)), assertz_executed('"+CharonUtil.ACTIVITY+"', IdP, P, Ti, T, Performers), findall(E, processFlow(activity(IdP), E), Es), start(Es, P, T))");
 			
-//			rules.add("(finish(activity(IdP), P, T) :- !, executing(activity(IdP), P, Ti), T >= Ti, retract(executing(activity(IdP), P, Ti)), assertz(executed(activity(IdP), P, Ti, T)), findall(E, flow(activity(IdP), E), Es), start(Es, P, T))");
-
-			rules.add("(finish(process(IdP), P, T) :- !, executing(process(IdP), P, Ti, Performers), retract(executing(process(IdP), P, Ti, Performers)), assertz_executed('"+CharonUtil.PROCESS+"', IdP, P, Ti, T, Performers), findall(E, flow(process(IdP), E), Es), start(Es, P, T))");
+//			rules.add("(finish(activity(IdP), P, T) :- !, executing(activity(IdP), P, Ti), T >= Ti, retract(executing(activity(IdP), P, Ti)), assertz(executed(activity(IdP), P, Ti, T)), findall(E, processFlow(activity(IdP), E), Es), start(Es, P, T))");
 			
-			rules.add("(finish(decision(IdD), A, P, T) :- !, executing(decision(IdD), P, Ti, Performers), findall(E, option(IdD, A, E), Es), Es \\= [], assertz_option_selected(IdD, A, P, T), retract(executing(decision(IdD), P, Ti, Performers)), assertz_executed('"+CharonUtil.DECISION+"', IdD, P, Ti, T, Performers), start(Es, P, T))");
-
-			rules.add("(finish(synchronism(IdS), P, T) :- !, executing(synchronism(IdS), P, Ti, Performers), retract(executing(synchronism(IdS), P, Ti, Performers)), assertz_executed('"+CharonUtil.SYNCHRONISM+"', IdS, P, Ti, T, Performers), findall(E7, flow(synchronism(IdS), E7), E7s), start(E7s, P, T))");
-
-//			rules.add("(finish(artifact(IdP), P, T) :- !, assertz(available(IdP, P, T)), findall(E, flow(artifact(IdP), E), Es), start(Es, P, T))");
+			rules.add("(finish(process(IdP), P, T) :- !, executing(process(IdP), P, Ti, Performers), retract(executing(process(IdP), P, Ti, Performers)), assertz_executed('"+CharonUtil.PROCESS+"', IdP, P, Ti, T, Performers), findall(E, processFlow(process(IdP), E), Es), start(Es, P, T))");
 			
-			rules.add("(finish(final(_), [process(IdP)|P], T) :- !, finish(process(IdP), P, T))");
+			rules.add("(finish(decision(IdD), A, P, T) :- !, executing(decision(IdD), P, Ti, Performers), findall(E, option(IdD, A, E), Es), Es \\= [], assertz_option_selected(IdD, A, P), retract(executing(decision(IdD), P, Ti, Performers)), assertz_executed('"+CharonUtil.DECISION+"', IdD, P, Ti, T, Performers), start(Es, P, T))");
+
+			rules.add("(finish(synchronism(IdS), P, T) :- !, executing(synchronism(IdS), P, Ti, Performers), retract(executing(synchronism(IdS), P, Ti, Performers)), assertz_executed('"+CharonUtil.SYNCHRONISM+"', IdS, P, Ti, T, Performers), findall(E7, processFlow(synchronism(IdS), E7), E7s), start(E7s, P, T))");
+
+//			rules.add("(finish(artifact(IdP), P, T) :- !, assertz(available(IdP, P, T)), findall(E, processFlow(artifact(IdP), E), Es), start(Es, P, T))");
+			
+			rules.add("(finish(final(_), [IdP|P], T) :- !, finish(process(IdP), P, T))");
+			
 		}
 
 		return rules;
