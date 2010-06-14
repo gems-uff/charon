@@ -190,12 +190,12 @@ public class KnowledgeBase {
 			charonRules.add("(create_port(PortId, PortType, PortName, PortDataType) :- assertz(port(PortId)), assertz(portType(PortId, PortType)), assertz(portName(PortId, PortName)), assertz(portDataType(PortId, PortDataType)), init_dbase('"+databaseLocation+"','"+user+"','"+password+"',Conn), createInsertCommand('PORT', ['id', 'type_', 'name', 'data_type'], [PortId, PortType, PortName, PortDataType], Query), exec(Conn, Query))");
 			
 			//Process Instance
-			charonRules.add("(create_processInstance(ProcessInstanceId, ProcessClassId) :- assertz(processInstance(ProcessInstanceId)), assertz(processInstanceType(ProcessInstanceId, ProcessClassId)), init_dbase('"+databaseLocation+"','"+user+"','"+password+"',Conn), createInsertCommand('PROCESS_INSTANCE', ['instance_id', 'process_id'], [ProcessInstanceId, ProcessClassId], Query), exec(Conn, Query))");
+			charonRules.add("(create_processInstance(ProcessInstanceId, ProcessClassId, ProcessInstanceName) :- assertz(processInstance(ProcessInstanceId)), assertz(processInstanceType(ProcessInstanceId, ProcessClassId)), assertz(processInstanceName(ProcessInstanceId, ProcessInstanceName)), init_dbase('"+databaseLocation+"','"+user+"','"+password+"',Conn), createInsertCommand('PROCESS_INSTANCE', ['instance_id', 'process_id', 'name'], [ProcessInstanceId, ProcessClassId, ProcessInstanceName], Query), exec(Conn, Query))");
 			charonRules.add("(set_SWFMSProcess(SWFMSId, ProcessInstanceId) :- assertz(swfmsProcess(ProcessInstanceId, SWFMSId)), init_dbase('"+databaseLocation+"','"+user+"','"+password+"',Conn), createUpdateCommand('PROCESS_INSTANCE', ['swfms_id'], [SWFMSId], ['instance_id'], [ProcessInstanceId], Query), exec(Conn, Query))");
 			charonRules.add("(set_artifactProcessPort(ProcessInstanceId, PortId, ArtifactId) :- assertz(artifactProcessPort(ArtifactId, ProcessInstanceId, PortId)), init_dbase('"+databaseLocation+"','"+user+"','"+password+"',Conn), createInsertCommand('ARTIFACT_PORT_PROCESS_INSTANCE', ['process_instance', 'artifact', 'port'], [ProcessInstanceId, ArtifactId, PortId], Query), exec(Conn, Query))");
 			
 			//Activity Instance
-			charonRules.add("(create_activityInstance(ActivityInstanceId, ActivityClassId) :- assertz(activityInstance(ActivityInstanceId)), assertz(activityInstanceType(ActivityInstanceId, ActivityClassId)), init_dbase('"+databaseLocation+"','"+user+"','"+password+"',Conn), createInsertCommand('ACTIVITY_INSTANCE', ['instance_id', 'activity_id'], [ActivityInstanceId, ActivityClassId], Query), exec(Conn, Query))");
+			charonRules.add("(create_activityInstance(ActivityInstanceId, ActivityClassId, ActivityInstanceName) :- assertz(activityInstance(ActivityInstanceId)), assertz(activityInstanceType(ActivityInstanceId, ActivityClassId)), assertz(activityInstanceName(ActivityInstanceId, ActivityInstanceName)), init_dbase('"+databaseLocation+"','"+user+"','"+password+"',Conn), createInsertCommand('ACTIVITY_INSTANCE', ['instance_id', 'activity_id', 'name'], [ActivityInstanceId, ActivityClassId, ActivityInstanceName], Query), exec(Conn, Query))");
 			charonRules.add("(set_artifactActivityPort(ActivityInstanceId, PortId, ArtifactId) :- assertz(artifactActivityPort(ArtifactId, ActivityInstanceId, PortId)), init_dbase('"+databaseLocation+"','"+user+"','"+password+"',Conn), createInsertCommand('ARTIFACT_PORT_ACTIVITY_INSTANCE', ['activity_instance', 'artifact', 'port'], [ActivityInstanceId, ArtifactId, PortId], Query), exec(Conn, Query))");
 			
 			// Execution
@@ -260,7 +260,7 @@ public class KnowledgeBase {
 			charonRules.add("(set_artifactProcessPort(ProcessInstanceId, PortId, ArtifactId) :- assertz(artifactProcessPort(ArtifactId, ProcessInstanceId, PortId)))");
 			
 			//Activity Instance
-			charonRules.add("(create_activityInstance(ActivityInstanceId, ActivityClassId) :- assertz(activityInstance(ActivityInstanceId)), assertz(activityInstanceType(ActivityInstanceId, ActivityClassId)))");
+			charonRules.add("(create_activityInstance(ActivityInstanceId, ActivityClassId, ActivityInstanceName) :- assertz(activityInstance(ActivityInstanceId)), assertz(activityInstanceType(ActivityInstanceId, ActivityClassId)), assertz(activityInstanceName(ActivityInstanceId, ActivityInstanceName)))");
 			charonRules.add("(set_artifactActivityPort(ActivityInstanceId, PortId, ArtifactId) :- assertz(artifactActivityPort(ArtifactId, ActivityInstanceId, PortId)))");
 			
 			// Execution
@@ -462,9 +462,10 @@ public class KnowledgeBase {
 		while(result.next()){
 			String instanceId = result.getString(1);
 			String processId = result.getString(2);
-			String swfmsId = result.getString(3);
+			String instanceName = result.getString(3);
+			String swfmsId = result.getString(4);
 			
-			inferenceMachine.isSolvable("assertz(processInstance('"+instanceId+"')), assertz(processInstanceType('"+instanceId+"', '"+processId+"')), assertz(swfmsProcess('"+instanceId+"', '"+swfmsId+"')).");
+			inferenceMachine.isSolvable("assertz(processInstance('"+instanceId+"')), assertz(processInstanceType('"+instanceId+"', '"+processId+"')), assertz(swfmsProcess('"+instanceId+"', '"+swfmsId+"')), assertz(processInstanceName('"+instanceId+"', '"+instanceName+"')).");
 		}
 		
 		//Load activity instance
@@ -474,8 +475,9 @@ public class KnowledgeBase {
 		while(result.next()){
 			String instanceId = result.getString(1);
 			String activityId = result.getString(2);
+			String instanceName = result.getString(3);
 			
-			inferenceMachine.isSolvable("assertz(activityInstance('"+instanceId+"')), assertz(activityInstanceType('"+instanceId+"', '"+activityId+"')).");
+			inferenceMachine.isSolvable("assertz(activityInstance('"+instanceId+"')), assertz(activityInstanceType('"+instanceId+"', '"+activityId+"')), assertz(activityInstanceName('"+instanceId+"', '"+instanceName+"')).");
 		}
 		
 		//Load flows

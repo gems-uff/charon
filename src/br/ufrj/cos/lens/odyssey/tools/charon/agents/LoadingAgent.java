@@ -163,10 +163,10 @@ public class LoadingAgent extends Agent {
 		return isSolvable;
 	}
 	
-	public String instantiateActivity(KnowledgeBase knowledgeBase, String activityClassId){
+	public String instantiateActivity(KnowledgeBase knowledgeBase, String activityClassId, String name){
 		connect(knowledgeBase);
 		String activityInstanceId = IDGenerator.generateID();
-		boolean isSolvable = knowledgeBase.isSolvable("create_activityInstance('"+activityInstanceId+"', '"+activityClassId+"').");
+		boolean isSolvable = knowledgeBase.isSolvable("create_activityInstance('"+activityInstanceId+"', '"+activityClassId+"', '"+name+"').");
 		disconnect();
 		if(isSolvable){
 			classIdsByInstance.put(activityInstanceId, activityClassId);
@@ -176,10 +176,10 @@ public class LoadingAgent extends Agent {
 			return null;
 	}
 	
-	public String instantiateProcess(KnowledgeBase knowledgeBase, String processClassId){
+	public String instantiateProcess(KnowledgeBase knowledgeBase, String processClassId, String name){
 		connect(knowledgeBase);
 		String processInstanceId = IDGenerator.generateID();
-		boolean isSolvable = knowledgeBase.isSolvable("create_processInstance('"+processInstanceId+"', '"+processClassId+"').");
+		boolean isSolvable = knowledgeBase.isSolvable("create_processInstance('"+processInstanceId+"', '"+processClassId+"', '"+name+"').");
 		disconnect();
 		if(isSolvable){
 			classIdsByInstance.put(processInstanceId, processClassId);

@@ -112,14 +112,14 @@ public class CharonAPI {
 		return loadingAgent.associateArtifactToProcessPort(knowledgeBase, processInstanceId, portId, artifactId);
 	}
 	
-	public String instantiateActivity(String activityClassId) throws CharonException{
+	public String instantiateActivity(String activityClassId, String name) throws CharonException{
 		LoadingAgent loadingAgent = AgentManager.getInstance().getAgent(LoadingAgent.class);
-		return loadingAgent.instantiateActivity(knowledgeBase, activityClassId);
+		return loadingAgent.instantiateActivity(knowledgeBase, activityClassId, name);
 	}
 	
-	public String instantiateProcess(String processClassId) throws CharonException{
+	public String instantiateProcess(String processClassId, String name) throws CharonException{
 		LoadingAgent loadingAgent = AgentManager.getInstance().getAgent(LoadingAgent.class);
-		return loadingAgent.instantiateProcess(knowledgeBase, processClassId);
+		return loadingAgent.instantiateProcess(knowledgeBase, processClassId, name);
 	}
 	
 	public String createSynchronism() throws CharonException{

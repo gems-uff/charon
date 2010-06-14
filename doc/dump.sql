@@ -84,6 +84,7 @@ CREATE TABLE PROCESS_INSTANCE
 (
  instance_id int unsigned not null,
  process_id int unsigned not null,
+ name varchar(255),
  swfms_id int unsigned,
  primary key (instance_id),
  foreign key (process_id) references PROCESS (id),
@@ -95,6 +96,7 @@ CREATE TABLE ACTIVITY_INSTANCE
 (
  instance_id int unsigned not null,
  activity_id int unsigned not null,
+ name varchar(255),
  primary key (instance_id),
  foreign key (activity_id) references ACTIVITY (id)
 ) engine=InnoDB;
@@ -343,7 +345,7 @@ delimiter ;
 
 --INSERT INTO `PORT` VALUES (8,0,'portA','int');
 --INSERT INTO `ACTIVITY` VALUES (5,'A1','local'),(6,'A2','local'),(7,'A3','local');
---INSERT INTO `ACTIVITY_INSTANCE` VALUES (10,5),(11,6),(12,7);
+--INSERT INTO `ACTIVITY_INSTANCE` VALUES (10,5,'A1'),(11,6,'A2'),(12,7,'A3');
 --INSERT INTO `ACTIVITY_PORT` VALUES (5,8);
 --INSERT INTO `ARTIFACT` VALUES (9);
 --INSERT INTO `ARTIFACT_PORT_ACTIVITY_INSTANCE` VALUES (10,9,8);
@@ -354,7 +356,7 @@ delimiter ;
 --INSERT INTO `INITIAL` VALUES (4);
 --INSERT INTO `SWFMS` VALUES (3,'Vistrails','192.168.0.1');
 --INSERT INTO `PROCESS` VALUES (4,'P1','local');
---INSERT INTO `PROCESS_INSTANCE` VALUES (13,4,3);
+--INSERT INTO `PROCESS_INSTANCE` VALUES (13,4,'P1',3);
 --INSERT INTO `EXPERIMENT` VALUES (1);
 --INSERT INTO `EXPERIMENT_VERSION` VALUES (2,NULL,1,'NACAD',13);
 --INSERT INTO `EXPERIMENT_INSTANCE` VALUES (14,2);
