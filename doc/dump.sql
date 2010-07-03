@@ -193,6 +193,7 @@ CREATE TABLE DECISION
 CREATE TABLE SYNCHRONISM
 (
  id int unsigned not null,
+ visible int unsigned not null,
  primary key (id)
 ) engine=InnoDB;
 
