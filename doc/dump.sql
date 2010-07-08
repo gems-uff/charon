@@ -178,7 +178,7 @@ CREATE TABLE ARTIFACT_PORT_PROCESS_INSTANCE
  process_instance int unsigned not null,
  artifact int unsigned not null,
  port int unsigned not null,
- foreign key (process_instance) references ACTIVITY_INSTANCE (instance_id),
+ foreign key (process_instance) references PROCESS_INSTANCE (instance_id),
  foreign key (artifact) references ARTIFACT (id),
  foreign key (port) references PORT (id)
 ) engine=InnoDB;
