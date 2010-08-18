@@ -203,6 +203,9 @@ public class KnowledgeBase {
 			charonRules.add("(assertz_executed(ElementType, ElementId, P, Ti, Tf, Performers) :- createElement(ElementId, ElementType, Element), assertz(executed(Element, P, Ti, Tf, Performers)), init_dbase('"+databaseLocation+"','"+user+"','"+password+"',Conn), createUpdateCommand('EXECUTION_STATUS', ['status', 'end_time'], ['"+CharonUtil.EXECUTED_STATUS+"', Tf], ['id_element', 'type_element'], [ElementId, ElementType], Query), exec(Conn, Query))");
 			charonRules.add("(assertz_option_selected(OptionId, A, P) :- assertz(option_selected(OptionId, A, P)), init_dbase('"+databaseLocation+"','"+user+"','"+password+"',Conn), createInsertCommand('OPTION_SELECTED', ['id_option', 'name', 'path'], [OptionId, A, P], Query), exec(Conn, Query))");
 			
+			charonRules.add("(assertz_artifactValue(ArtifactId, ArtifactValue, P) :- assertz(artifactValue(ArtifactId, ArtifactValue, P)), init_dbase('"+databaseLocation+"','"+user+"','"+password+"',Conn), createInsertCommand('ARTIFACT_VALUE', ['artifact', 'value', 'path'], [ArtifactId, ArtifactValue, P], Query), exec(Conn, Query))");
+			charonRules.add("(assertz_artifactValueLocation(ArtifactId, HostURL, HostLocalPath, P) :- assertz(artifactValueLocation(ArtifactId, HostURL, HostLocalPath, P)), init_dbase('"+databaseLocation+"','"+user+"','"+password+"',Conn), createInsertCommand('ARTIFACT_VALUE_LOCATION', ['artifact', 'host_url', 'host_local_path', 'path'], [ArtifactId, HostURL, HostLocalPath, P], Query), exec(Conn, Query))");
+			
 		}
 		else{
             
@@ -268,7 +271,9 @@ public class KnowledgeBase {
 			charonRules.add("(assertz_executed(ElementType, ElementId, P, Ti, Tf, Performers) :- createElement(ElementId, ElementType, Element), assertz(executed(Element, P, Ti, Tf, Performers)))");
 			charonRules.add("(assertz_option_selected(OptionId, OptionName) :- assertz(option_selected(OptionId, OptionName)))");
 
-			
+			charonRules.add("(assertz_artifactValue(ArtifactId, ArtifactValue, P) :- assertz(artifactValue(ArtifactId, ArtifactValue, P)))");
+			charonRules.add("(assertz_artifactValueLocation(ArtifactId, HostURL, HostLocalPath, P) :- assertz(artifactValueLocation(ArtifactId, HostURL, HostLocalPath, P)))");
+
 		}
 		
 
@@ -563,7 +568,7 @@ public class KnowledgeBase {
 			inferenceMachine.isSolvable("assertz(artifactProcessPort('"+artifactId+"', '"+processInstanceId+"', '"+portId+"')).");
 		}
 		
-		//Load process parameters
+		//Load EXECUTION_STATUS
 		
 		result = session.query("SELECT * FROM EXECUTION_STATUS");
 		
@@ -582,6 +587,33 @@ public class KnowledgeBase {
 			else
 			if(status == CharonUtil.EXECUTED_STATUS)
 				inferenceMachine.isSolvable("assertz(executed("+CharonUtil.createElement(elementType, elementId)+", ["+path+"], '"+startTime+"', '"+endTime+"', [])).");
+		}
+		
+		//Load EXECUTION_STATUS
+		
+		result = session.query("SELECT * FROM ARTIFACT_VALUE");
+		
+		while(result.next()){
+			String artifactId = result.getString(1);
+			String artifactValue = result.getString(2);
+			String path = result.getString(3);
+			
+			inferenceMachine.isSolvable("assertz(artifactValue('"+artifactId+"', '"+artifactValue+"', ["+path+"])).");
+			
+		}
+		
+		//Load EXECUTION_STATUS_LOCATION
+		
+		result = session.query("SELECT * FROM ARTIFACT_VALUE_LOCATION");
+		
+		while(result.next()){
+			String artifactId = result.getString(1);
+			String hostURL = result.getString(2);
+			String hostLocalPath = result.getString(3);
+			String path = result.getString(4);
+			
+			inferenceMachine.isSolvable("assertz(artifactValueLocation('"+artifactId+"', '"+hostURL+"', '"+hostLocalPath+"', ["+path+"])).");
+			
 		}
 		
 	}

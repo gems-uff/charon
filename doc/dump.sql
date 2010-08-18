@@ -12,6 +12,8 @@ USE charon;
 DROP TABLE IF EXISTS EXPERIMENT_INSTANCE;
 DROP TABLE IF EXISTS EXPERIMENT_VERSION;
 DROP TABLE IF EXISTS EXPERIMENT;
+DROP TABLE IF EXISTS ARTIFACT_VALUE;
+DROP TABLE IF EXISTS ARTIFACT_VALUE_LOCATION;
 DROP TABLE IF EXISTS ARTIFACT_PORT_PROCESS_INSTANCE;
 DROP TABLE IF EXISTS ARTIFACT_PORT_ACTIVITY_INSTANCE;
 DROP TABLE IF EXISTS PROCESS_INSTANCE;
@@ -247,6 +249,31 @@ CREATE TABLE EXECUTION_STATUS
  end_time bigint unsigned,
  path varchar(255),
  performers varchar(255)
+) engine=InnoDB;
+
+--
+-- TABLE DEFINITION FOR ARTIFACT_VALUE
+--
+
+CREATE TABLE ARTIFACT_VALUE
+(
+ artifact int unsigned not null,
+ value varchar(255),
+ path varchar(255),
+ foreign key (artifact) references ARTIFACT (id)
+) engine=InnoDB;
+
+--
+-- TABLE DEFINITION FOR ARTIFACT_VALUE_LOCATION
+--
+
+CREATE TABLE ARTIFACT_VALUE_LOCATION
+(
+ artifact int unsigned not null,
+ host_url varchar(255),
+ host_local_path varchar(255),
+ path varchar(255),
+ foreign key (artifact) references ARTIFACT (id)
 ) engine=InnoDB;
 
 --

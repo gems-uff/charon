@@ -212,9 +212,9 @@ public class CharonAPI {
 		return enactmentAgent.setArtifactValue(knowledgeBase, artifactId, context, value);
 	}
 	
-	public boolean publishArtifactDataLocation(String artifactId, String[] context, String hostURL, String hostLocalPath) throws CharonException{
+	public boolean publishArtifactValueLocation(String artifactId, String[] context, String hostURL, String hostLocalPath) throws CharonException{
 		EnactmentAgent enactmentAgent = AgentManager.getInstance().getAgent(EnactmentAgent.class);
-		return enactmentAgent.publishArtifactDataLocation(knowledgeBase, artifactId, context, hostURL, hostLocalPath);
+		return enactmentAgent.publishArtifactValueLocation(knowledgeBase, artifactId, context, hostURL, hostLocalPath);
 	}
 	
 	

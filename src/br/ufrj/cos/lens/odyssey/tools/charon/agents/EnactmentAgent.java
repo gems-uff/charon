@@ -123,26 +123,22 @@ public class EnactmentAgent extends Agent {
 		return isSolvable;
 	}
 
-	/*
-	 * TODO: Fazer esse método...
-	 */
 	public boolean setArtifactValue(KnowledgeBase knowledgeBase, String artifactId, String[] context, String value){		
 		
 		connect(knowledgeBase);
 		String contextList = createContextList(context);
-		boolean isSolvable = knowledgeBase.isSolvable("assertz(productData('"+artifactId+"', "+contextList+", '"+value+"')).");
+		boolean isSolvable = knowledgeBase.isSolvable("assertz_artifactValue('"+artifactId+"', '"+value+"', "+contextList+").");
 		disconnect();
 		return isSolvable;
 	}
 	
-	public boolean publishArtifactDataLocation(KnowledgeBase knowledgeBase, String artifactId, String[] context, String hostURL, String hostLocalPath){
+	public boolean publishArtifactValueLocation(KnowledgeBase knowledgeBase, String artifactId, String[] context, String hostURL, String hostLocalPath){
 		
 		connect(knowledgeBase);
 		String contextList = createContextList(context);
-		boolean isSolvable = knowledgeBase.isSolvable("assertz(productDataLocation('"+artifactId+"', "+contextList+", '"+hostURL+"', '"+hostLocalPath+"')).");
+		boolean isSolvable = knowledgeBase.isSolvable("assertz_artifactValueLocation('"+artifactId+"', '"+hostURL+"', '"+hostLocalPath+"', "+contextList+").");
 		disconnect();
 		return isSolvable;
-
 	}
 		
 	public String createContextList(String[] context){
@@ -166,7 +162,7 @@ public class EnactmentAgent extends Agent {
 		if (rules == null) {
 			rules = new ArrayList<String>();
 
-			rules.add("(start(experiment(IdE), IdEInstance, T) :- !, currentVersion(experiment(IdE), VersionId), create_experimentInstance(IdEInstance, VersionId, IdE), experimentRootProcess(IdE, VersionId, IdP), assertz_executing('"+CharonUtil.EXPERIMENT+"', IdEInstance, [], T, []), assertz(processFlow(process(IdP), experimentEndFlag(IdEInstance))), start(process(IdP), [IdEInstance], T))");
+			rules.add("(start(experiment(IdE), IdEInstance, T) :- !, currentVersion(experiment(IdE), VersionId), create_experimentInstance(IdEInstance, VersionId, IdE), experimentRootProcess(IdE, VersionId, IdP), assertz_executing('"+CharonUtil.EXPERIMENT+"', IdEInstance, [], T, []), assertz(processFlow(process(IdP), experimentEndFlag(IdEInstance))), start(experimentProcess(IdP), [IdEInstance], T))");
 			rules.add("(start(experimentEndFlag(IdEInstance), _ , T) :- !, retract(executing(experiment(IdEInstance), P, Ti, Performers)), assertz_executed('"+CharonUtil.EXPERIMENT+"', IdEInstance, P, Ti, T, Performers))");
 			
 			rules.add("start([],_,_)");
@@ -177,6 +173,13 @@ public class EnactmentAgent extends Agent {
 
 			rules.add("(start(activity(IdP), P, T) :- !, not(executing(activity(IdP), P, _, _)), assertz_executing('"+CharonUtil.ACTIVITY+"', IdP, P, T, []))");
 
+			/**
+			 * TODO: Workaround to solve context problem
+			 * BEGIN
+			 */
+			rules.add("(start(experimentProcess(IdP), P, T) :- !, not(executing(process(IdP), P, _, _)), assertz_executing('"+CharonUtil.PROCESS+"', IdP, P, T, []), processInstanceType(IdP, IdC), start(initial(IdC), P, T))");
+			//END
+			
 			rules.add("(start(process(IdP), P, T) :- !, not(executing(process(IdP), P, _, _)), assertz_executing('"+CharonUtil.PROCESS+"', IdP, P, T, []), processInstanceType(IdP, IdC), start(initial(IdC), [IdP|P], T))");
 
 			rules.add("(start(decision(IdD), P, T) :- !, not(executing(decision(IdD), P, _, _)), assertz_executing('"+CharonUtil.DECISION+"', IdD, P, T, []))");
