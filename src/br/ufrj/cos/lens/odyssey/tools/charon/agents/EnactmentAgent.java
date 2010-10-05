@@ -91,7 +91,8 @@ public class EnactmentAgent extends Agent {
 	public boolean notifyProcessExecutionStartup(KnowledgeBase knowledgeBase, String processInstanceId, String[] context){
 		connect(knowledgeBase);
 		long currentTime = System.currentTimeMillis() / 1000;
-		boolean isSolvable = knowledgeBase.isSolvable("start(process('"+processInstanceId+"'), "+context+", "+currentTime+")).");
+		String contextList = createContextList(context);
+		boolean isSolvable = knowledgeBase.isSolvable("start(process('"+processInstanceId+"'), "+contextList+", "+currentTime+").");
 		disconnect();
 		return isSolvable;
 	}

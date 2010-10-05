@@ -145,7 +145,7 @@ CREATE TABLE PORT
  id int unsigned not null,
  type_ int unsigned,
  name varchar(255),
- data_type varchar(30),
+ data_type varchar(50),
  primary key (id)
 ) engine=InnoDB;
 
