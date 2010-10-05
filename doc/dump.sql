@@ -291,83 +291,101 @@ delimiter |
 
 CREATE TRIGGER update_last_id1 BEFORE INSERT ON EXPERIMENT
   FOR EACH ROW BEGIN
-    UPDATE ID_CONTROL SET last_id = NEW.id;
+	IF NEW.id > (select last_id FROM ID_CONTROL) THEN  
+    	UPDATE ID_CONTROL SET last_id = NEW.id;
+   	END IF;
   END;
 |
 
 CREATE TRIGGER update_last_id3 BEFORE INSERT ON PROCESS
   FOR EACH ROW BEGIN
-    UPDATE ID_CONTROL SET last_id = NEW.id;
+	IF NEW.id > (select last_id FROM ID_CONTROL) THEN  
+    	UPDATE ID_CONTROL SET last_id = NEW.id;
+   	END IF;
   END;
 |
 
 CREATE TRIGGER update_last_id4 BEFORE INSERT ON ACTIVITY
   FOR EACH ROW BEGIN
-    UPDATE ID_CONTROL SET last_id = NEW.id;
+	IF NEW.id > (select last_id FROM ID_CONTROL) THEN  
+    	UPDATE ID_CONTROL SET last_id = NEW.id;
+   	END IF;
   END;
 |
 
 CREATE TRIGGER update_last_id5 BEFORE INSERT ON ARTIFACT
   FOR EACH ROW BEGIN
-    UPDATE ID_CONTROL SET last_id = NEW.id;
+	IF NEW.id > (select last_id FROM ID_CONTROL) THEN  
+    	UPDATE ID_CONTROL SET last_id = NEW.id;
+   	END IF;
   END;
 |
 
 CREATE TRIGGER update_last_id6 BEFORE INSERT ON PORT
   FOR EACH ROW BEGIN
-    UPDATE ID_CONTROL SET last_id = NEW.id;
+	IF NEW.id > (select last_id FROM ID_CONTROL) THEN  
+    	UPDATE ID_CONTROL SET last_id = NEW.id;
+   	END IF;
   END;
 |
 
 CREATE TRIGGER update_last_id7 BEFORE INSERT ON DECISION
   FOR EACH ROW BEGIN
-    UPDATE ID_CONTROL SET last_id = NEW.id;
+	IF NEW.id > (select last_id FROM ID_CONTROL) THEN  
+    	UPDATE ID_CONTROL SET last_id = NEW.id;
+   	END IF;
   END;
 |
 
 CREATE TRIGGER update_last_id8 BEFORE INSERT ON SYNCHRONISM
   FOR EACH ROW BEGIN
-    UPDATE ID_CONTROL SET last_id = NEW.id;
+	IF NEW.id > (select last_id FROM ID_CONTROL) THEN  
+    	UPDATE ID_CONTROL SET last_id = NEW.id;
+   	END IF;
   END;
 |
 
 CREATE TRIGGER update_last_id9 BEFORE INSERT ON OPTION_
   FOR EACH ROW BEGIN
-    UPDATE ID_CONTROL SET last_id = NEW.id;
+	IF NEW.id > (select last_id FROM ID_CONTROL) THEN  
+    	UPDATE ID_CONTROL SET last_id = NEW.id;
+   	END IF;
   END;
 |
-
-CREATE TRIGGER update_last_id10 BEFORE INSERT ON INITIAL
-  FOR EACH ROW BEGIN
-    UPDATE ID_CONTROL SET last_id = NEW.id;
-  END;
-|
-
-CREATE TRIGGER update_last_id11 BEFORE INSERT ON FINAL
-  FOR EACH ROW BEGIN
-    UPDATE ID_CONTROL SET last_id = NEW.id;
-  END;
-|
-
 
 CREATE TRIGGER update_last_id12 BEFORE INSERT ON SWFMS
   FOR EACH ROW BEGIN
-    UPDATE ID_CONTROL SET last_id = NEW.id;
+	IF NEW.id > (select last_id FROM ID_CONTROL) THEN  
+    	UPDATE ID_CONTROL SET last_id = NEW.id;
+   	END IF;
   END;
 |
 
 CREATE TRIGGER update_last_id13 BEFORE INSERT ON PROCESS_INSTANCE
   FOR EACH ROW BEGIN
-    UPDATE ID_CONTROL SET last_id = NEW.instance_id;
+	IF NEW.instance_id > (select last_id FROM ID_CONTROL) THEN  
+    	UPDATE ID_CONTROL SET last_id = NEW.instance_id;
+   	END IF;
   END;
 |
 
 CREATE TRIGGER update_last_id14 BEFORE INSERT ON ACTIVITY_INSTANCE
   FOR EACH ROW BEGIN
-    UPDATE ID_CONTROL SET last_id = NEW.instance_id;
+	IF NEW.instance_id > (select last_id FROM ID_CONTROL) THEN  
+    	UPDATE ID_CONTROL SET last_id = NEW.instance_id;
+   	END IF;
   END;
+  
 |
 
+ CREATE TRIGGER update_last_id15 BEFORE INSERT ON EXPERIMENT_INSTANCE
+  FOR EACH ROW BEGIN
+	IF NEW.instance_id > (select last_id FROM ID_CONTROL) THEN  
+    	UPDATE ID_CONTROL SET last_id = NEW.instance_id;
+   	END IF;
+  END;
+
+|  
 delimiter ;
 
 
