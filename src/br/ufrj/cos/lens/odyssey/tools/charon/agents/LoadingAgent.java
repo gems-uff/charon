@@ -55,9 +55,9 @@ public class LoadingAgent extends Agent {
 		return isSolvable;
 	}
 	
-	public boolean setExperimentRootProcess(KnowledgeBase knowledgeBase, String experimentId, String processInstanceId){
+	public boolean setExperimentRootProcess(KnowledgeBase knowledgeBase, String experimentId, String processId){
 		connect(knowledgeBase);
-		boolean isSolvable = knowledgeBase.isSolvable("set_experimentRootProcess('"+experimentId+"', '"+processInstanceId+"').");
+		boolean isSolvable = knowledgeBase.isSolvable("set_experimentRootProcess('"+experimentId+"', '"+processId+"').");
 		disconnect();
 		return isSolvable;
 	}

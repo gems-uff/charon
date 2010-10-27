@@ -163,7 +163,7 @@ public class EnactmentAgent extends Agent {
 		if (rules == null) {
 			rules = new ArrayList<String>();
 
-			rules.add("(start(experiment(IdE), IdEInstance, T) :- !, currentVersion(experiment(IdE), VersionId), create_experimentInstance(IdEInstance, VersionId, IdE), experimentRootProcess(IdE, VersionId, IdP), assertz_executing('"+CharonUtil.EXPERIMENT+"', IdEInstance, [], T, []), assertz(processFlow(process(IdP), experimentEndFlag(IdEInstance))), start(experimentProcess(IdP), [IdEInstance], T))");
+			rules.add("(start(experiment(IdE), IdEInstance, T) :- !, currentVersion(experiment(IdE), VersionId), create_experimentInstance(IdEInstance, VersionId, IdE), assertz_executing('"+CharonUtil.EXPERIMENT+"', IdEInstance, [], T, []), experimentRootProcess(IdE, VersionId, IdP), create_processInstance(IdEInstance, IdP, 'root'), assertz(processFlow(process(IdEInstance), experimentEndFlag(IdEInstance))), start(process(IdEInstance), [], T))");
 			rules.add("(start(experimentEndFlag(IdEInstance), _ , T) :- !, retract(executing(experiment(IdEInstance), P, Ti, Performers)), assertz_executed('"+CharonUtil.EXPERIMENT+"', IdEInstance, P, Ti, T, Performers))");
 			
 			rules.add("start([],_,_)");
@@ -174,12 +174,6 @@ public class EnactmentAgent extends Agent {
 
 			rules.add("(start(activity(IdP), P, T) :- !, not(executing(activity(IdP), P, _, _)), assertz_executing('"+CharonUtil.ACTIVITY+"', IdP, P, T, []))");
 
-			/**
-			 * TODO: Workaround to solve context problem
-			 * BEGIN
-			 */
-			rules.add("(start(experimentProcess(IdP), P, T) :- !, not(executing(process(IdP), P, _, _)), assertz_executing('"+CharonUtil.PROCESS+"', IdP, P, T, []), processInstanceType(IdP, IdC), start(initial(IdC), P, T))");
-			//END
 			
 			rules.add("(start(process(IdP), P, T) :- !, not(executing(process(IdP), P, _, _)), assertz_executing('"+CharonUtil.PROCESS+"', IdP, P, T, []), processInstanceType(IdP, IdC), start(initial(IdC), [IdP|P], T))");
 
