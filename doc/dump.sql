@@ -113,7 +113,7 @@ CREATE TABLE EXPERIMENT_VERSION
  primary key (experiment, version),
  foreign key (experiment, previous_version) references EXPERIMENT_VERSION (experiment, version),
  foreign key (experiment) references EXPERIMENT (id),
- foreign key (root_process) references PROCESS_INSTANCE (instance_id)
+ foreign key (root_process) references PROCESS (id)
 ) engine=InnoDB;
 
 
