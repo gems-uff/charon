@@ -51,6 +51,9 @@ public class CharonUtil {
 		else
 		if(elementType.equals(ARTIFACT))
 			return "product('"+elementId+"')";
+		else
+		if(elementType.equals(EXPERIMENT))
+			return "experiment('"+elementId+"')";
 		else return null;
 	}
 	
