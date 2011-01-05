@@ -112,6 +112,28 @@ public class KnowledgeBase {
 		charonRules.add("(nextVersionId(Element, VersionId) :- currentVersion(Element, PreviousVersionId), VersionId is PreviousVersionId + 1)");
 		charonRules.add("(setCurrentVersion(Element, VersionId, PreviousVersionId) :- retract(currentVersion(Element, PreviousVersionId)), assertz(currentVersion(Element, VersionId)))");
 		charonRules.add("(associateElementToExperimentLastVersion(ExperimentId, Element) :- currentVersion(experiment(ExperimentId), CurrentVersionId), assertz(experimentVersionDimension(ExperimentId, CurrentVersionId, swfms(SWFMS_Id))))");
+
+		
+		
+		charonRules.add("(last(X,[X]))");
+		charonRules.add("(last(X,[_|L]) :- last(X,L))");
+		
+		charonRules.add("(experimentExecutionTime(ExperimentId, ExperimentInstanceId, ExecutionTime) :- experimentInstance(ExperimentInstanceId, _, ExperimentId), executed(experiment(ExperimentInstanceId), _, Ti, Tf, _),  class('java.lang.Long') <- parseLong(Ti) returns V1, class('java.lang.Long') <- parseLong(Tf) returns V2, ExecutionTime is V2 - V1)");
+		charonRules.add("(activityExecutionTime(ExperimentId, ExperimentInstanceId, ActivityName, ExecutionTime) :- experimentInstance(ExperimentInstanceId, _, ExperimentId), activityName(ActivityClassId, ActivityName), activityInstanceType(ActivityInstanceId, ActivityClassId), executed(activity(ActivityInstanceId), P , Ti, Tf, _), last(ExperimentInstanceId, P), class('java.lang.Long') <- parseLong(Ti) returns V1, class('java.lang.Long') <- parseLong(Tf) returns V2, ExecutionTime is V2 - V1)");
+		charonRules.add("(consumedArtifactList(_, [], []))");
+		charonRules.add("(consumedArtifactList(ActivityInstanceId, [PortId|PortIdList], [ArtifactId|ArtifactList]) :- portType(PortId, '"+CharonUtil.INPORT+"'), artifactActivityPort(ArtifactId, ActivityInstanceId, PortId), consumedArtifactList(ActivityInstanceId, PortIdList, ArtifactList))");
+		charonRules.add("(consumedArtifactList(ActivityInstanceId, [PortId|PortIdList], ArtifactList) :- portType(PortId, '"+CharonUtil.OUTPORT+"'), artifactActivityPort(ArtifactId, ActivityInstanceId, PortId), consumedArtifactList(ActivityInstanceId, PortIdList, ArtifactList))");
+		charonRules.add("(artifactsConsumedByActivity(ExperimentId, ExperimentInstanceId, ActivityName, ArtifactIdList) :- experimentInstance(ExperimentInstanceId, _, ExperimentId), activityName(ActivityClassId, ActivityName), activityInstanceType(ActivityInstanceId, ActivityClassId), findall(PortId, activityPort(ActivityClassId, PortId), PortIdList), consumedArtifactList(ActivityInstanceId, PortIdList, ArtifactIdList), !)");
+		charonRules.add("(generatedArtifactList(_, [], []))");
+		charonRules.add("(generatedArtifactList(ActivityInstanceId, [PortId|PortIdList], [ArtifactId|ArtifactList]) :- portType(PortId, '"+CharonUtil.OUTPORT+"'), artifactActivityPort(ArtifactId, ActivityInstanceId, PortId), consumedArtifactList(ActivityInstanceId, PortIdList, ArtifactList))");
+		charonRules.add("(generatedArtifactList(ActivityInstanceId, [PortId|PortIdList], ArtifactList) :- portType(PortId, '"+CharonUtil.INPORT+"'), artifactActivityPort(ArtifactId, ActivityInstanceId, PortId), consumedArtifactList(ActivityInstanceId, PortIdList, ArtifactList))");
+		charonRules.add("(artifactsGeneratedByActivity(ExperimentId, ExperimentInstanceId, ActivityName, ArtifactIdList) :- experimentInstance(ExperimentInstanceId, _, ExperimentId), activityName(ActivityClassId, ActivityName), activityInstanceType(ActivityInstanceId, ActivityClassId), findall(PortId, activityPort(ActivityClassId, PortId), PortIdList), generatedArtifactList(ActivityInstanceId, PortIdList, ArtifactIdList), !)");
+		charonRules.add("(artifactValue(ExperimentId, ExperimentInstanceId, ArtifactId, ArtifactValue) :- artifactValue(ArtifactId, ArtifactValue, _))");
+		charonRules.add("(existsPortOut(ArtifactId) :- artifactActivityPort(ArtifactId, _, PortIdOUT), portType(PortIdOUT, '"+CharonUtil.OUTPORT+"'))");
+		charonRules.add("(artifactAncestors(ArtifactId, []) :- not(existsPortOut(ArtifactId)))");
+		charonRules.add("(artifactAncestors(ArtifactId, [ArtifactAncestorId|ArtifactAncestors]) :- artifactActivityPort(ArtifactId, ActivityInstanceId, PortIdOUT), portType(PortIdOUT, '"+CharonUtil.OUTPORT+"'), artifactActivityPort(ArtifactAncestorId, ActivityInstanceId, PortIdIN), portType(PortIdIN, '"+CharonUtil.INPORT+"'), artifactAncestors(ArtifactAncestorId, ArtifactAncestors))");
+		
+		
 		
 		if(IsUsingDatabase){
 			
@@ -139,6 +161,8 @@ public class KnowledgeBase {
 			charonRules.add("(init_dbase(DBase, Username, Password, Connection) :- java_object('br.ufrj.cos.lens.odyssey.tools.charon.util.MysqlConnector', [DBase, Username, Password], Connection), Connection <- connect('1'))");
 			charonRules.add("(exec(Connection, Query) :- Connection <- exec(Query))");
 			charonRules.add("(println(Str) :- class('java.lang.System').out <- get(StdOut), StdOut <- println(Str))");
+			charonRules.add("(println([]))");
+			charonRules.add("(println([A|B]) :- println(A), println(B))");
 			
 			
             // EXPERIMENT
@@ -579,14 +603,14 @@ public class KnowledgeBase {
 			String status = result.getString(3);
 			String startTime = result.getString(4);
 			String endTime = result.getString(5);
-			String path = result.getString(6);
-			String performers = result.getString(7);
+			String path = transformList(result.getString(6));
+			String performers = transformList(result.getString(7));
 			
 			
-			if(status == CharonUtil.EXECUTING_STATUS)
+			if(status.equals(CharonUtil.EXECUTING_STATUS))
 				inferenceMachine.isSolvable("assertz(executing("+CharonUtil.createElement(elementType, elementId)+", ["+path+"], '"+startTime+"', [])).");
 			else
-			if(status == CharonUtil.EXECUTED_STATUS)
+			if(status.equals(CharonUtil.EXECUTED_STATUS))
 				inferenceMachine.isSolvable("assertz(executed("+CharonUtil.createElement(elementType, elementId)+", ["+path+"], '"+startTime+"', '"+endTime+"', [])).");
 		}
 		
@@ -618,6 +642,31 @@ public class KnowledgeBase {
 		}
 		
 	}
+	
+	public String transformList(String list){
+		
+		String[] elements = list.split(",");
+		StringBuffer transformedList = new StringBuffer("");
+
+		if(elements.length>1){
+			for(int i=0; i<elements.length; i++){
+				String temp = elements[i].trim();
+				transformedList.append("'"+temp+"',");
+			}
+		}
+
+		
+		if(transformedList.length()>1){
+			return transformedList.substring(0, transformedList.length()-1);
+		}
+		else{
+			String temp = list.trim();
+			if(temp.length()>1)
+				return "'"+temp+"'";
+			else
+				return temp;
+		}
+	}	
 
 	/**
 	 * Add a process into the knowledge base
@@ -700,26 +749,26 @@ public class KnowledgeBase {
 		ArrayList<String> charonRules = new ArrayList<String>();
 		
 		
-		charonRules.add("(createElement(ElementId, '"+CharonUtil.EXPERIMENT+"', experiment(ElementId)) :- !)");
-		charonRules.add("(createElement(ElementId, '"+CharonUtil.PROCESS+"', process(ElementId)) :- !)");
-		charonRules.add("(createElement(ElementId, '"+CharonUtil.ACTIVITY+"', activity(ElementId)) :- !)");
-		charonRules.add("(createElement(ElementId, '"+CharonUtil.SYNCHRONISM+"', synchronism(ElementId)) :- !)");
-		charonRules.add("(createElement(ElementId, '"+CharonUtil.DECISION+"', decision(ElementId)) :- !)");
-		charonRules.add("(createElement(ElementId, '"+CharonUtil.INITIAL+"', initial(ElementId)) :- !)");
-		charonRules.add("(createElement(ElementId, '"+CharonUtil.FINAL+"', final(ElementId)) :- !)");
-		charonRules.add("(createElement(ElementId, '"+CharonUtil.ARTIFACT+"', product(ElementId)) :- !)");
+		charonRules.add("(createElement(ElementId, '"+CharonUtil.ACTIVITY+"', activity(ElementId)))");
+		charonRules.add("(createElement(ElementId, '"+CharonUtil.PROCESS+"', process(ElementId)))");
+		charonRules.add("(createElement(ElementId, '"+CharonUtil.SYNCHRONISM+"', synchronism(ElementId)))");
+		charonRules.add("(createElement(ElementId, '"+CharonUtil.DECISION+"', decision(ElementId)))");
+		charonRules.add("(createElement(ElementId, '"+CharonUtil.INITIAL+"', initial(ElementId)))");
+		charonRules.add("(createElement(ElementId, '"+CharonUtil.FINAL+"', final(ElementId)))");
+		charonRules.add("(createElement(ElementId, '"+CharonUtil.ARTIFACT+"', product(ElementId)))");
+
 		
-		charonRules.add("(nextVersionId(Element, VersionId) :- currentVersion(Element, PreviousVersionId), VersionId is PreviousVersionId + 1)");
+		charonRules.add("(nextVersionId(VersionId) :- class('br.ufrj.cos.lens.odyssey.tools.charon.util.IDGenerator') <- generateID returns VersionId)");
 		charonRules.add("(setCurrentVersion(Element, VersionId, PreviousVersionId) :- retract(currentVersion(Element, PreviousVersionId)), assertz(currentVersion(Element, VersionId)))");
 		charonRules.add("(associateElementToExperimentLastVersion(ExperimentId, Element) :- currentVersion(experiment(ExperimentId), CurrentVersionId), assertz(experimentVersionDimension(ExperimentId, CurrentVersionId, swfms(SWFMS_Id))))");
-		
+
 		
         // EXPERIMENT
-        charonRules.add("(create_experiment(ExperimentId, ExperimentName) :- assertz(experiment(ExperimentId)), VersionId is 1, assertz(version(experiment(ExperimentId), VersionId, 0)), assertz(currentVersion(experiment(ExperimentId), VersionId)), assertz(experimentName(ExperimentId, ExperimentName)))");
-        charonRules.add("(create_experimentNewVersion(ExperimentId) :- nextVersionId(experiment(ExperimentId), VersionId), currentVersion(experiment(ExperimentId), PreviousVersionId), assertz(version(experiment(ExperimentId), VersionId, PreviousVersionId)), setCurrentVersion(experiment(ExperimentId), VersionId, PreviousVersionId))");
-        charonRules.add("(set_experimentName(ExperimentId, ExperimentName) :- assertz(experimentName(ExperimentId, ExperimentName)))");
-        charonRules.add("(set_experimentRootProcess(ExperimentId, ExperimentRootProcessInstanceId) :- currentVersion(experiment(ExperimentId), CurrentVersionId), assertz(experimentRootProcess(ExperimentId, CurrentVersionId, ExperimentRootProcessInstanceId)))");
-		charonRules.add("(create_experimentInstance(ExperimentInstanceId, ExperimentVersionId, ExperimentId) :- assertz(experimentInstance(ExperimentInstanceId, ExperimentVersionId, ExperimentId)))");
+        charonRules.add("(create_experiment(ExperimentId) :- assertz(experiment(ExperimentId)), nextVersionId(VersionId), assertz(version(experiment(ExperimentId), VersionId, '0')), assertz(currentVersion(experiment(ExperimentId), VersionId)))");
+        charonRules.add("(create_experimentNewVersion(ExperimentId) :- nextVersionId(VersionId), currentVersion(experiment(ExperimentId), PreviousVersionId), assertz(version(experiment(ExperimentId), VersionId, PreviousVersionId)), setCurrentVersion(process(ProcessClassId), VersionId, PreviousVersionId))");
+        charonRules.add("(set_experimentName(ExperimentId, ExperimentName) :- currentVersion(experiment(ExperimentId), CurrentVersionId), assertz(experimentName(CurrentVersionId, ExperimentName)))");
+        charonRules.add("(set_experimentRootProcess(ExperimentId, ExperimentRootProcessId) :- currentVersion(experiment(ExperimentId), CurrentVersionId), assertz(experimentRootProcess(CurrentVersionId, ExperimentRootProcessId)))");
+		charonRules.add("(create_experimentInstance(ExperimentInstanceId, ExperimentVersionId) :- assertz(experimentInstance(ExperimentInstanceId, ExperimentVersionId)))");
         
         // PROCESS
         charonRules.add("(create_process(ProcessClassId, ProcessClassName, ProcessClassType) :- assertz(process(ProcessClassId)), assertz(processName(ProcessClassId, ProcessClassName)), assertz(processType(ProcessClassId, ProcessClassType)))");
@@ -733,22 +782,15 @@ public class KnowledgeBase {
 		charonRules.add("(create_SWFMS(SWFMS_Id, SWFMS_Name, SWFMS_Host) :- assertz(swfms(SWFMS_Id)), assertz(swfmsName(SWFMS_Id, SWFMS_Name)), assertz(swfmsHost(SWFMS_Id, SWFMS_Host)))");
 		
 		//Decision and Option
-		charonRules.add("(create_decision(DecisionId, DecisionName) :- assertz(decision(DecisionId)), assertz(decisionName(DecisionId, DecisionName)))");
+		charonRules.add("(create_decision(DecisionId, DecisionName) :- assertz(decisionName(DecisionId, DecisionName)))");
 		charonRules.add("(add_decisionOption(OptionId, OptionName, ToElementType, ToElementId) :- createElement(ToElementId, ToElementType, ToElement), assertz(option(OptionId, OptionName, ToElement)))");
 		
 		//Defining flow
 		charonRules.add("(create_flow(OriginElementType, OriginElementId, DestinationElementType, DestinationElementId) :- createElement(OriginElementId, OriginElementType, OriginElement), createElement(DestinationElementId, DestinationElementType, DestinationElement), assertz(processFlow(OriginElement, DestinationElement)))");
 		charonRules.add("(delete_flow(OriginElementType, OriginElementId, DestinationElementType, DestinationElementId) :- createElement(OriginElementId, OriginElementType, OriginElement), createElement(DestinationElementId, DestinationElementType, DestinationElement), retract(processFlow(OriginElement, DestinationElement)))");
-		
-		//Defining experiment flow
-		charonRules.add("(create_experiment_flow(OriginElementType, experiment(ExperimentId), DestinationElementType, DestinationElementId) :- currentVersion(experiment(ExperimentId), CurrentVersionId), experimentRootProcess(ExperimentId, CurrentVersionId, ProcessInstanceId), processInstanceType(ProcessInstanceId, ProcessClassId), create_flow(OriginElementType, ProcessClassId, DestinationElementType, DestinationElementId))");
-		charonRules.add("(create_experiment_flow(OriginElementType, OriginElementId, DestinationElementType, experiment(ExperimentId)) :- currentVersion(experiment(ExperimentId), CurrentVersionId), experimentRootProcess(ExperimentId, CurrentVersionId, ProcessInstanceId), processInstanceType(ProcessInstanceId, ProcessClassId), create_flow(OriginElementType, OriginElementId, DestinationElementType, ProcessClassId))");
-		charonRules.add("(delete_experiment_flow(OriginElementType, experiment(ExperimentId), DestinationElementType, DestinationElementId) :- currentVersion(experiment(ExperimentId), CurrentVersionId), experimentRootProcess(ExperimentId, CurrentVersionId, ProcessInstanceId), processInstanceType(ProcessInstanceId, ProcessClassId), retract_flow(OriginElementType, ProcessClassId, DestinationElementType, DestinationElementId))");
-		charonRules.add("(delete_experiment_flow(OriginElementType, OriginElementId, DestinationElementType, experiment(ExperimentId)) :- currentVersion(experiment(ExperimentId), CurrentVersionId), experimentRootProcess(ExperimentId, CurrentVersionId, ProcessInstanceId), processInstanceType(ProcessInstanceId, ProcessClassId), retract_flow(OriginElementType, OriginElementId, DestinationElementType, ProcessClassId))");
 
 		//Synchronism
 		charonRules.add("(create_synchronism(SynchronismId) :- assertz(synchronism(SynchronismId)))");
-		charonRules.add("(create_invisible_synchronism(SynchronismId) :- assertz(synchronism(SynchronismId)), assertz(invisible(synchronism(SynchronismId))))");
 		
 		//Initial
 		charonRules.add("(create_initial(InitialId) :- assertz(initial(InitialId)))");
@@ -768,16 +810,13 @@ public class KnowledgeBase {
 		charonRules.add("(set_artifactProcessPort(ProcessInstanceId, PortId, ArtifactId) :- assertz(artifactProcessPort(ArtifactId, ProcessInstanceId, PortId)))");
 		
 		//Activity Instance
-		charonRules.add("(create_activityInstance(ActivityInstanceId, ActivityClassId, ActivityInstanceName) :- assertz(activityInstance(ActivityInstanceId)), assertz(activityInstanceType(ActivityInstanceId, ActivityClassId)), assertz(activityInstanceName(ActivityInstanceId, ActivityInstanceName)))");
+		charonRules.add("(create_activityInstance(ActivityInstanceId, ActivityClassId) :- assertz(activityInstance(ActivityInstanceId)), assertz(activityInstanceType(ActivityInstanceId, ActivityClassId)))");
 		charonRules.add("(set_artifactActivityPort(ActivityInstanceId, PortId, ArtifactId) :- assertz(artifactActivityPort(ArtifactId, ActivityInstanceId, PortId)))");
 		
 		// Execution
 		charonRules.add("(assertz_executing(ElementType, ElementId, P, T, Performers) :- createElement(ElementId, ElementType, Element), assertz(executing(Element, P, T, Performers)))");
 		charonRules.add("(assertz_executed(ElementType, ElementId, P, Ti, Tf, Performers) :- createElement(ElementId, ElementType, Element), assertz(executed(Element, P, Ti, Tf, Performers)))");
-		charonRules.add("(assertz_option_selected(OptionId, OptionName) :- assertz(option_selected(OptionId, OptionName)))");
-
-		charonRules.add("(assertz_artifactValue(ArtifactId, ArtifactValue, P) :- assertz(artifactValue(ArtifactId, ArtifactValue, P)))");
-		charonRules.add("(assertz_artifactValueLocation(ArtifactId, HostURL, HostLocalPath, P) :- assertz(artifactValueLocation(ArtifactId, HostURL, HostLocalPath, P)))");
+		charonRules.add("(assertz_option_selected(OptionId, A, P, T) :- assertz(option_selected(OptionId, A, P, T)))");
 
 		this.removeClauses(charonRules);
 		
