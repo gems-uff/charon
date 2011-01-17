@@ -117,21 +117,48 @@ public class KnowledgeBase {
 		
 		charonRules.add("(last(X,[X]))");
 		charonRules.add("(last(X,[_|L]) :- last(X,L))");
+
 		
+		//Lista atividades de um workflow
+
+		charonRules.add("(getProcessElements(final(_), []) :- !)");
+		charonRules.add("(getProcessElements(E, [process(Name)|ElementList]) :- processFlow(E, process(Id)), !, processInstanceType(Id, Id2), processName(Id2, Name), getProcessElements(process(Id), ElementList))");
+		charonRules.add("(getProcessElements(E, [activity(Name)|ElementList]) :- processFlow(E, activity(Id)), !, activityInstanceType(Id, Id2), activityName(Id2, Name), getProcessElements(activity(Id), ElementList))");
+		charonRules.add("(getProcessElements(E, ElementList) :- processFlow(E, E2), getProcessElements(E2, ElementList))");
+		charonRules.add("(containsProcess(E, ProcessInstanceId) :- processFlow(E, process(ProcessInstanceId)), !)");
+		charonRules.add("(containsProcess(E, ProcessInstanceId) :- processFlow(E, E2), containsProcess(E2, ProcessInstanceId))");
+		charonRules.add("(listActivitiesFromSWFMS(ExperimentId, SWFMSName, Activities) :- experimentRootProcess(ExperimentId, _, ExperimentRootProcessId), swfmsName(SWFMSId, SWFMSName), swfmsProcess(ProcessInstanceId, SWFMSId), containsProcess(initial(ExperimentRootProcessId), ProcessInstanceId), processInstanceType(ProcessInstanceId, ProcessClassId), getProcessElements(initial(ProcessClassId), Activities))");
+		
+		//Lista de portas de uma atividade
+		charonRules.add("(getActivityPortName([], []))");
+		charonRules.add("(getActivityPortName([[PortId, PortName]|PortIdNameList], [PortId|PortIdList]) :- portName(PortId, PortName), getActivityPortName(PortIdNameList, PortIdList))");
+		charonRules.add("(activityPorts(ExperimentId, ExperimentInstanceId, ActivityName, ActivityPorts) :- experimentInstance(ExperimentInstanceId, _, ExperimentId), activityName(ActivityClassId, ActivityName), findall(PortId, activityPort(ActivityClassId, PortId), PortIdList), getActivityPortName(ActivityPorts, PortIdList))");
+		
+		//Tempo de duração de uma execução de um experimento
 		charonRules.add("(experimentExecutionTime(ExperimentId, ExperimentInstanceId, ExecutionTime) :- experimentInstance(ExperimentInstanceId, _, ExperimentId), executed(experiment(ExperimentInstanceId), _, Ti, Tf, _),  class('java.lang.Long') <- parseLong(Ti) returns V1, class('java.lang.Long') <- parseLong(Tf) returns V2, ExecutionTime is V2 - V1)");
+		
+		//Tempo de execução de uma atividade do experimento
 		charonRules.add("(activityExecutionTime(ExperimentId, ExperimentInstanceId, ActivityName, ExecutionTime) :- experimentInstance(ExperimentInstanceId, _, ExperimentId), activityName(ActivityClassId, ActivityName), activityInstanceType(ActivityInstanceId, ActivityClassId), executed(activity(ActivityInstanceId), P , Ti, Tf, _), last(ExperimentInstanceId, P), class('java.lang.Long') <- parseLong(Ti) returns V1, class('java.lang.Long') <- parseLong(Tf) returns V2, ExecutionTime is V2 - V1)");
+		
+		//Lista de artefatos consumidos por uma atividade
 		charonRules.add("(consumedArtifactList(_, [], []))");
-		charonRules.add("(consumedArtifactList(ActivityInstanceId, [PortId|PortIdList], [ArtifactId|ArtifactList]) :- portType(PortId, '"+CharonUtil.INPORT+"'), artifactActivityPort(ArtifactId, ActivityInstanceId, PortId), consumedArtifactList(ActivityInstanceId, PortIdList, ArtifactList))");
+		charonRules.add("(consumedArtifactList(ActivityInstanceId, [PortId|PortIdList], [[ArtifactId,ArtifactValue]|ArtifactList]) :- portType(PortId, '"+CharonUtil.INPORT+"'), artifactActivityPort(ArtifactId, ActivityInstanceId, PortId), artifactValue(ArtifactId, ArtifactValue, _), consumedArtifactList(ActivityInstanceId, PortIdList, ArtifactList))");
 		charonRules.add("(consumedArtifactList(ActivityInstanceId, [PortId|PortIdList], ArtifactList) :- portType(PortId, '"+CharonUtil.OUTPORT+"'), artifactActivityPort(ArtifactId, ActivityInstanceId, PortId), consumedArtifactList(ActivityInstanceId, PortIdList, ArtifactList))");
-		charonRules.add("(artifactsConsumedByActivity(ExperimentId, ExperimentInstanceId, ActivityName, ArtifactIdList) :- experimentInstance(ExperimentInstanceId, _, ExperimentId), activityName(ActivityClassId, ActivityName), activityInstanceType(ActivityInstanceId, ActivityClassId), findall(PortId, activityPort(ActivityClassId, PortId), PortIdList), consumedArtifactList(ActivityInstanceId, PortIdList, ArtifactIdList), !)");
+		charonRules.add("(artifactsConsumedByActivity(ExperimentId, ExperimentInstanceId, ActivityName, ArtifactIdList) :- experimentInstance(ExperimentInstanceId, _, ExperimentId), activityName(ActivityClassId, ActivityName), activityInstanceType(ActivityInstanceId, ActivityClassId), findall(PortId, activityPort(ActivityClassId, PortId), PortIdList), consumedArtifactList(ActivityInstanceId, PortIdList, ArtifactIdList))");
+		
+		//Lista de artefatos gerados por uma atividade
 		charonRules.add("(generatedArtifactList(_, [], []))");
-		charonRules.add("(generatedArtifactList(ActivityInstanceId, [PortId|PortIdList], [ArtifactId|ArtifactList]) :- portType(PortId, '"+CharonUtil.OUTPORT+"'), artifactActivityPort(ArtifactId, ActivityInstanceId, PortId), consumedArtifactList(ActivityInstanceId, PortIdList, ArtifactList))");
-		charonRules.add("(generatedArtifactList(ActivityInstanceId, [PortId|PortIdList], ArtifactList) :- portType(PortId, '"+CharonUtil.INPORT+"'), artifactActivityPort(ArtifactId, ActivityInstanceId, PortId), consumedArtifactList(ActivityInstanceId, PortIdList, ArtifactList))");
-		charonRules.add("(artifactsGeneratedByActivity(ExperimentId, ExperimentInstanceId, ActivityName, ArtifactIdList) :- experimentInstance(ExperimentInstanceId, _, ExperimentId), activityName(ActivityClassId, ActivityName), activityInstanceType(ActivityInstanceId, ActivityClassId), findall(PortId, activityPort(ActivityClassId, PortId), PortIdList), generatedArtifactList(ActivityInstanceId, PortIdList, ArtifactIdList), !)");
+		charonRules.add("(generatedArtifactList(ActivityInstanceId, [PortId|PortIdList], [[ArtifactId,ArtifactValue]|ArtifactList]) :- portType(PortId, '"+CharonUtil.OUTPORT+"'), artifactActivityPort(ArtifactId, ActivityInstanceId, PortId), artifactValue(ArtifactId, ArtifactValue, _), generatedArtifactList(ActivityInstanceId, PortIdList, ArtifactList))");
+		charonRules.add("(generatedArtifactList(ActivityInstanceId, [PortId|PortIdList], ArtifactList) :- portType(PortId, '"+CharonUtil.INPORT+"'), artifactActivityPort(ArtifactId, ActivityInstanceId, PortId), generatedArtifactList(ActivityInstanceId, PortIdList, ArtifactList))");
+		charonRules.add("(artifactsGeneratedByActivity(ExperimentId, ExperimentInstanceId, ActivityName, ArtifactIdList) :- experimentInstance(ExperimentInstanceId, _, ExperimentId), activityName(ActivityClassId, ActivityName), activityInstanceType(ActivityInstanceId, ActivityClassId), findall(PortId, activityPort(ActivityClassId, PortId), PortIdList), generatedArtifactList(ActivityInstanceId, PortIdList, ArtifactIdList))");
+		
+		//Valor de um artefato
 		charonRules.add("(artifactValue(ExperimentId, ExperimentInstanceId, ArtifactId, ArtifactValue) :- artifactValue(ArtifactId, ArtifactValue, _))");
+		
+		//Lista de artefatos ancestrais de um artefato
 		charonRules.add("(existsPortOut(ArtifactId) :- artifactActivityPort(ArtifactId, _, PortIdOUT), portType(PortIdOUT, '"+CharonUtil.OUTPORT+"'))");
 		charonRules.add("(artifactAncestors(ArtifactId, []) :- not(existsPortOut(ArtifactId)))");
-		charonRules.add("(artifactAncestors(ArtifactId, [ArtifactAncestorId|ArtifactAncestors]) :- artifactActivityPort(ArtifactId, ActivityInstanceId, PortIdOUT), portType(PortIdOUT, '"+CharonUtil.OUTPORT+"'), artifactActivityPort(ArtifactAncestorId, ActivityInstanceId, PortIdIN), portType(PortIdIN, '"+CharonUtil.INPORT+"'), artifactAncestors(ArtifactAncestorId, ArtifactAncestors))");
+		charonRules.add("(artifactAncestors(ArtifactId, [[ArtifactAncestorId,ArtifactValue]|ArtifactAncestors]) :- artifactActivityPort(ArtifactId, ActivityInstanceId, PortIdOUT), portType(PortIdOUT, '"+CharonUtil.OUTPORT+"'), artifactActivityPort(ArtifactAncestorId, ActivityInstanceId, PortIdIN), portType(PortIdIN, '"+CharonUtil.INPORT+"'), artifactAncestors(ArtifactAncestorId, ArtifactAncestors), artifactValue(ArtifactAncestorId, ArtifactValue, _))");
 		
 		
 		
