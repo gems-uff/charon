@@ -132,7 +132,7 @@ public class KnowledgeBase {
 		//Lista de portas de uma atividade
 		charonRules.add("(getActivityPortName([], []))");
 		charonRules.add("(getActivityPortName([[PortId, PortName]|PortIdNameList], [PortId|PortIdList]) :- portName(PortId, PortName), getActivityPortName(PortIdNameList, PortIdList))");
-		charonRules.add("(activityPorts(ExperimentId, ExperimentInstanceId, ActivityName, ActivityPorts) :- experimentInstance(ExperimentInstanceId, _, ExperimentId), activityName(ActivityClassId, ActivityName), findall(PortId, activityPort(ActivityClassId, PortId), PortIdList), getActivityPortName(ActivityPorts, PortIdList))");
+		charonRules.add("(activityPorts(ExperimentId, ActivityName, ActivityPorts) :- activityName(ActivityClassId, ActivityName), findall(PortId, activityPort(ActivityClassId, PortId), PortIdList), getActivityPortName(ActivityPorts, PortIdList))");
 		
 		//Tempo de duração de uma execução de um experimento
 		charonRules.add("(experimentExecutionTime(ExperimentId, ExperimentInstanceId, ExecutionTime) :- experimentInstance(ExperimentInstanceId, _, ExperimentId), executed(experiment(ExperimentInstanceId), _, Ti, Tf, _),  class('java.lang.Long') <- parseLong(Ti) returns V1, class('java.lang.Long') <- parseLong(Tf) returns V2, ExecutionTime is V2 - V1)");
