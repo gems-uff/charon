@@ -118,9 +118,13 @@ public class KnowledgeBase {
 		charonRules.add("(last(X,[X]))");
 		charonRules.add("(last(X,[_|L]) :- last(X,L))");
 
+
+		//
+		charonRules.add("(lastExperimentExecution('1', '25'))");
+		charonRules.add("(experimentName('1', 'DistExp'))");
+
 		
 		//Lista atividades de um workflow
-
 		charonRules.add("(getProcessElements(final(_), []) :- !)");
 		charonRules.add("(getProcessElements(E, [process(Name)|ElementList]) :- processFlow(E, process(Id)), !, processInstanceType(Id, Id2), processName(Id2, Name), getProcessElements(process(Id), ElementList))");
 		charonRules.add("(getProcessElements(E, [activity(Name)|ElementList]) :- processFlow(E, activity(Id)), !, activityInstanceType(Id, Id2), activityName(Id2, Name), getProcessElements(activity(Id), ElementList))");
