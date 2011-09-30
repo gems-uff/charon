@@ -49,6 +49,8 @@ public class KnowledgeBase {
 	private String user;
 	
 	private String password;
+	
+	private ArrayList<String> charonRules;
 
 	/**
 	 * Constructs a new knowledge base loading existing facts from "repository"
@@ -98,7 +100,7 @@ public class KnowledgeBase {
 	
 	private void setCharonRules(boolean IsUsingDatabase) {
 
-		ArrayList<String> charonRules = new ArrayList<String>();
+		charonRules = new ArrayList<String>();
 		
 		charonRules.add("(createElement(ElementId, '"+CharonUtil.EXPERIMENT+"', experiment(ElementId)) :- !)");
 		charonRules.add("(createElement(ElementId, '"+CharonUtil.PROCESS+"', process(ElementId)) :- !)");
@@ -314,7 +316,7 @@ public class KnowledgeBase {
 			charonRules.add("(create_port(PortId, PortType, PortName, PortDataType) :- assertz(port(PortId)), assertz(portType(PortId, PortType)), assertz(portName(PortId, PortName)), assertz(portDataType(PortId, PortDataType)))");
 			
 			//Process Instance
-			charonRules.add("(create_processInstance(ProcessInstanceId, ProcessClassId) :- assertz(processInstance(ProcessInstanceId)), assertz(processInstanceType(ProcessInstanceId, ProcessClassId)))");
+			charonRules.add("(create_processInstance(ProcessInstanceId, ProcessClassId, ProcessInstanceName) :- assertz(processInstance(ProcessInstanceId)), assertz(processInstanceType(ProcessInstanceId, ProcessClassId)), assertz(processInstanceName(ProcessInstanceId, ProcessInstanceName)))");
 			charonRules.add("(set_SWFMSProcess(SWFMSId, ProcessInstanceId) :- assertz(swfmsProcess(ProcessInstanceId, SWFMSId)))");
 			charonRules.add("(set_artifactProcessPort(ProcessInstanceId, PortId, ArtifactId) :- assertz(artifactProcessPort(ArtifactId, ProcessInstanceId, PortId)))");
 			
@@ -775,79 +777,6 @@ public class KnowledgeBase {
 	 * (useful for debug)
 	 */
 	public void save() throws CharonException {
-		
-
-		ArrayList<String> charonRules = new ArrayList<String>();
-		
-		
-		charonRules.add("(createElement(ElementId, '"+CharonUtil.ACTIVITY+"', activity(ElementId)))");
-		charonRules.add("(createElement(ElementId, '"+CharonUtil.PROCESS+"', process(ElementId)))");
-		charonRules.add("(createElement(ElementId, '"+CharonUtil.SYNCHRONISM+"', synchronism(ElementId)))");
-		charonRules.add("(createElement(ElementId, '"+CharonUtil.DECISION+"', decision(ElementId)))");
-		charonRules.add("(createElement(ElementId, '"+CharonUtil.INITIAL+"', initial(ElementId)))");
-		charonRules.add("(createElement(ElementId, '"+CharonUtil.FINAL+"', final(ElementId)))");
-		charonRules.add("(createElement(ElementId, '"+CharonUtil.ARTIFACT+"', product(ElementId)))");
-
-		
-		charonRules.add("(nextVersionId(VersionId) :- class('br.ufrj.cos.lens.odyssey.tools.charon.util.IDGenerator') <- generateID returns VersionId)");
-		charonRules.add("(setCurrentVersion(Element, VersionId, PreviousVersionId) :- retract(currentVersion(Element, PreviousVersionId)), assertz(currentVersion(Element, VersionId)))");
-		charonRules.add("(associateElementToExperimentLastVersion(ExperimentId, Element) :- currentVersion(experiment(ExperimentId), CurrentVersionId), assertz(experimentVersionDimension(ExperimentId, CurrentVersionId, swfms(SWFMS_Id))))");
-
-		
-        // EXPERIMENT
-        charonRules.add("(create_experiment(ExperimentId) :- assertz(experiment(ExperimentId)), nextVersionId(VersionId), assertz(version(experiment(ExperimentId), VersionId, '0')), assertz(currentVersion(experiment(ExperimentId), VersionId)))");
-        charonRules.add("(create_experimentNewVersion(ExperimentId) :- nextVersionId(VersionId), currentVersion(experiment(ExperimentId), PreviousVersionId), assertz(version(experiment(ExperimentId), VersionId, PreviousVersionId)), setCurrentVersion(process(ProcessClassId), VersionId, PreviousVersionId))");
-        charonRules.add("(set_experimentName(ExperimentId, ExperimentName) :- currentVersion(experiment(ExperimentId), CurrentVersionId), assertz(experimentName(CurrentVersionId, ExperimentName)))");
-        charonRules.add("(set_experimentRootProcess(ExperimentId, ExperimentRootProcessId) :- currentVersion(experiment(ExperimentId), CurrentVersionId), assertz(experimentRootProcess(CurrentVersionId, ExperimentRootProcessId)))");
-		charonRules.add("(create_experimentInstance(ExperimentInstanceId, ExperimentVersionId) :- assertz(experimentInstance(ExperimentInstanceId, ExperimentVersionId)))");
-        
-        // PROCESS
-        charonRules.add("(create_process(ProcessClassId, ProcessClassName, ProcessClassType) :- assertz(process(ProcessClassId)), assertz(processName(ProcessClassId, ProcessClassName)), assertz(processType(ProcessClassId, ProcessClassType)))");
-        charonRules.add("(add_processPort(ProcessClassId, PortId) :- assertz(processPort(ProcessClassId, PortId)))");
-       
-		// ACTIVITY
-        charonRules.add("(create_activity(ActivityClassId, ActivityClassName, ActivityClassType) :- assertz(activity(ActivityClassId)), assertz(activityName(ActivityClassId, ActivityClassName)), assertz(activityType(ActivityClassId, ActivityClassType)))");
-        charonRules.add("(add_activityPort(ActivityClassId, PortId) :- assertz(activityPort(ActivityClassId, PortId)))");
-		
-		// SWFMS
-		charonRules.add("(create_SWFMS(SWFMS_Id, SWFMS_Name, SWFMS_Host) :- assertz(swfms(SWFMS_Id)), assertz(swfmsName(SWFMS_Id, SWFMS_Name)), assertz(swfmsHost(SWFMS_Id, SWFMS_Host)))");
-		
-		//Decision and Option
-		charonRules.add("(create_decision(DecisionId, DecisionName) :- assertz(decisionName(DecisionId, DecisionName)))");
-		charonRules.add("(add_decisionOption(OptionId, OptionName, ToElementType, ToElementId) :- createElement(ToElementId, ToElementType, ToElement), assertz(option(OptionId, OptionName, ToElement)))");
-		
-		//Defining flow
-		charonRules.add("(create_flow(OriginElementType, OriginElementId, DestinationElementType, DestinationElementId) :- createElement(OriginElementId, OriginElementType, OriginElement), createElement(DestinationElementId, DestinationElementType, DestinationElement), assertz(processFlow(OriginElement, DestinationElement)))");
-		charonRules.add("(delete_flow(OriginElementType, OriginElementId, DestinationElementType, DestinationElementId) :- createElement(OriginElementId, OriginElementType, OriginElement), createElement(DestinationElementId, DestinationElementType, DestinationElement), retract(processFlow(OriginElement, DestinationElement)))");
-
-		//Synchronism
-		charonRules.add("(create_synchronism(SynchronismId) :- assertz(synchronism(SynchronismId)))");
-		
-		//Initial
-		charonRules.add("(create_initial(InitialId) :- assertz(initial(InitialId)))");
-		
-		//Final
-		charonRules.add("(create_final(FinalId) :- assertz(final(FinalId)))");
-		
-		//Artifact
-		charonRules.add("(create_artifact(ArtifactId) :- assertz(artifact(ArtifactId)))");
-		
-		//Port
-		charonRules.add("(create_port(PortId, PortType, PortName, PortDataType) :- assertz(port(PortId)), assertz(portType(PortId, PortType)), assertz(portName(PortId, PortName)), assertz(portDataType(PortId, PortDataType)))");
-		
-		//Process Instance
-		charonRules.add("(create_processInstance(ProcessInstanceId, ProcessClassId) :- assertz(processInstance(ProcessInstanceId)), assertz(processInstanceType(ProcessInstanceId, ProcessClassId)))");
-		charonRules.add("(set_SWFMSProcess(SWFMSId, ProcessInstanceId) :- assertz(swfmsProcess(ProcessInstanceId, SWFMSId)))");
-		charonRules.add("(set_artifactProcessPort(ProcessInstanceId, PortId, ArtifactId) :- assertz(artifactProcessPort(ArtifactId, ProcessInstanceId, PortId)))");
-		
-		//Activity Instance
-		charonRules.add("(create_activityInstance(ActivityInstanceId, ActivityClassId) :- assertz(activityInstance(ActivityInstanceId)), assertz(activityInstanceType(ActivityInstanceId, ActivityClassId)))");
-		charonRules.add("(set_artifactActivityPort(ActivityInstanceId, PortId, ArtifactId) :- assertz(artifactActivityPort(ArtifactId, ActivityInstanceId, PortId)))");
-		
-		// Execution
-		charonRules.add("(assertz_executing(ElementType, ElementId, P, T, Performers) :- createElement(ElementId, ElementType, Element), assertz(executing(Element, P, T, Performers)))");
-		charonRules.add("(assertz_executed(ElementType, ElementId, P, Ti, Tf, Performers) :- createElement(ElementId, ElementType, Element), assertz(executed(Element, P, Ti, Tf, Performers)))");
-		charonRules.add("(assertz_option_selected(OptionId, A, P, T) :- assertz(option_selected(OptionId, A, P, T)))");
 
 		this.removeClauses(charonRules);
 		
