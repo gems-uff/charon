@@ -170,15 +170,17 @@ public class Charon {
 	}
 	
 	public static void main(String[] args) throws Exception{
-		Charon charon = new Charon("jdbc:mysql://localhost:3306/charon","charon","edPibTR1");
+//		Charon charon = new Charon("jdbc:mysql://localhost:3306/charon","charon","edPibTR1");
 		
 		
-//		Charon charon = new Charon("c:\\test");
+		Charon charon = new Charon("resource");
 		CharonAPI charonAPI = new CharonAPI(charon.knowledgeBase);
 		
-		int ACTIVITY = Integer.parseInt(CharonUtil.ACTIVITY);
+		System.out.println(charonAPI.isValidDerivatedWorkflow());
 		
-		boolean ok = false;
+//		int ACTIVITY = Integer.parseInt(CharonUtil.ACTIVITY);
+//		
+//		boolean ok = false;
 //		
 //		String experimentId = charonAPI.createExperiment("NACAD");
 //		String swfmsId = charonAPI.registerSGWf("Vistrails", "192.168.0.1");
@@ -193,17 +195,17 @@ public class Charon {
 //		charonAPI.addActivityPort(activityId1, portId);
 		
 		
-		String experimentId = "1";
-		String processRootId = "2";
-		String process1Id = "4";
-		String process2Id = "9";
-		String activityId1 = "7";
-		String activityId2 = "12";
-		String activityInstanceId1 = "8";
-		String activityInstanceId2 = "13";
-		String processRootInstanceId = "3";
-		String process1InstanceId = "5";
-		String process2InstanceId = "10";
+//		String experimentId = "1";
+//		String processRootId = "2";
+//		String process1Id = "4";
+//		String process2Id = "9";
+//		String activityId1 = "7";
+//		String activityId2 = "12";
+//		String activityInstanceId1 = "8";
+//		String activityInstanceId2 = "13";
+//		String processRootInstanceId = "3";
+//		String process1InstanceId = "5";
+//		String process2InstanceId = "10";
 		
 //		String activityInstanceId1 = charonAPI.instantiateActivity(activityId1);
 //		
@@ -220,7 +222,7 @@ public class Charon {
 //		ok = charonAPI.associateProcessToSWFMS(processInstanceId, swfmsId);
 //		ok = charonAPI.setExperimentRootProcess(experimentId, processInstanceId);
 		
-		String experimentInstanceId = charonAPI.initializeExperimentExecution(experimentId);
+//		String experimentInstanceId = charonAPI.initializeExperimentExecution(experimentId);
 //		ok = charonAPI.notifyActivityExecutionEnding(activityInstanceId1, new String[]{process1InstanceId, experimentInstanceId});
 //		ok = charonAPI.notifyActivityExecutionEnding(activityInstanceId2, new String[]{process2InstanceId, experimentInstanceId});
 //
@@ -231,6 +233,6 @@ public class Charon {
 //		
 //		
 //		
-//		charon.save();
+		//charon.save();
 	}
 }

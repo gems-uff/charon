@@ -96,6 +96,15 @@ public class LoadingAgent extends Agent {
 			return null;
 	}
 	
+	public boolean isValidDerivedWorkflow(KnowledgeBase knowledgeBase){
+		connect(knowledgeBase);
+		boolean isSolvable = knowledgeBase.isSolvable("isValidDerivedWorkflow(_).");
+//		boolean isSolvable = knowledgeBase.isSolvable("mandatory('A').");
+//		boolean isSolvable = knowledgeBase.isSolvable("initializeDerivation(_).");
+		disconnect();
+		return isSolvable;
+	}
+	
 	
 	public String createActivity(KnowledgeBase knowledgeBase, String type, String name){
 		connect(knowledgeBase);

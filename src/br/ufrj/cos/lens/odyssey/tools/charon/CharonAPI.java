@@ -71,6 +71,11 @@ public class CharonAPI {
 		LoadingAgent loadingAgent = AgentManager.getInstance().getAgent(LoadingAgent.class);
 		return loadingAgent.createProcess(knowledgeBase, type, name);
 	}
+	
+	public boolean isValidDerivatedWorkflow() throws CharonException{
+		LoadingAgent loadingAgent = AgentManager.getInstance().getAgent(LoadingAgent.class);
+		return loadingAgent.isValidDerivedWorkflow(knowledgeBase);
+	}
 		
 	public String createActivity(String type, String name) throws CharonException{
 		LoadingAgent loadingAgent = AgentManager.getInstance().getAgent(LoadingAgent.class);
