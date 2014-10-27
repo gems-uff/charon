@@ -98,7 +98,9 @@ public class LoadingAgent extends Agent {
 	
 	public boolean isValidDerivedWorkflow(KnowledgeBase knowledgeBase){
 		connect(knowledgeBase);
-		boolean isSolvable = knowledgeBase.isSolvable("isValidDerivedWorkflow(_).");
+//		boolean isSolvable = knowledgeBase.isSolvable("isValidDerivedWorkflow(_).");
+		boolean isSolvable = knowledgeBase.isSolvable("selectElement('B1').");
+		        isSolvable = knowledgeBase.isSolvable("currentSelection('E1').");
 //		boolean isSolvable = knowledgeBase.isSolvable("mandatory('A').");
 //		boolean isSolvable = knowledgeBase.isSolvable("initializeDerivation(_).");
 		disconnect();
@@ -298,7 +300,7 @@ public class LoadingAgent extends Agent {
 		boolean isSolvable = knowledgeBase.isSolvable("create_flow('"+originElementType+"', '" + originElementId+"', '"+destinationElementType+"', '"+destinationElementId+"').");
 		
 		/*
-		 * TODO: Algoritmo de deletar fluxo não funciona bem no caso quando se cria um processo sem adicionar nenhum elemento
+		 * TODO: Algoritmo de deletar fluxo nï¿½o funciona bem no caso quando se cria um processo sem adicionar nenhum elemento
 		 */
 				
 		
@@ -327,7 +329,7 @@ public class LoadingAgent extends Agent {
 		boolean isSolvable = knowledgeBase.isSolvable("delete_flow('"+originElementType+"', '"+originElementId+"', '"+destinationElementType+"', '"+destinationElementId+"').");
 		
 		
-		//TODO: verificar quando o elemento não está conectado em ninguém "a frente ou atras" no workflow
+		//TODO: verificar quando o elemento nï¿½o estï¿½ conectado em ninguï¿½m "a frente ou atras" no workflow
 		if(false){
 			knowledgeBase.isSolvable("create_experiment_flow('"+originElementType+"', '" + originElementId+"', '"+CharonUtil.SYNCHRONISM+"', experiment('"+experimentId+"')).");
 			knowledgeBase.isSolvable("create_experiment_flow('"+CharonUtil.INITIAL+"', experiment('"+experimentId+"'), '"+destinationElementType+"', '"+destinationElementId+"').");

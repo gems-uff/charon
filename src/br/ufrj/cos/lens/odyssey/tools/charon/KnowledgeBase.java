@@ -113,14 +113,15 @@ public class KnowledgeBase {
 		charonRules.add("(mandatory('D'))");
 		charonRules.add("(variant('D1', 'D'))");
 		charonRules.add("(variant('D2', 'D'))");
-		
+		charonRules.add("(mandatory('E'))");
+		charonRules.add("(variant('E1', 'E'))");		
 		
 		charonRules.add("(abstractWorkflow('A'))");
 		charonRules.add("(abstractWorkflow('B'))");
-//		charonRules.add("(abstractWorkflow('D'))");
+		charonRules.add("(abstractWorkflow('D'))");
 		charonRules.add("(abstractWorkflow('C'))");
-		charonRules.add("(abstractWorkflow('B1'))");
-		charonRules.add("(abstractWorkflow('D1'))");
+//		charonRules.add("(abstractWorkflow('B1'))");
+//		charonRules.add("(abstractWorkflow('D1'))");
 		
 		
 		
@@ -139,23 +140,53 @@ public class KnowledgeBase {
 		charonRules.add("(checkVariationPoints([VP|VPList], AbstActvList) :- optional(VP), not(abstractWorkflow(VP)), checkVariationPoints(VPList, AbstActvList))");
 		charonRules.add("(checkVariationPoints([VP|VPList], AbstActvList) :- findall(VariantId, variant(VariantId, VP), VariantIdList), isVariantSelected(VP, VariantIdList, AbstActvList), checkVariationPoints(VPList, AbstActvList))");
 		
-		//Não checa se tem mais de uma variante selecionada (isso nao acontece pq a funcao selectVariant nao existe) e da erro se o conjunto de variantes for vazio. 
+		//Nï¿½o checa se tem mais de uma variante selecionada (isso nao acontece pq a funcao selectVariant nao existe) e da erro se o conjunto de variantes for vazio. 
 		charonRules.add("(isVariantSelected(VariationPoint, [Var|VariantList], AbstActvList) :- member(Var, AbstActvList))");
 		charonRules.add("(isVariantSelected(VariationPoint, [Var|VariantList], AbstActvList) :- not(member(Var, AbstActvList)), isVariantSelected(VariationPoint, VariantList, AbstActvList))");
 
 	
 		//Function to select one variant of a variation point. Before select the functions checks if there is other variant already selected. 
+		//tem que validar se eh possivel fazer a selecao dessa variante
 		charonRules.add("(selectVariant(Var) :- findall(ActivityId, abstractWorkflow(ActivityId), AbstActvList), variant(Var, VP), findall(Var, variant(Var, VP), VariantList), not(isVariantSelected(VP, VariantList, AbstActvList)), assertz(abstractWorkflow(Var)))");
+		
+		//TODO: Select Optional (verificar se eh possivel selecionar o elemento opcional)
 		
 		//Function to select all mandatory activities in the derived abstract workflow
 		charonRules.add("(selectMandatoryActivities([]))");
 		charonRules.add("(selectMandatoryActivities([M|MandatoryList]) :- assertz(abstractWorkflow(M)), selectMandatoryActivities(MandatoryList))");
 ////	
 		
+//		charonRules.add("(selectElement(E) :- not(abstractWorkflow(E)), mandatory(E), selectMandatoryActivities([E]))");
+//		charonRules.add("(selectElement(E) :- not(abstractWorkflow(E)), optional(E), variationPoint(E),  assertz(abstractWorkflow(E)))");
+//		charonRules.add("(selectElement(E) :- not(abstractWorkflow(E)), optional(E), assertz(currentSelection(E)), assertz(abstractWorkflow(E)), checkForInferredSelection(_))");
+		charonRules.add("(selectElement(E) :- not(abstractWorkflow(E)), variant(E, _), assertz(currentSelection(E)), assertz(abstractWorkflow(E)), checkForInferredSelection(_))");
+		
+//		charonRules.add("(selectElement(E) :- assertz(currentSelection(E)), assertz(abstractWorkflow(E)))");
+		
+		charonRules.add("(checkForInferredSelection(_) :- rule(_))");
+		
+		
+		//Essa operacao abaixo nao funciona sendo chamada aqui dentro porque a funcao ainda nao foi cadastrada...
 		charonRules.add("(initializeDerivation(_))");
 		
 		
+//		charonRules.add("(selectEle(A) :- rule(_))");
+		
+//		charonRules.add("(abstractWorkflow('B1') :- assertz(implicatesSelection('D1')))");
+		
+		charonRules.add("(println(Str) :- class('java.lang.System').out <- get(StdOut), StdOut <- println(Str))");
+		
+//		charonRules.add("(rule('X') :- (abstractWorkflow('B1') -> assertz(implicatesSelection('D1')), println('funcionou')))");
+		
+		charonRules.add("(rule('X') :- (abstractWorkflow('B1') -> selectElement('D1'), println('funcionou')))");
+		charonRules.add("(rule('Y') :- (abstractWorkflow('D1') -> selectElement('E1'), println('funcionou')))");
+		
+		
 //		charonRules.add("(mandatory('A','B'))");
+		
+//		charonRules.add("(selectElement('B1'))");
+//		charonRules.add("(currentSelection('B1'))");
+
 		
 		
 		
@@ -219,10 +250,10 @@ public class KnowledgeBase {
 //		charonRules.add("(getActivityPortName([[PortId, PortName]|PortIdNameList], [PortId|PortIdList]) :- portName(PortId, PortName), getActivityPortName(PortIdNameList, PortIdList))");
 //		charonRules.add("(activityPorts(ExperimentId, ActivityName, ActivityPorts) :- activityName(ActivityClassId, ActivityName), findall(PortId, activityPort(ActivityClassId, PortId), PortIdList), getActivityPortName(ActivityPorts, PortIdList))");
 //		
-//		//Tempo de duração de uma execução de um experimento
+//		//Tempo de duraï¿½ï¿½o de uma execuï¿½ï¿½o de um experimento
 //		charonRules.add("(experimentExecutionTime(ExperimentId, ExperimentInstanceId, ExecutionTime) :- experimentInstance(ExperimentInstanceId, _, ExperimentId), executed(experiment(ExperimentInstanceId), _, Ti, Tf, _),  class('java.lang.Long') <- parseLong(Ti) returns V1, class('java.lang.Long') <- parseLong(Tf) returns V2, ExecutionTime is V2 - V1)");
 //		
-//		//Tempo de execução de uma atividade do experimento
+//		//Tempo de execuï¿½ï¿½o de uma atividade do experimento
 //		charonRules.add("(activityExecutionTime(ExperimentId, ExperimentInstanceId, ActivityName, ExecutionTime) :- experimentInstance(ExperimentInstanceId, _, ExperimentId), activityName(ActivityClassId, ActivityName), activityInstanceType(ActivityInstanceId, ActivityClassId), executed(activity(ActivityInstanceId), P , Ti, Tf, _), last(ExperimentInstanceId, P), class('java.lang.Long') <- parseLong(Ti) returns V1, class('java.lang.Long') <- parseLong(Tf) returns V2, ExecutionTime is V2 - V1)");
 //		
 //		//Lista de artefatos consumidos por uma atividade
