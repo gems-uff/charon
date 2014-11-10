@@ -18,7 +18,6 @@ import br.ufrj.cos.lens.odyssey.tools.charon.agents.SimulationAgent;
 import br.ufrj.cos.lens.odyssey.tools.charon.entities.CharonActivity;
 import br.ufrj.cos.lens.odyssey.tools.charon.entities.CharonDecision;
 import br.ufrj.cos.lens.odyssey.tools.charon.entities.CharonElement;
-import br.ufrj.cos.lens.odyssey.tools.charon.util.CharonUtil;
 
 /**
  * This class is responsible for providing access to the Charon process machine
@@ -59,14 +58,7 @@ public class Charon {
 		
 		charonAPI = new CharonAPI(knowledgeBase);
 	}
-	
-	public Charon(String database, String user, String password) throws CharonException {
-		
-		knowledgeBase = new KnowledgeBase(database, user, password);
-		AgentManager.getInstance().init();
-		
-		charonAPI = new CharonAPI(knowledgeBase);
-	}
+
 	
 	/**
 	 * Add a new process defined in "spemPackage" inside charon.
@@ -169,70 +161,83 @@ public class Charon {
 		return knowledgeBase.getAllSolutions(goal);
 	}
 	
+//	public static void main(String[] args) throws Exception{
+//		
+//		Charon charon = new Charon("resource");
+//		CharonAPI charonAPI = new CharonAPI(charon.knowledgeBase);
+//		
+//
+//		
+//		System.out.println(charonAPI.insertMandatory("1"));
+//		
+//		System.out.println(charonAPI.insertOptional("2"));
+//		
+//		charonAPI.rollbackSelection();
+//		System.out.println(charonAPI.unselectElement("1"));
+//		
+//		
+//		charonAPI.rollbackSelection();
+//		
+//		
+//		System.out.println(charonAPI.isElementSelected("1"));
+//		
+//		System.out.println(charonAPI.isValidDerivatedWorkflow());
+//		
+//		
+////		System.out.println(charonAPI.isValidDerivatedWorkflow());
+//		
+//		
+//	}
+	
 	public static void main(String[] args) throws Exception{
-//		Charon charon = new Charon("jdbc:mysql://localhost:3306/charon","charon","edPibTR1");
-		
 		
 		Charon charon = new Charon("resource");
 		CharonAPI charonAPI = new CharonAPI(charon.knowledgeBase);
 		
-		System.out.println(charonAPI.isValidDerivatedWorkflow());
+
 		
-//		int ACTIVITY = Integer.parseInt(CharonUtil.ACTIVITY);
-//		
-//		boolean ok = false;
-//		
-//		String experimentId = charonAPI.createExperiment("NACAD");
-//		String swfmsId = charonAPI.registerSGWf("Vistrails", "192.168.0.1");
-//		String processId = charonAPI.createProcess("local", "P1");
-//		String activityId1 = charonAPI.createActivity("local", "A1");
-//		String activityId2 = charonAPI.createActivity("local", "A2");
-//		String activityId3 = charonAPI.createActivity("local", "A3");
-//		
-//		String portId = charonAPI.createInPort("portA", "int");
-//		String artifactId = charonAPI.createArtifact();
-//		
-//		charonAPI.addActivityPort(activityId1, portId);
+		System.out.println(charonAPI.insertMandatory("1"));
+		
+		System.out.println(charonAPI.insertOptional("2"));
+		
+		System.out.println("part1");
+		
+		charonAPI.rollbackSelection();
+		System.out.println(charonAPI.selectElement("2"));
 		
 		
-//		String experimentId = "1";
-//		String processRootId = "2";
-//		String process1Id = "4";
-//		String process2Id = "9";
-//		String activityId1 = "7";
-//		String activityId2 = "12";
-//		String activityInstanceId1 = "8";
-//		String activityInstanceId2 = "13";
-//		String processRootInstanceId = "3";
-//		String process1InstanceId = "5";
-//		String process2InstanceId = "10";
-		
-//		String activityInstanceId1 = charonAPI.instantiateActivity(activityId1);
-//		
-//		charonAPI.associateArtifactToActivityPort(activityInstanceId1, portId, artifactId);
-//		
-//		String activityInstanceId2 = charonAPI.instantiateActivity(activityId2);
-//		String activityInstanceId3 = charonAPI.instantiateActivity(activityId3);
-//		ok = charonAPI.associateElementToProcessWorkflow(processId, ACTIVITY, activityInstanceId1);
-//		ok = charonAPI.associateElementToProcessWorkflow(processId, ACTIVITY, activityInstanceId2);
-//		ok = charonAPI.associateElementToProcessWorkflow(processId, ACTIVITY, activityInstanceId3);
-//		ok = charonAPI.defineFlow(processId, ACTIVITY, activityInstanceId1, ACTIVITY, activityInstanceId2);
-//		ok = charonAPI.defineFlow(processId, ACTIVITY, activityInstanceId1, ACTIVITY, activityInstanceId3);
-//		String processInstanceId = charonAPI.instantiateProcess(processId);
-//		ok = charonAPI.associateProcessToSWFMS(processInstanceId, swfmsId);
-//		ok = charonAPI.setExperimentRootProcess(experimentId, processInstanceId);
-		
-//		String experimentInstanceId = charonAPI.initializeExperimentExecution(experimentId);
-//		ok = charonAPI.notifyActivityExecutionEnding(activityInstanceId1, new String[]{process1InstanceId, experimentInstanceId});
-//		ok = charonAPI.notifyActivityExecutionEnding(activityInstanceId2, new String[]{process2InstanceId, experimentInstanceId});
-//
-//		charonAPI.createExperimentNewVersion(experimentId);
+		charonAPI.commitSelection();
 		
 		
-//		
-//		
-//		
-//		
-		//charon.save();
+		System.out.println(charonAPI.isElementSelected("2"));
+		
+		System.out.println("part2");
+		
+		
+		charonAPI.rollbackSelection();
+		System.out.println(charonAPI.unselectElement("2"));
+		
+		
+		charonAPI.commitSelection();
+		
+		System.out.println(charonAPI.isElementSelected("2"));
+		
+
+		System.out.println("part3");
+		
+		
+		charonAPI.rollbackSelection();
+		System.out.println(charonAPI.selectElement("2"));
+		
+		
+		charonAPI.commitSelection();
+		
+		System.out.println(charonAPI.isElementSelected("2"));
+
+		
+		
+//		System.out.println(charonAPI.isValidDerivatedWorkflow());
+		
+		
 	}
 }

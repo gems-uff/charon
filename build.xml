@@ -50,12 +50,12 @@
     
     <!-- COMPILE TARGET -->
     <target name="compile" depends="prepare">
-        <javac classpathref="class.path" srcdir="${src.dir}" destdir="${build.dir}" optimize="true" debug="on" />
+        <javac classpathref="class.path" encoding="UTF-8" srcdir="${src.dir}" destdir="${build.dir}" optimize="true" debug="on" />
     </target>
     
     <!-- COMPILE TEST TARGET -->
     <target name="compileTest" depends="prepareTest">
-        <javac classpathref="class.path" srcdir="${src.dir}:${test.src.dir}" destdir="${build.dir}" optimize="false" debug="on">
+        <javac classpathref="class.path" encoding="UTF-8" srcdir="${src.dir}:${test.src.dir}" destdir="${build.dir}" optimize="false" debug="on">
         	<compilerarg value="-Xlint:unchecked"/>
 		</javac>
     </target>
@@ -92,6 +92,11 @@
         	</manifest>
         </jar>
     </target>
+	
+	<!-- EXPLINE DEPLOY TARGET -->
+	<target name="expLineDeploy" depends="jar">
+		<copy file="${build.dir}/${ant.project.name}.jar" todir="${expline.dir}"/>
+	</target>
         
     <!-- SIGNJAR TARGET -->
 	<target name="signjar" depends="jar">

@@ -26,7 +26,7 @@ public class MysqlConnector {
 			Class.forName("com.mysql.jdbc.Driver").newInstance();
 			session = DriverManager.getConnection(url, user, passwd);
 		} catch (Exception e) {
-			System.out.println("Erro de conex„o com o banco");
+			System.out.println("Erro de conex√£o com o banco");
 		}
 	}
 	
@@ -35,7 +35,7 @@ public class MysqlConnector {
 			Class.forName("com.mysql.jdbc.Driver").newInstance();
 			session = DriverManager.getConnection(url, user, passwd);
 		} catch (Exception e) {
-			System.out.println("Erro de conex„o com o banco");
+			System.out.println("Erro de conex√£o com o banco");
 		}
 	}
 	

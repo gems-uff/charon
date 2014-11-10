@@ -1,5 +1,7 @@
 package br.ufrj.cos.lens.odyssey.tools.charon;
 
+import java.util.Set;
+
 import br.ufrj.cos.lens.odyssey.tools.charon.agents.AdminAgent;
 import br.ufrj.cos.lens.odyssey.tools.charon.agents.EnactmentAgent;
 import br.ufrj.cos.lens.odyssey.tools.charon.agents.LoadingAgent;
@@ -31,6 +33,85 @@ public class CharonAPI {
 	public CharonAPI(KnowledgeBase knowledgeBase) throws CharonException {
 		this.knowledgeBase = knowledgeBase;
 	}
+
+	
+	
+	
+	public boolean insertVariant(String variantId, String variationPointId) throws CharonException{
+		LoadingAgent loadingAgent = AgentManager.getInstance().getAgent(LoadingAgent.class);
+		return loadingAgent.insertVariant(knowledgeBase, variantId, variationPointId);
+	}
+	
+	public boolean insertMandatory(String mandatoryId) throws CharonException{
+		LoadingAgent loadingAgent = AgentManager.getInstance().getAgent(LoadingAgent.class);
+		return loadingAgent.insertMandatory(knowledgeBase, mandatoryId);
+	}
+	
+	public boolean insertOptional(String optionalId) throws CharonException{
+		LoadingAgent loadingAgent = AgentManager.getInstance().getAgent(LoadingAgent.class);
+		return loadingAgent.insertOptional(knowledgeBase, optionalId);
+	}
+
+	public boolean insertVariationPoint(String variationPointId, boolean mandatory) throws CharonException{
+		LoadingAgent loadingAgent = AgentManager.getInstance().getAgent(LoadingAgent.class);
+		return loadingAgent.insertVariationPoint(knowledgeBase, variationPointId, mandatory);
+	}
+	
+	
+	
+	
+	public boolean initializeDerivation() throws CharonException{
+		LoadingAgent loadingAgent = AgentManager.getInstance().getAgent(LoadingAgent.class);
+		return loadingAgent.initializeDerivation(knowledgeBase);
+	}
+	
+	public boolean isValidDerivedWorkflow() throws CharonException{
+		LoadingAgent loadingAgent = AgentManager.getInstance().getAgent(LoadingAgent.class);
+		return loadingAgent.initializeDerivation(knowledgeBase);
+	}
+	
+	public boolean selectElement(String elementId) throws CharonException{
+		LoadingAgent loadingAgent = AgentManager.getInstance().getAgent(LoadingAgent.class);
+		return loadingAgent.selectElement(knowledgeBase, elementId);
+	}
+	
+	public boolean unselectElement(String elementId) throws CharonException{
+		LoadingAgent loadingAgent = AgentManager.getInstance().getAgent(LoadingAgent.class);
+		return loadingAgent.unselectElement(knowledgeBase, elementId);
+	}
+	
+	public boolean isElementSelected(String elementId) throws CharonException{
+		LoadingAgent loadingAgent = AgentManager.getInstance().getAgent(LoadingAgent.class);
+		return loadingAgent.isElementSelected(knowledgeBase, elementId);
+	}
+	
+	public Set<String> getInferredSelection() throws CharonException{
+		LoadingAgent loadingAgent = AgentManager.getInstance().getAgent(LoadingAgent.class);
+		return loadingAgent.getInferredSelection(knowledgeBase);
+	}
+	
+	public Set<String> getInferredDeselection() throws CharonException{
+		LoadingAgent loadingAgent = AgentManager.getInstance().getAgent(LoadingAgent.class);
+		return loadingAgent.getInferredDeselection(knowledgeBase);
+	}
+	
+	
+	
+	public void beginSelection() throws CharonException{
+		LoadingAgent loadingAgent = AgentManager.getInstance().getAgent(LoadingAgent.class);
+		loadingAgent.beginSelection(knowledgeBase);
+	}
+	
+	public void commitSelection() throws CharonException{
+		LoadingAgent loadingAgent = AgentManager.getInstance().getAgent(LoadingAgent.class);
+		loadingAgent.commitSelection(knowledgeBase);
+	}
+	
+	public void rollbackSelection() throws CharonException{
+		LoadingAgent loadingAgent = AgentManager.getInstance().getAgent(LoadingAgent.class);
+		loadingAgent.rollbackSelection(knowledgeBase);
+	}
+
 	
 	
 	/*

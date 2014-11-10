@@ -1,3 +1,4 @@
 eclipse.preferences.version=1
 encoding//src/br/ufrj/cos/lens/odyssey/tools/charon/KnowledgeBase.java=UTF-8
 encoding//src/br/ufrj/cos/lens/odyssey/tools/charon/agents/LoadingAgent.java=UTF-8
+encoding//src/br/ufrj/cos/lens/odyssey/tools/charon/util/MysqlConnector.java=UTF-8
