@@ -34,7 +34,7 @@ public class Charon {
 	/**
 	 * Knowledge base instance
 	 */
-	private KnowledgeBase knowledgeBase;
+	private KnowledgeBase knowledgeBase; 
 	
 	/**
 	 * Charon's API
