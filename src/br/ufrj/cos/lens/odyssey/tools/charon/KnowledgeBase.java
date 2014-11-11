@@ -26,7 +26,7 @@ public class KnowledgeBase {
 	/**
 	 * Inference machine that phisically holds the knowledge base
 	 */
-	private InferenceMachine inferenceMachine = null;
+	private InferenceMachine inferenceMachine = null; 
 
 	/**
 	 * Agent connected to the knowledge base
