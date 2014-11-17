@@ -194,49 +194,48 @@ public class Charon {
 		Charon charon = new Charon("resource");
 		CharonAPI charonAPI = new CharonAPI(charon.knowledgeBase);
 		
-
 		
-		System.out.println(charonAPI.insertMandatory("1"));
-		
-		System.out.println(charonAPI.insertOptional("2"));
-		
-		System.out.println("part1");
-		
-		charonAPI.rollbackSelection();
-		System.out.println(charonAPI.selectElement("2"));
-		
-		
-		charonAPI.commitSelection();
-		
-		
-		System.out.println(charonAPI.isElementSelected("2"));
-		
-		System.out.println("part2");
-		
-		
-		charonAPI.rollbackSelection();
-		System.out.println(charonAPI.unselectElement("2"));
-		
-		
-		charonAPI.commitSelection();
-		
-		System.out.println(charonAPI.isElementSelected("2"));
+		System.out.println(charonAPI.isValidDerivatedWorkflow());
 		
 
-		System.out.println("part3");
 		
-		
-		charonAPI.rollbackSelection();
-		System.out.println(charonAPI.selectElement("2"));
-		
-		
-		charonAPI.commitSelection();
-		
-		System.out.println(charonAPI.isElementSelected("2"));
-
-		
-		
-//		System.out.println(charonAPI.isValidDerivatedWorkflow());
+//		System.out.println(charonAPI.insertMandatory("1"));
+//		
+//		System.out.println(charonAPI.insertOptional("2"));
+//		
+//		System.out.println("part1");
+//		
+//		charonAPI.rollbackSelection();
+//		System.out.println(charonAPI.selectElement("2"));
+//		
+//		
+//		charonAPI.commitSelection();
+//		
+//		
+//		System.out.println(charonAPI.isElementSelected("2"));
+//		
+//		System.out.println("part2");
+//		
+//		
+//		charonAPI.rollbackSelection();
+//		System.out.println(charonAPI.unselectElement("2"));
+//		
+//		
+//		charonAPI.commitSelection();
+//		
+//		System.out.println(charonAPI.isElementSelected("2"));
+//		
+//
+//		System.out.println("part3");
+//		
+//		
+//		charonAPI.rollbackSelection();
+//		System.out.println(charonAPI.selectElement("2"));
+//		
+//		
+//		charonAPI.commitSelection();
+//		
+//		System.out.println(charonAPI.isElementSelected("2"));
 		
 		
 	}

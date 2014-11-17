@@ -70,7 +70,7 @@ public class LoadingAgent extends Agent {
 		return isSolvable;
 	}
 	
-	public boolean isValidDerivedWorkflow(KnowledgeBase knowledgeBase){
+	public boolean isValidDerivedWorkfloww(KnowledgeBase knowledgeBase){
 		connect(knowledgeBase);
 		boolean isSolvable = knowledgeBase.isSolvable("isValidDerivedWorkflow(_).");
 		
@@ -228,7 +228,7 @@ public class LoadingAgent extends Agent {
 			return null;
 	}
 	
-	public boolean isValidDerivedWorkfloww(KnowledgeBase knowledgeBase){
+	public boolean isValidDerivedWorkflow(KnowledgeBase knowledgeBase){
 		connect(knowledgeBase);
 //		boolean isSolvable = knowledgeBase.isSolvable("isValidDerivedWorkflow(_).");
 //		boolean isSolvable = knowledgeBase.isSolvable("findall(ActivityId, abstractWorkflow(ActivityId), L1), findall(ActivityId2, currentSelection(ActivityId2), L2), append(L1, L2, ['B2'|L]).");
@@ -247,7 +247,10 @@ public class LoadingAgent extends Agent {
 //		        isSolvable = knowledgeBase.isSolvable("abstractWorkflow('D1').");
 //				isSolvable = knowledgeBase.isSolvable("currentSelection('B1').");
 //				List<Map<String, Object>> solutions = knowledgeBase.getAllSolutions("validationRule(RuleId).");
-		        boolean isSolvable = knowledgeBase.isSolvable("isValidDerivedWorkflow(_).");
+		        knowledgeBase.getAllSolutions("selectElement('B1', []).");
+//		        boolean isSolvable = knowledgeBase.isSolvable("currentSelection('F1', ['E1', 'B1']).");
+//		        boolean isSolvable = knowledgeBase.isSolvable("currentSelection('D1', ['B1']).");
+		        boolean isSolvable = knowledgeBase.isSolvable("currentSelection('E1', ['B1']).");
 //		        boolean isSolvable = knowledgeBase.isSolvable("isThereAnyOtherVariantSelected('E', ['E1', 'E2'], ['E1', 'E2', 'A', 'E']).");
 //		        boolean isSolvable = knowledgeBase.isSolvable("isVariantSelected('E', ['E1'], ['E1', 'E2', 'A', 'E']).");
 //		        boolean isSolvable = knowledgeBase.isSolvable("checkVariationPoints(['E'], ['E1', 'E2', 'A', 'E']).");
