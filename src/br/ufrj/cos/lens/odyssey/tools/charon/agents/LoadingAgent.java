@@ -247,10 +247,27 @@ public class LoadingAgent extends Agent {
 //		        isSolvable = knowledgeBase.isSolvable("abstractWorkflow('D1').");
 //				isSolvable = knowledgeBase.isSolvable("currentSelection('B1').");
 //				List<Map<String, Object>> solutions = knowledgeBase.getAllSolutions("validationRule(RuleId).");
-		        knowledgeBase.getAllSolutions("selectElement('B1', []).");
+//		        knowledgeBase.getAllSolutions("selectElement('B1', []).");
+//		        
+//		        List<Map<String, Object>> solutions = knowledgeBase.getAllSolutions("currentSelection(A, B).");
+//		        
+//				boolean isSolvable = knowledgeBase.isSolvable("append(['A'], 'B', ['A', 'B']).");
+				
+				
+				List<Map<String, Object>> solutions = knowledgeBase.getAllSolutions("rulee(A, B, C).");
+				
+				boolean isSolvable = knowledgeBase.isSolvable("rulee('A', 'B', 'C').");
+				
+		
+				
+		
 //		        boolean isSolvable = knowledgeBase.isSolvable("currentSelection('F1', ['E1', 'B1']).");
 //		        boolean isSolvable = knowledgeBase.isSolvable("currentSelection('D1', ['B1']).");
-		        boolean isSolvable = knowledgeBase.isSolvable("currentSelection('E1', ['B1']).");
+//		        boolean isSolvable = knowledgeBase.isSolvable("currentSelection('E1', ['B1']).");
+		
+//		        knowledgeBase.getAllSolutions("rule('X').");
+//		        boolean isSolvable = knowledgeBase.isSolvable("selected('D1').");
+		        
 //		        boolean isSolvable = knowledgeBase.isSolvable("isThereAnyOtherVariantSelected('E', ['E1', 'E2'], ['E1', 'E2', 'A', 'E']).");
 //		        boolean isSolvable = knowledgeBase.isSolvable("isVariantSelected('E', ['E1'], ['E1', 'E2', 'A', 'E']).");
 //		        boolean isSolvable = knowledgeBase.isSolvable("checkVariationPoints(['E'], ['E1', 'E2', 'A', 'E']).");

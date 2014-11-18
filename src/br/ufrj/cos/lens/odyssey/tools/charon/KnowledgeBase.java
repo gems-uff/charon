@@ -170,7 +170,7 @@ public class KnowledgeBase {
 		//Function to select one variant of a variation point. Before select the functions checks if there is other variant already selected. 
 		charonRules.add("(selectVariant(Var, Path) :- findall(ActivityId, abstractWorkflow(ActivityId), AbstActvList), variant(Var, VP), findall(Var1, variant(Var1, VP), VariantList), findall(ActivityId2, currentSelection(ActivityId2), CurrentSelectList), append(AbstActvList, CurrentSelectList, CompleteList), not(isVariantSelected(VP, VariantList, CompleteList)), assertz(currentSelection(Var, Path)), selectElement(VP))");
 		
-		charonRules.add("(selectElement(E, Path) :- not(abstractWorkflow(E)), not(currentDeselection(E, _)), not(currentSelection(E, _)), variant(E, _), selectVariant(E, Path), checkForInferredSelection(_, [E|Path]))");
+		charonRules.add("(selectElement(E, Path) :- not(abstractWorkflow(E)), not(currentDeselection(E, _)), not(currentSelection(E, _)), variant(E, _), selectVariant(E, Path), append(Path, [E], Path2), checkForInferredSelection(_, Path2))");
 		
 		charonRules.add("(selectElement(E, Path) :- (abstractWorkflow(E); currentSelection(E)), variant(E, _))");
 		
@@ -222,8 +222,13 @@ public class KnowledgeBase {
 		
 		//TIP: Posso tentar usar listas para guardar todos comaminhos possíveis de inferencia das regras.
 
-		charonRules.add("(rule(_))");
-		charonRules.add("(rule('X', Path) :- ((abstractWorkflow('B1'); currentSelection('B1', _)) -> (selectElement('D1', Path); selectElement('E1', Path))))");
+//		charonRules.add("(rule(_))");
+//		charonRules.add("(rule('X', Path) :- ((abstractWorkflow('B1'); currentSelection('B1', _)) -> (selectElement('E1', Path); selectElement('D1', Path))))");
+		charonRules.add("(rule('X1', Path) :- ((abstractWorkflow('B1'); currentSelection('B1', _)) -> selectElement('E1', Path)))");
+		charonRules.add("(rule('X2', Path) :- ((abstractWorkflow('B1'); currentSelection('B1', _)) -> selectElement('D1', Path)))");
+		
+//		charonRules.add("(rule('X') :- ((abstractWorkflow('B'); currentSelection('B1', _)) -> (assertz(selected('D1')); assertz(selected('E1')))))");
+		
 		charonRules.add("(rule('Y', Path) :- ((abstractWorkflow('E1'); currentSelection('E1', _)) -> selectElement('F1', Path)))");
 //		charonRules.add("(rule('Y') :- ((abstractWorkflow('D1'); currentSelection('D1')) -> selectElement('E1')))");
 //		charonRules.add("(rule('Y') :- ((abstractWorkflow('E1'); currentSelection('E1')) -> selectElement('D1')))");
@@ -232,6 +237,14 @@ public class KnowledgeBase {
 		
 //		charonRules.add("(validationRule('X') :- not((abstractWorkflow('B1') -> abstractWorkflow('D1'))))");
 //		charonRules.add("(validationRule('Y') :- not((abstractWorkflow('D1') -> abstractWorkflow('E1'))))");
+		
+		
+		charonRules.add("(rulee(A, B, C) :- ((selectedA(A), selectedB(B)) -> selectedC(C)))");
+		
+		
+		charonRules.add("(selectedA('A'))");
+		charonRules.add("(selectedB('B'))");
+		charonRules.add("(selectedC('C'))");
 
 		
 		//Essa operacao abaixo nao funciona sendo chamada aqui dentro porque a funcao ainda nao foi cadastrada...
