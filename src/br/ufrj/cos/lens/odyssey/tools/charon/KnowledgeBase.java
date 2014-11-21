@@ -248,12 +248,12 @@ public class KnowledgeBase {
 ////		charonRules.add("(selectedB('B'))");
 ////		charonRules.add("(selectedC('C'))");
 		
-		charonRules.add("(and(A, B) :- A, B)");
-		charonRules.add("(evaluate(E, true) :- E)");
-		charonRules.add("(evaluate(_, false))");
-		
-		charonRules.add("(bool(true))");
-		charonRules.add("(bool(false))");
+//		charonRules.add("(and(A, B) :- A, B)");
+//		charonRules.add("(evaluate(E, true) :- E)");
+//		charonRules.add("(evaluate(_, false))");
+//		
+//		charonRules.add("(bool(true))");
+//		charonRules.add("(bool(false))");
 		
 //		charonRules.add("(tableBody(A,B,E) :- bool(A), bool(B), write(A), write(' \t '), write(B), write(' \t '), evaluate(E, Result), write(Result), nl, fail.)");
 		
