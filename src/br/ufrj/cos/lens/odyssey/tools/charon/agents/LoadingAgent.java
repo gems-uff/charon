@@ -254,7 +254,7 @@ public class LoadingAgent extends Agent {
 //				boolean isSolvable = knowledgeBase.isSolvable("append(['A'], 'B', ['A', 'B']).");
 				
 				
-//				List<Map<String, Object>> solutions = knowledgeBase.getAllSolutions("rulee(A, B, C).");
+				List<Map<String, Object>> solutions = knowledgeBase.getAllSolutions("tableBody(A,B,C,D,and(imp(A, or(B,C)),imp(C, D))).");
 				
 //				boolean isSolvable = knowledgeBase.isSolvable("rulee('A', 'B', 'C').");
 				

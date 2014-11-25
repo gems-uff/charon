@@ -29,7 +29,7 @@ public class Charon {
 	/**
 	 * File where charon knowledge base should be stored
 	 */
-	private static final String FILE_NAME = "charon.pl";
+	private static final String FILE_NAME = "Expline.pl";
 	
 	/**
 	 * Knowledge base instance
@@ -191,7 +191,7 @@ public class Charon {
 	
 	public static void main(String[] args) throws Exception{
 		
-		Charon charon = new Charon("resource");
+		Charon charon = new Charon("");
 		CharonAPI charonAPI = new CharonAPI(charon.knowledgeBase);
 		
 		

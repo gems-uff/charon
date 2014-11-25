@@ -2,7 +2,7 @@ and(A, B) :- A, B.
 imp(A, B) :- not(A); B.
 or(A, B) :- A ; B.
 
-evaluate(E, true) :- E.
+evaluate(E, true) :- E, !.
 
 bool(true).
 bool(false).
@@ -19,7 +19,7 @@ tableBody(A,B,C,D,E) :-
   bool(B),
   bool(C),
   bool(D),
-  evaluate(E, Result).
+  evaluate(E, Result). 
   
 tableBody(A,B,E) :-
   bool(A),
@@ -27,7 +27,7 @@ tableBody(A,B,E) :-
   evaluate(E, Result).
   
   
-%tableBody(A,B,C, and(and(imp(A,B),imp(B, C)),imp(C,not(A)))).
+%tableBody(A,B,C, and(and(imp(A,B),imp(B, C)),imp(C,not(A)))). 
 %tableBody(A,B, and(imp(A, B),imp(B,not(A)))).
 %tableBody(A,B, imp( or(A, not(A)), and(B, not(B)))).
 %tableBody(A,B,C,D,and(imp(A, or(B,C)),imp(C, D))).
