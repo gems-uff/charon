@@ -70,7 +70,7 @@ public class LoadingAgent extends Agent {
 		return isSolvable;
 	}
 	
-	public boolean isValidDerivedWorkfloww(KnowledgeBase knowledgeBase){
+	public boolean isValidDerivedWorkflow(KnowledgeBase knowledgeBase){
 		connect(knowledgeBase);
 		boolean isSolvable = knowledgeBase.isSolvable("isValidDerivedWorkflow(_).");
 		
@@ -228,7 +228,7 @@ public class LoadingAgent extends Agent {
 			return null;
 	}
 	
-	public boolean isValidDerivedWorkflow(KnowledgeBase knowledgeBase){
+	public boolean isValidDerivedWorkflow2(KnowledgeBase knowledgeBase){
 		connect(knowledgeBase);
 //		boolean isSolvable = knowledgeBase.isSolvable("isValidDerivedWorkflow(_).");
 //		boolean isSolvable = knowledgeBase.isSolvable("findall(ActivityId, abstractWorkflow(ActivityId), L1), findall(ActivityId2, currentSelection(ActivityId2), L2), append(L1, L2, ['B2'|L]).");

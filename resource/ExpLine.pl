@@ -181,10 +181,10 @@ END: Regras de inserção e remoção de variantes
 /*
 mandatory('A').
 variationPoint('B').
-optional('B').
+mandatory('B').
 variant('B1', 'B').
-variant('B2', 'B').
-optional('C').
+variant('B2', 'B'). 
+optional('C'). 
 variationPoint('D').
 mandatory('D').
 variant('D1', 'D').
@@ -192,8 +192,10 @@ variant('D2', 'D').
 mandatory('E').
 variationPoint('E').
 variant('E1', 'E').
-variant('E2', 'E').
-		
+variant('E2', 'E'). 
+	
+
+/*	 
 abstractWorkflow('A'). 
 abstractWorkflow('B').
 %abstractWorkflow('D').
