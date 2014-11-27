@@ -173,6 +173,17 @@ unselectElement(E) :-
 	retract(abstractWorkflow(E)).
 
 
+and(A, B) :- A, B.
+imp(A, B) :- not(A); B.
+or(A, B) :- A ; B.
+nand(A,B) :- not(and(A,B)).
+xor(A, B) :- and(or(A, B), nand(A, B)).
+
+evaluate(E, true) :- E, !.
+
+bool(true).
+bool(false).
+
 /*
 END: Regras de inserção e remoção de variantes
 */

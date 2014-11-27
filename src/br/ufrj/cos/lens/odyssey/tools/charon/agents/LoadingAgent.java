@@ -193,6 +193,13 @@ public class LoadingAgent extends Agent {
 		disconnect();
 		return isSolvable;
 	}
+	
+	public boolean insertValidationRule(KnowledgeBase knowledgeBase, String rule){
+		connect(knowledgeBase);
+		boolean isSolvable = knowledgeBase.isSolvable(rule);
+		disconnect();
+		return isSolvable;
+	}
 
 	public String registerSGWf(KnowledgeBase knowledgeBase, String name, String host){
 		connect(knowledgeBase);
