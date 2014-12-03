@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.sql.DatabaseMetaData;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -43,6 +42,9 @@ public class InferenceMachine {
 	 */
 	public InferenceMachine() {
 		inferenceMachine = new Prolog();
+		
+//        IOLibrary IO = (IOLibrary)inferenceMachine.getLibrary("alice.tuprolog.lib.IOLibrary");
+//        IO.setExecutionType(IOLibrary.graphicExecution); // changed from IO.graphicExecution to IOLibrary.graphicExecution
 	}
 	
 	/**
@@ -55,6 +57,15 @@ public class InferenceMachine {
 		inferenceMachine.addTheory(theory);
 
 	}
+	
+	public InferenceMachine(String th) throws InvalidTheoryException, FileNotFoundException, IOException {
+		this();
+		
+		Theory theory = new Theory(th);
+		inferenceMachine.addTheory(theory);
+
+	}
+	
 
 	/**
 	 * Adds a collection of clauses into the knowledge base
@@ -225,5 +236,18 @@ public class InferenceMachine {
 		} else {
 			return term.toString();
 		}
+	}
+
+	public boolean appendTheory(String theory) {
+		try {
+			Theory newtheory = this.inferenceMachine.getTheory();
+			newtheory.append(new Theory(theory));
+			this.inferenceMachine.addTheory(newtheory);
+		} catch (InvalidTheoryException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
+		}
+		return true;
 	}
 }

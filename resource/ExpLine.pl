@@ -181,41 +181,32 @@ xor(A, B) :- and(or(A, B), nand(A, B)).
 
 evaluate(E, true) :- E, !.
 
-bool(true).
-bool(false).
 
-/*
-END: Regras de inserção e remoção de variantes
-*/
+boolean34(true).
+boolean34(false).
+boolean35(true).
+boolean35(false).
+boolean36(true).
+boolean36(false).
+boolean37(true).
+boolean37(false).
+boolean38(true).
+boolean38(false).
+boolean39(true).
+boolean39(false).
+boolean40(true).
+boolean40(false).
+boolean41(true).
+boolean41(false).
+boolean42(true).
+boolean42(false).
+boolean43(true).
+boolean43(false).
+boolean26(true).
+boolean26(false).
+boolean27(true).
+boolean27(false).
+boolean28(true).
+boolean28(false).
 
-
-/*
-mandatory('A').
-variationPoint('B').
-mandatory('B').
-variant('B1', 'B').
-variant('B2', 'B'). 
-optional('C'). 
-variationPoint('D').
-mandatory('D').
-variant('D1', 'D').
-variant('D2', 'D').
-mandatory('E').
-variationPoint('E').
-variant('E1', 'E').
-variant('E2', 'E'). 
-	
-
-/*	 
-abstractWorkflow('A'). 
-abstractWorkflow('B').
-%abstractWorkflow('D').
-abstractWorkflow('E').
-%abstractWorkflow('C').  
-abstractWorkflow('B1'). 
-%abstractWorkflow('D1'). 
-abstractWorkflow('E1').
-%abstractWorkflow('E2').
-%abstractWorkflow('B2').
-
-*/
+evaluateState(A34, A35, A36, A37, A38, A39, A40, A41, A42, A43, A26, A27, A28, E) :- boolean34(A34), boolean35(A35), boolean36(A36), boolean37(A37), boolean38(A38), boolean39(A39), boolean40(A40), boolean41(A41), boolean42(A42), boolean43(A43), boolean26(A26), boolean27(A27), boolean28(A28),  evaluate(E, Result).

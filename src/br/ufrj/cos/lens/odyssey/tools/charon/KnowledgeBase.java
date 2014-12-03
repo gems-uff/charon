@@ -1,6 +1,7 @@
 package br.ufrj.cos.lens.odyssey.tools.charon;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -11,6 +12,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import spem.SpemPackage;
+import alice.tuprolog.InvalidTheoryException;
 import br.ufrj.cos.lens.odyssey.tools.charon.agents.Agent;
 import br.ufrj.cos.lens.odyssey.tools.charon.agents.MappingAgent;
 import br.ufrj.cos.lens.odyssey.tools.inference.InferenceMachine;
@@ -26,7 +28,7 @@ public class KnowledgeBase {
 	/**
 	 * Inference machine that phisically holds the knowledge base
 	 */
-	private InferenceMachine inferenceMachine = null;  
+	private InferenceMachine inferenceMachine = null;
 
 	/**
 	 * Agent connected to the knowledge base
@@ -59,6 +61,21 @@ public class KnowledgeBase {
 		}
 		
 		setCharonRules(false);
+	}
+	
+	public KnowledgeBase(String theory) throws CharonException {
+
+		try{
+			inferenceMachine = new InferenceMachine(theory);
+		} catch (Exception e){
+			throw new CharonException("Could not load existing knowledge base from " + repository, e);
+		}
+		
+		setCharonRules(false);
+	}
+	
+	public boolean appendTheory(String theory){
+		return inferenceMachine.appendTheory(theory);
 	}
 	
 	private void setCharonRules(boolean IsUsingDatabase) {

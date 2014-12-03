@@ -46,14 +46,33 @@ public class Charon {
 	 * 
 	 * @param repository Place where Charon will recover/store its knowledge base
 	 */
-	public Charon(String repositoryDirectory) throws CharonException {
-		File directory = new File(repositoryDirectory);
+	public Charon(File directory) throws CharonException {
 		if (!directory.exists() && !directory.mkdirs()) {
-			throw new CharonException("Could not create directory " + repositoryDirectory);
+			throw new CharonException("Could not create directory " + directory);
 		}
 		
 		File file = new File(directory, FILE_NAME);
 		knowledgeBase = new KnowledgeBase(file);
+		AgentManager.getInstance().init();
+		
+		charonAPI = new CharonAPI(knowledgeBase);
+	}
+	
+	public Charon(File directory, String fileName) throws CharonException {
+		if (!directory.exists() && !directory.mkdirs()) {
+			throw new CharonException("Could not create directory " + directory);
+		}
+		
+		File file = new File(directory, fileName);
+		knowledgeBase = new KnowledgeBase(file);
+		AgentManager.getInstance().init();
+		
+		charonAPI = new CharonAPI(knowledgeBase);
+	}
+	
+	public Charon(String theory) throws CharonException {
+		
+		knowledgeBase = new KnowledgeBase(theory);
 		AgentManager.getInstance().init();
 		
 		charonAPI = new CharonAPI(knowledgeBase);
@@ -191,11 +210,11 @@ public class Charon {
 	
 	public static void main(String[] args) throws Exception{
 		
-		Charon charon = new Charon("");
+		Charon charon = new Charon("resource");
 		CharonAPI charonAPI = new CharonAPI(charon.knowledgeBase);
 		
 		
-		System.out.println(charonAPI.isValidDerivatedWorkflow());
+		System.out.println(charonAPI.listValidConfigurations("evaluateState(A34, A35, A36, A37, A38, A39, A40, A41, A42, A43, A26, A27, A28, and(and(or(xor(xor(xor(xor(A34, A35), A36), A37), A38), not or(or(or(or(A34, A35), A36), A37), A38)), or(xor(xor(xor(xor(A39, A40), A41), A42), A43), not or(or(or(or(A39, A40), A41), A42), A43))), or(xor(xor(A26, A27), A28), not or(or(A26, A27), A28)))).", "35", true));
 		
 
 		

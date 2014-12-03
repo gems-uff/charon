@@ -5,7 +5,7 @@
 	<classpathentry kind="src" path="resource"/>
 	<classpathentry kind="src" path="test/resource"/>
 	<classpathentry kind="lib" path="test/lib/junit3.8.1.jar"/>
-	<classpathentry kind="lib" path="lib/2p.jar"/>
+	<classpathentry kind="lib" path="lib/2p.jar" sourcepath="/2p"/>
 	<classpathentry kind="lib" path="lib/tuprolog-extensions.jar"/>
 	<classpathentry kind="lib" path="lib/tuprolog-ide.jar"/>
 	<classpathentry kind="lib" path="lib/tuprolog.jar"/>

@@ -291,235 +291,122 @@ public class LoadingAgent extends Agent {
 		disconnect();
 		return isSolvable;
 	}
-	
-	
-	public String createActivity(KnowledgeBase knowledgeBase, String type, String name){
+
+	public List<Map<String, Object>> listValidConfigurations(
+			KnowledgeBase knowledgeBase, String query, String elementId, boolean selected) {
+		
 		connect(knowledgeBase);
-		String activityClassId = IDGenerator.generateID();
-		boolean isSolvable = knowledgeBase.isSolvable("create_activity('"+activityClassId+"', '"+name+"', '"+type+"').");
-		disconnect();
-		if(isSolvable){
-			return activityClassId;
-		}
+		
+		if(selected)
+			knowledgeBase.isSolvable("retract(bool"+elementId+"(false)).");
 		else
-			return null;
-	}
-	
-	
-	public String createPort(KnowledgeBase knowledgeBase, String portType, String portName, String portDataType){
-		connect(knowledgeBase);
-		String portId = IDGenerator.generateID();
-		boolean isSolvable = knowledgeBase.isSolvable("create_port('"+portId+"', '"+portType+"', '"+portName+"', '"+portDataType+"').");
-		disconnect();
-		if(isSolvable){
-			return portId;
-		}
+			knowledgeBase.isSolvable("retract(bool"+elementId+"(true)).");
+		
+		List<Map<String, Object>> solutions = knowledgeBase.getAllSolutions(query);
+		
+		if(selected)
+			knowledgeBase.isSolvable("assertz(bool"+elementId+"(false)).");
 		else
-			return null;
+			knowledgeBase.isSolvable("assertz(bool"+elementId+"(true)).");		
+		
+		disconnect();
+		
+		return solutions;
 	}
 	
-	
-	public boolean addActivityPort(KnowledgeBase knowledgeBase, String activityId, String portId){
+	public boolean isValidPreliminaryDerivedWorkflow(
+			KnowledgeBase knowledgeBase, String query, String elementId, boolean selected) {
+		
 		connect(knowledgeBase);
-		boolean isSolvable = knowledgeBase.isSolvable("add_activityPort('"+activityId+"', '"+portId+"').");
+		
+		setCurrentState(knowledgeBase);
+		
+		if(selected){
+			knowledgeBase.isSolvable("assertz(bool"+elementId+"(true)).");
+			knowledgeBase.isSolvable("retract(bool"+elementId+"(false)).");
+		}
+		else{
+			knowledgeBase.isSolvable("assertz(bool"+elementId+"(false)).");
+			knowledgeBase.isSolvable("retract(bool"+elementId+"(true)).");
+		}
+		
+		boolean isSolvable = knowledgeBase.isSolvable(query);
+		
+		cleanState(knowledgeBase);
+		
 		disconnect();
+		
 		return isSolvable;
 	}
 	
-	public boolean addProcessPort(KnowledgeBase knowledgeBase, String processId, String portId){
-		connect(knowledgeBase);
-		boolean isSolvable = knowledgeBase.isSolvable("add_processPort('"+processId+"', '"+portId+"').");
-		disconnect();
-		return isSolvable;
-	}
+	private void setCurrentState(KnowledgeBase knowledgeBase){
 		
-	public String createArtifact(KnowledgeBase knowledgeBase){
-		connect(knowledgeBase);
-		String artifactId = IDGenerator.generateID();
-		boolean isSolvable = knowledgeBase.isSolvable("create_artifact('"+artifactId+"').");
-		disconnect();
-		if(isSolvable){
-			return artifactId;
-		}
-		else
-			return null;
-	}
-	
-	public boolean associateArtifactToActivityPort(KnowledgeBase knowledgeBase, String activityInstanceId, String portId, String artifactId){
-		connect(knowledgeBase);
-		boolean isSolvable = knowledgeBase.isSolvable("set_artifactActivityPort('"+activityInstanceId+"', '"+portId+"', '"+artifactId+"').");
-		disconnect();
-		return isSolvable;
-	}
-	
-	public boolean associateArtifactToProcessPort(KnowledgeBase knowledgeBase, String processInstanceId, String portId, String artifactId){
-		connect(knowledgeBase);
-		boolean isSolvable = knowledgeBase.isSolvable("set_artifactProcessPort('"+processInstanceId+"', '"+portId+"', '"+artifactId+"').");
-		disconnect();
-		return isSolvable;
-	}
-	
-	public String instantiateActivity(KnowledgeBase knowledgeBase, String activityClassId, String name){
-		connect(knowledgeBase);
-		String activityInstanceId = IDGenerator.generateID();
-		boolean isSolvable = knowledgeBase.isSolvable("create_activityInstance('"+activityInstanceId+"', '"+activityClassId+"', '"+name+"').");
-		disconnect();
-		if(isSolvable){
-			classIdsByInstance.put(activityInstanceId, activityClassId);
-			return activityInstanceId;
-		}
-		else
-			return null;
-	}
-	
-	public String instantiateProcess(KnowledgeBase knowledgeBase, String processClassId, String name){
-		connect(knowledgeBase);
-		String processInstanceId = IDGenerator.generateID();
-		boolean isSolvable = knowledgeBase.isSolvable("create_processInstance('"+processInstanceId+"', '"+processClassId+"', '"+name+"').");
-		disconnect();
-		if(isSolvable){
-			classIdsByInstance.put(processInstanceId, processClassId);
-			return processInstanceId;
-		}
-		else
-			return null;
-	}
-	
-	public String createSynchronism(KnowledgeBase knowledgeBase){
-		connect(knowledgeBase);
-		String synchronismId = IDGenerator.generateID();
-		boolean isSolvable = knowledgeBase.isSolvable("create_synchronism('"+synchronismId+"').");
-		disconnect();
-		if(isSolvable)
-			return synchronismId;
-		else
-			return null;
-	}
-	
-	public boolean createInvisibleSynchronism(KnowledgeBase knowledgeBase, String synchronismId){
-		connect(knowledgeBase);
-		boolean isSolvable = knowledgeBase.isSolvable("create_invisible_synchronism('"+synchronismId+"').");
-		disconnect();
-		return isSolvable;
-	}
-	
-	public String createDecision(KnowledgeBase knowledgeBase, String name){
-		connect(knowledgeBase);
-		String decisionId = IDGenerator.generateID();
-		boolean isSolvable = knowledgeBase.isSolvable("create_decision('"+decisionId+"', '"+name+"').");
-		disconnect();
-		if(isSolvable)
-			return decisionId;
-		else
-			return null;
-	}
-	
-	public String createDecisionOption(KnowledgeBase knowledgeBase, String decisionId, String name, int toElementType, String toElementId){
-		connect(knowledgeBase);
+		List<Map<String, Object>> solutions = knowledgeBase.getAllSolutions("variant(A, _).");
 		
-		boolean isSolvable = knowledgeBase.isSolvable("add_decisionOption('"+decisionId+"', '"+name+"', '"+toElementType+"', '"+toElementId+"').");
-		
-		disconnect();		
-		if(isSolvable)
-			return decisionId;
-		else
-			return null;
-	}	
-	
-	public boolean associateElementToProcessWorkflow(KnowledgeBase knowledgeBase, String processId, int elementType, String elementId){
-		connect(knowledgeBase);
-		
-		boolean isSolvable = false;
-		
-		String type = elementType+"";
-		
-		if(type.equals(CharonUtil.PROCESS) || type.equals(CharonUtil.ACTIVITY) || type.equals(CharonUtil.SYNCHRONISM)){
-			isSolvable = knowledgeBase.isSolvable("create_flow('"+CharonUtil.INITIAL+"', '"+processId+"', '"+elementType+"', '" + elementId+"'), create_flow('"+elementType+"', '" + elementId+ "', '"+CharonUtil.SYNCHRONISM+"', '" +processId+"').");
-		}
-		else if(type.equals(CharonUtil.DECISION)){
-			isSolvable = knowledgeBase.isSolvable("create_flow('"+CharonUtil.INITIAL+"', '"+processId+"', '"+elementType+"', '" + elementId+"').");
+		for (Map<String, Object> map : solutions) {
+			
+			String id = (String) map.get("A");
+			id = id.substring(1, id.length()-1);
+			
+			if(knowledgeBase.isSolvable("abstractWorkflow("+id+")."))
+				knowledgeBase.isSolvable("retract(bool"+id+"(false)).");
+			else
+				knowledgeBase.isSolvable("retract(bool"+id+"(true)).");
+			
 		}
 		
-		disconnect();
-		return isSolvable;
+		solutions = knowledgeBase.getAllSolutions("optional(B).");
+		
+		for (Map<String, Object> map : solutions) {
+			
+			String id = (String) map.get("B");
+			id = id.substring(1, id.length()-1);
+			
+			if(knowledgeBase.isSolvable("abstractWorkflow("+id+")."))
+				knowledgeBase.isSolvable("retract(bool"+id+"(false)).");
+			else
+				knowledgeBase.isSolvable("retract(bool"+id+"(true)).");
+			
+		}
+		
 	}
 	
-	public boolean associateElementToExperimentRootProcessWorkflow(KnowledgeBase knowledgeBase, String experimentId, int elementType, String elementId){
-		connect(knowledgeBase);
+	private void cleanState(KnowledgeBase knowledgeBase){
 		
-		boolean isSolvable = false;
+		List<Map<String, Object>> solutions1 = knowledgeBase.getAllSolutions("variant(A, _).");
 		
-		String type = elementType+"";
-		
-		if(type.equals(CharonUtil.PROCESS) || type.equals(CharonUtil.ACTIVITY) || type.equals(CharonUtil.SYNCHRONISM)){
-			isSolvable = knowledgeBase.isSolvable("create_experiment_flow('"+CharonUtil.INITIAL+"', experiment('"+experimentId+"'), '"+elementType+"', '" + elementId+"'), create_experiment_flow('"+elementType+"', '" + elementId+ "', '"+CharonUtil.SYNCHRONISM+"', experiment('"+experimentId+"')).");
+		for (Map<String, Object> map : solutions1) {
+			
+			String id = (String) map.get("A");
+			id = id.substring(1, id.length()-1);
+			
+			knowledgeBase.isSolvable("assertz(bool"+id+"(false)).");
+			knowledgeBase.isSolvable("assertz(bool"+id+"(true)).");
+			
 		}
-		else if(type.equals(CharonUtil.DECISION)){
-			isSolvable = knowledgeBase.isSolvable("create_experiment_flow('"+CharonUtil.INITIAL+"', experiment('"+experimentId+"'), '"+elementType+"', '" + elementId+"').");
+		
+		List<Map<String, Object>> solutions2 = knowledgeBase.getAllSolutions("optional(B).");
+		
+		for (Map<String, Object> map : solutions2) {
+			
+			String id = (String) map.get("B");
+			id = id.substring(1, id.length()-1);
+			
+			knowledgeBase.isSolvable("assertz(bool"+id+"(false)).");
+			knowledgeBase.isSolvable("assertz(bool"+id+"(true)).");
+			
 		}
 		
-		disconnect();
-		return isSolvable;
 	}
 	
-	public boolean removeElementToExperimentRootProcessWorkflow(KnowledgeBase knowledgeBase, String experimentId, int elementType, String elementId){
+	public boolean insertRules(KnowledgeBase knowledgeBase, String rules) {
+		
 		connect(knowledgeBase);
 		
-		boolean isSolvable = false;
-		
-		String type = elementType+"";
-		
-		if(type.equals(CharonUtil.PROCESS) || type.equals(CharonUtil.ACTIVITY) || type.equals(CharonUtil.SYNCHRONISM)){
-			isSolvable = knowledgeBase.isSolvable("delete_experiment_flow('"+CharonUtil.INITIAL+"', experiment('"+experimentId+"'), '"+elementType+"', '" + elementId+"'), delete_experiment_flow('"+elementType+"', '" + elementId+ "', '"+CharonUtil.SYNCHRONISM+"', experiment('"+experimentId+"')).");
-		}
-		else if(type.equals(CharonUtil.DECISION)){
-			isSolvable = knowledgeBase.isSolvable("delete_experiment_flow('"+CharonUtil.INITIAL+"', experiment('"+experimentId+"'), '"+elementType+"', '" + elementId+"').");
-		}
+		boolean isSolvable = knowledgeBase.appendTheory(rules);
 		
 		disconnect();
-		return isSolvable;
-	}
-	
-	public boolean defineFlow(KnowledgeBase knowledgeBase, String processId, int originElementType, String originElementId, int destinationElementType, String destinationElementId){
-		connect(knowledgeBase);
-		boolean isSolvable = knowledgeBase.isSolvable("create_flow('"+originElementType+"', '" + originElementId+"', '"+destinationElementType+"', '"+destinationElementId+"').");
 		
-		/*
-		 * TODO: Algoritmo de deletar fluxo n�o funciona bem no caso quando se cria um processo sem adicionar nenhum elemento
-		 */
-				
-		
-		if(isSolvable){
-			knowledgeBase.isSolvable("delete_flow('"+originElementType+"', '" + originElementId+"', '"+CharonUtil.SYNCHRONISM+"', '" +processId+"').");
-			knowledgeBase.isSolvable("delete_flow('"+CharonUtil.INITIAL+"', '"+processId+"', '"+destinationElementType+"', '"+destinationElementId+"').");
-		}
-		disconnect();
-		return isSolvable;
-	}
-	
-	public boolean defineExperimentRootProcessFlow(KnowledgeBase knowledgeBase, String experimentId, int originElementType, String originElementId, int destinationElementType, String destinationElementId){
-		connect(knowledgeBase);
-		boolean isSolvable = knowledgeBase.isSolvable("create_flow('"+originElementType+"', '" + originElementId+"', '"+destinationElementType+"', '"+destinationElementId+"').");
-		
-		if(isSolvable){
-			knowledgeBase.isSolvable("delete_experiment_flow('"+originElementType+"', '" + originElementId+"', '"+CharonUtil.SYNCHRONISM+"', experiment('"+experimentId+"')).");
-			knowledgeBase.isSolvable("delete_experiment_flow('"+CharonUtil.INITIAL+"', experiment('"+experimentId+"'), '"+destinationElementType+"', '"+destinationElementId+"').");
-		}
-		disconnect();
-		return isSolvable;
-	}
-	
-	public boolean removeExperimentRootProcessFlow(KnowledgeBase knowledgeBase, String experimentId, int originElementType, String originElementId, int destinationElementType, String destinationElementId){
-		connect(knowledgeBase);
-		boolean isSolvable = knowledgeBase.isSolvable("delete_flow('"+originElementType+"', '"+originElementId+"', '"+destinationElementType+"', '"+destinationElementId+"').");
-		
-		
-		//TODO: verificar quando o elemento n�o est� conectado em ningu�m "a frente ou atras" no workflow
-		if(false){
-			knowledgeBase.isSolvable("create_experiment_flow('"+originElementType+"', '" + originElementId+"', '"+CharonUtil.SYNCHRONISM+"', experiment('"+experimentId+"')).");
-			knowledgeBase.isSolvable("create_experiment_flow('"+CharonUtil.INITIAL+"', experiment('"+experimentId+"'), '"+destinationElementType+"', '"+destinationElementId+"').");
-		}
-		disconnect();
 		return isSolvable;
 	}	
 	
