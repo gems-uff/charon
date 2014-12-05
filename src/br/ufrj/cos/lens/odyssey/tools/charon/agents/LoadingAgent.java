@@ -348,7 +348,7 @@ public class LoadingAgent extends Agent {
 			String id = (String) map.get("A");
 			id = id.substring(1, id.length()-1);
 			
-			if(knowledgeBase.isSolvable("abstractWorkflow("+id+")."))
+			if(knowledgeBase.isSolvable("abstractWorkflow('"+id+"')."))
 				knowledgeBase.isSolvable("retract(bool"+id+"(false)).");
 			else
 				knowledgeBase.isSolvable("retract(bool"+id+"(true)).");
@@ -362,7 +362,7 @@ public class LoadingAgent extends Agent {
 			String id = (String) map.get("B");
 			id = id.substring(1, id.length()-1);
 			
-			if(knowledgeBase.isSolvable("abstractWorkflow("+id+")."))
+			if(knowledgeBase.isSolvable("abstractWorkflow('"+id+"')."))
 				knowledgeBase.isSolvable("retract(bool"+id+"(false)).");
 			else
 				knowledgeBase.isSolvable("retract(bool"+id+"(true)).");
