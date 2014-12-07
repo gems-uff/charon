@@ -1,5 +1,6 @@
 package br.ufrj.cos.lens.odyssey.tools.charon.agents;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -298,16 +299,18 @@ public class LoadingAgent extends Agent {
 		connect(knowledgeBase);
 		
 		if(selected)
-			knowledgeBase.isSolvable("retract(bool"+elementId+"(false)).");
+			knowledgeBase.isSolvable("retract(boolean"+elementId+"(false)).");
 		else
-			knowledgeBase.isSolvable("retract(bool"+elementId+"(true)).");
+			knowledgeBase.isSolvable("retract(boolean"+elementId+"(true)).");
 		
 		List<Map<String, Object>> solutions = knowledgeBase.getAllSolutions(query);
 		
+//		knowledgeBase.getAllSolutions2(query);
+				
 		if(selected)
-			knowledgeBase.isSolvable("assertz(bool"+elementId+"(false)).");
+			knowledgeBase.isSolvable("assertz(boolean"+elementId+"(false)).");
 		else
-			knowledgeBase.isSolvable("assertz(bool"+elementId+"(true)).");		
+			knowledgeBase.isSolvable("assertz(boolean"+elementId+"(true)).");		
 		
 		disconnect();
 		
@@ -322,12 +325,12 @@ public class LoadingAgent extends Agent {
 		setCurrentState(knowledgeBase);
 		
 		if(selected){
-			knowledgeBase.isSolvable("assertz(bool"+elementId+"(true)).");
-			knowledgeBase.isSolvable("retract(bool"+elementId+"(false)).");
+			knowledgeBase.isSolvable("assertz(boolean"+elementId+"(true)).");
+			knowledgeBase.isSolvable("retract(boolean"+elementId+"(false)).");
 		}
 		else{
-			knowledgeBase.isSolvable("assertz(bool"+elementId+"(false)).");
-			knowledgeBase.isSolvable("retract(bool"+elementId+"(true)).");
+			knowledgeBase.isSolvable("assertz(boolean"+elementId+"(false)).");
+			knowledgeBase.isSolvable("retract(boolean"+elementId+"(true)).");
 		}
 		
 		boolean isSolvable = knowledgeBase.isSolvable(query);
@@ -349,9 +352,9 @@ public class LoadingAgent extends Agent {
 			id = id.substring(1, id.length()-1);
 			
 			if(knowledgeBase.isSolvable("abstractWorkflow('"+id+"')."))
-				knowledgeBase.isSolvable("retract(bool"+id+"(false)).");
+				knowledgeBase.isSolvable("retract(boolean"+id+"(false)).");
 			else
-				knowledgeBase.isSolvable("retract(bool"+id+"(true)).");
+				knowledgeBase.isSolvable("retract(boolean"+id+"(true)).");
 			
 		}
 		
@@ -363,9 +366,9 @@ public class LoadingAgent extends Agent {
 			id = id.substring(1, id.length()-1);
 			
 			if(knowledgeBase.isSolvable("abstractWorkflow('"+id+"')."))
-				knowledgeBase.isSolvable("retract(bool"+id+"(false)).");
+				knowledgeBase.isSolvable("retract(boolean"+id+"(false)).");
 			else
-				knowledgeBase.isSolvable("retract(bool"+id+"(true)).");
+				knowledgeBase.isSolvable("retract(boolean"+id+"(true)).");
 			
 		}
 		
@@ -380,8 +383,8 @@ public class LoadingAgent extends Agent {
 			String id = (String) map.get("A");
 			id = id.substring(1, id.length()-1);
 			
-			knowledgeBase.isSolvable("assertz(bool"+id+"(false)).");
-			knowledgeBase.isSolvable("assertz(bool"+id+"(true)).");
+			knowledgeBase.isSolvable("assertz(boolean"+id+"(false)).");
+			knowledgeBase.isSolvable("assertz(boolean"+id+"(true)).");
 			
 		}
 		
@@ -392,8 +395,8 @@ public class LoadingAgent extends Agent {
 			String id = (String) map.get("B");
 			id = id.substring(1, id.length()-1);
 			
-			knowledgeBase.isSolvable("assertz(bool"+id+"(false)).");
-			knowledgeBase.isSolvable("assertz(bool"+id+"(true)).");
+			knowledgeBase.isSolvable("assertz(boolean"+id+"(false)).");
+			knowledgeBase.isSolvable("assertz(boolean"+id+"(true)).");
 			
 		}
 		

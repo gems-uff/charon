@@ -13,6 +13,7 @@ import java.util.logging.Logger;
 
 import spem.SpemPackage;
 import alice.tuprolog.InvalidTheoryException;
+import alice.tuprolog.SolveInfo;
 import br.ufrj.cos.lens.odyssey.tools.charon.agents.Agent;
 import br.ufrj.cos.lens.odyssey.tools.charon.agents.MappingAgent;
 import br.ufrj.cos.lens.odyssey.tools.inference.InferenceMachine;
@@ -330,6 +331,10 @@ public class KnowledgeBase {
 	 */
 	public List<Map<String, Object>> getAllSolutions(String goal) {
 		return inferenceMachine.getAllSolutions(goal);
+	}
+	
+	public List<SolveInfo> getAllSolutions2(String goal) {
+		return inferenceMachine.getAllSolutions2(goal);
 	}
 
 	/**

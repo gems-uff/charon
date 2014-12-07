@@ -183,6 +183,22 @@ public class InferenceMachine {
 		return solutions;
 	}
 	
+	public synchronized List<SolveInfo> getAllSolutions2(String goal) {
+		List<SolveInfo> solutions = new ArrayList<SolveInfo>();
+
+		try {
+			SolveInfo solution = inferenceMachine.solve(goal);
+			while (solution != null) {
+				solutions.add(solution);
+				solution = inferenceMachine.solveNext();
+			}
+		} catch (MalformedGoalException e) {
+			Logger.global.log(Level.WARNING, "Could not query inference machine with " + goal, e);
+		} catch (NoMoreSolutionException e) {}
+		
+		return solutions;
+	}
+	
 	/**
 	 * Provides the content of the knowledge base in a textual format (read only mode)
 	 */
