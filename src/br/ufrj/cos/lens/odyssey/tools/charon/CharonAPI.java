@@ -100,6 +100,11 @@ public class CharonAPI {
 		return loadingAgent.listValidConfigurations(knowledgeBase, query, elementId, selected);
 	}
 	
+	public List<Map<String, Object>> listValidConfigurations2(String query, String elementId, boolean selected) throws CharonException{
+		LoadingAgent loadingAgent = AgentManager.getInstance().getAgent(LoadingAgent.class);
+		return loadingAgent.listValidConfigurations2(knowledgeBase, query, elementId, selected);
+	}
+	
 	public boolean isValidPreliminaryDerivedWorkflow(String query, String elementId, boolean selected) throws CharonException{
 		LoadingAgent loadingAgent = AgentManager.getInstance().getAgent(LoadingAgent.class);
 		return loadingAgent.isValidPreliminaryDerivedWorkflow(knowledgeBase, query, elementId, selected);

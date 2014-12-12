@@ -317,6 +317,30 @@ public class LoadingAgent extends Agent {
 		return solutions;
 	}
 	
+	public List<Map<String, Object>> listValidConfigurations2(
+			KnowledgeBase knowledgeBase, String query, String elementId, boolean selected) {
+		
+		connect(knowledgeBase);
+		
+		if(selected)
+			knowledgeBase.isSolvable("retract(boolean"+elementId+"(false)).");
+		else
+			knowledgeBase.isSolvable("retract(boolean"+elementId+"(true)).");
+		
+//		List<Map<String, Object>> solutions = knowledgeBase.getAllSolutions(query);
+		
+		knowledgeBase.getAllSolutions2(query);
+				
+		if(selected)
+			knowledgeBase.isSolvable("assertz(boolean"+elementId+"(false)).");
+		else
+			knowledgeBase.isSolvable("assertz(boolean"+elementId+"(true)).");		
+		
+		disconnect();
+		
+		return null;
+	}
+	
 	public boolean isValidPreliminaryDerivedWorkflow(
 			KnowledgeBase knowledgeBase, String query, String elementId, boolean selected) {
 		

@@ -50,7 +50,7 @@
     
     <!-- COMPILE TARGET -->
     <target name="compile" depends="prepare">
-        <javac classpathref="class.path" encoding="UTF-8" srcdir="${src.dir}" destdir="${build.dir}" optimize="true" debug="on" />
+        <javac classpathref="class.path" encoding="UTF-8" srcdir="${src.dir}" destdir="${build.dir}" optimize="true" debug="off" />
     </target>
     
     <!-- COMPILE TEST TARGET -->

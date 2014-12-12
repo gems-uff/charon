@@ -183,7 +183,7 @@ public class InferenceMachine {
 		return solutions;
 	}
 	
-	public synchronized List<SolveInfo> getAllSolutions2(String goal) {
+	public List<SolveInfo> getAllSolutions2(String goal) {
 		List<SolveInfo> solutions = new ArrayList<SolveInfo>();
 
 		try {
