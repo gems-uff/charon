@@ -55,6 +55,12 @@ public class InferenceMachine {
 		inferenceMachine.addTheory(theory);
 
 	}
+	
+	public InferenceMachine(String th) throws InvalidTheoryException, FileNotFoundException, IOException {
+		this();
+		Theory theory = new Theory(th);
+		inferenceMachine.addTheory(theory);
+	}
 
 	/**
 	 * Adds a collection of clauses into the knowledge base

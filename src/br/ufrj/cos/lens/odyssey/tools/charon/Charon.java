@@ -46,16 +46,21 @@ public class Charon {
 	 * 
 	 * @param repository Place where Charon will recover/store its knowledge base
 	 */
-	public Charon(String repositoryDirectory) throws CharonException {
-		File directory = new File(repositoryDirectory);
-		if (!directory.exists() && !directory.mkdirs()) {
+	public Charon(File repositoryDirectory) throws CharonException {
+		if (!repositoryDirectory.exists() && !repositoryDirectory.mkdirs()) {
 			throw new CharonException("Could not create directory " + repositoryDirectory);
 		}
 		
-		File file = new File(directory, FILE_NAME);
+		File file = new File(repositoryDirectory, FILE_NAME);
 		knowledgeBase = new KnowledgeBase(file);
 		AgentManager.getInstance().init();
 		
+		charonAPI = new CharonAPI(knowledgeBase);
+	}
+	
+	public Charon(String theory) throws CharonException {
+		knowledgeBase = new KnowledgeBase(theory);
+		AgentManager.getInstance().init();
 		charonAPI = new CharonAPI(knowledgeBase);
 	}
 
@@ -189,55 +194,4 @@ public class Charon {
 //		
 //	}
 	
-	public static void main(String[] args) throws Exception{
-		
-		Charon charon = new Charon("resource");
-		CharonAPI charonAPI = new CharonAPI(charon.knowledgeBase);
-		
-
-		
-		System.out.println(charonAPI.insertMandatory("1"));
-		
-		System.out.println(charonAPI.insertOptional("2"));
-		
-		System.out.println("part1");
-		
-		charonAPI.rollbackSelection();
-		System.out.println(charonAPI.selectElement("2"));
-		
-		
-		charonAPI.commitSelection();
-		
-		
-		System.out.println(charonAPI.isElementSelected("2"));
-		
-		System.out.println("part2");
-		
-		
-		charonAPI.rollbackSelection();
-		System.out.println(charonAPI.unselectElement("2"));
-		
-		
-		charonAPI.commitSelection();
-		
-		System.out.println(charonAPI.isElementSelected("2"));
-		
-
-		System.out.println("part3");
-		
-		
-		charonAPI.rollbackSelection();
-		System.out.println(charonAPI.selectElement("2"));
-		
-		
-		charonAPI.commitSelection();
-		
-		System.out.println(charonAPI.isElementSelected("2"));
-
-		
-		
-//		System.out.println(charonAPI.isValidDerivatedWorkflow());
-		
-		
-	}
 }
