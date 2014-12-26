@@ -115,7 +115,7 @@ public class LoadingAgent extends Agent {
 		knowledgeBase.getAllSolutions("retract(currentSelection(_,_,_)).");
 		knowledgeBase.getAllSolutions("retract(currentDesselection(_,_,_)).");
 		
-		knowledgeBase.getAllSolutions("selectElement([['"+elementId+"', "+selected+", 'R0'], []]).");
+		knowledgeBase.getAllSolutions("selectElement([['A"+elementId+"', "+selected+", 'R0'], []]).");
 		
 		knowledgeBase.getAllSolutions("processResults(_).");
 		
